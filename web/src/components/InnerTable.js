@@ -177,8 +177,9 @@ const TableToolbar = ({
         ],
     };
     const ref = React.createRef();
-    const [isOpenUploadTableDialog, setOpenUploadTableDialog] =
-        React.useState(false);
+    const [isOpenUploadTableDialog, setOpenUploadTableDialog] = React.useState(
+        false
+    );
     const [isOpenDataFormDialog, setOpenDataFormDialog] = React.useState(false);
     const [selectedItem, setSelectedItem] = React.useState({});
     const [headsImp, setHeadsImp] = React.useState([]);
@@ -255,20 +256,15 @@ const TableToolbar = ({
         },
     });
     const deleteData = () => {
-        rowsSelected.map((row) => {
-            console.log("deleting", row.id);
-            rm({
-                variables: {
-                    id: row.id,
-                },
-            }).then((v) => {
-                if (v.errors) {
-                    console.error(v.errors);
-                } else {
-                    //console.log("deleted", row.id)
-                    setSelected([]);
-                }
-            });
+        rm({
+            variables: { ids: selectedId },
+        }).then((v) => {
+            if (v.errors) {
+                console.error(v.errors);
+            } else {
+                //console.log("deleted", row.id)
+                setSelected([]);
+            }
         });
     };
     const handleAdd = () => {

@@ -74,9 +74,9 @@ const GENE_UPDATE = gql`
         }
     }
 `;
-const GENE_DELETE = gql`
-    mutation deleteGene($id: ID!) {
-        deleteGene(id: $id)
+const GENES_DELETE = gql`
+    mutation deleteGenes($ids: [ID!]!) {
+        deleteGenes(ids: $ids)
     }
 `;
 
@@ -145,9 +145,9 @@ const GENE_ANNOT_UPDATE = gql`
     }
 `;
 
-const GENE_ANNOT_DELETE = gql`
-    mutation deleteGeneAnnot($id: ID!) {
-        deleteGeneAnnot(id: $id)
+const GENE_ANNOTS_DELETE = gql`
+    mutation deleteGeneAnnots($ids: [ID!]!) {
+        deleteGeneAnnots(ids: $ids)
     }
 `;
 
@@ -216,9 +216,9 @@ const DDR_UPDATE = gql`
     }
 `;
 
-const DDR_DELETE = gql`
-    mutation deleteDdr($id: ID!) {
-        deleteDdr(id: $id)
+const DDRS_DELETE = gql`
+    mutation deleteDdrs($ids: [ID!]!) {
+        deleteDdrs(ids: $ids)
     }
 `;
 
@@ -270,9 +270,9 @@ const TMH_UPDATE = gql`
         }
     }
 `;
-const TMH_DELETE = gql`
-    mutation deleteTmh($id: ID!) {
-        deleteTmh(id: $id)
+const TMHS_DELETE = gql`
+    mutation deleteTmhs($ids: [ID!]!) {
+        deleteTmhs(ids: $ids)
     }
 `;
 
@@ -330,9 +330,9 @@ const CANCER_UPDATE = gql`
         }
     }
 `;
-const CANCER_DELETE = gql`
-    mutation deleteCancer($id: ID!) {
-        deleteCancer(id: $id)
+const CANCERS_DELETE = gql`
+    mutation deleteCancers($ids: [ID!]!) {
+        deleteCancers(ids: $ids)
     }
 `;
 
@@ -398,9 +398,9 @@ const MUTATION_CANCER_UPDATE = gql`
         }
     }
 `;
-const MUTATION_CANCER_DELETE = gql`
-    mutation deleteMutationCancer($id: ID!) {
-        deleteMutationCancer(id: $id)
+const MUTATION_CANCERS_DELETE = gql`
+    mutation deleteMutationCancers($ids: [ID!]!) {
+        deleteMutationCancers(ids: $ids)
     }
 `;
 
@@ -490,9 +490,9 @@ const DRUG_UPDATE = gql`
         }
     }
 `;
-const DRUG_DELETE = gql`
-    mutation deleteDrug($id: ID!) {
-        deleteDrug(id: $id)
+const DRUGS_DELETE = gql`
+    mutation deleteDrugs($ids: [ID!]!) {
+        deleteDrugs(ids: $ids)
     }
 `;
 
@@ -536,9 +536,9 @@ const DRUG_CANCER_UPDATE = gql`
         }
     }
 `;
-const DRUG_CANCER_DELETE = gql`
-    mutation deleteDrugCancer($id: ID!) {
-        deleteDrugCancer(id: $id)
+const DRUG_CANCERS_DELETE = gql`
+    mutation deleteDrugCancers($ids: [ID!]!) {
+        deleteDrugCancers(ids: $ids)
     }
 `;
 
@@ -582,9 +582,9 @@ const MUTATION_DRUG_BENEFIT_UPDATE = gql`
         }
     }
 `;
-const MUTATION_DRUG_BENEFIT_DELETE = gql`
-    mutation deleteMutationDrugBenefit($id: ID!) {
-        deleteMutationDrugBenefit(id: $id)
+const MUTATION_DRUG_BENEFITS_DELETE = gql`
+    mutation deleteMutationDrugBenefits($ids: [ID!]!) {
+        deleteMutationDrugBenefits(ids: $ids)
     }
 `;
 
@@ -628,9 +628,9 @@ const MUTATION_DRUG_RESISTANCE_UPDATE = gql`
         }
     }
 `;
-const MUTATION_DRUG_RESISTANCE_DELETE = gql`
-    mutation deleteMutationDrugResistance($id: ID!) {
-        deleteMutationDrugResistance(id: $id)
+const MUTATION_DRUG_RESISTANCES_DELETE = gql`
+    mutation deleteMutationDrugResistances($ids: [ID!]!) {
+        deleteMutationDrugResistances(ids: $ids)
     }
 `;
 
@@ -674,9 +674,9 @@ const MUTATION_DRUG_BENEFIT_OTHER_UPDATE = gql`
         }
     }
 `;
-const MUTATION_DRUG_BENEFIT_OTHER_DELETE = gql`
-    mutation deleteMutationDrugBenefitOther($id: ID!) {
-        deleteMutationDrugBenefitOther(id: $id)
+const MUTATION_DRUG_BENEFIT_OTHERS_DELETE = gql`
+    mutation deleteMutationDrugBenefitOthers($ids: [ID!]!) {
+        deleteMutationDrugBenefitOthers(ids: $ids)
     }
 `;
 
@@ -720,9 +720,9 @@ const MUTATION_CLINICAL_UPDATE = gql`
         }
     }
 `;
-const MUTATION_CLINICAL_DELETE = gql`
-    mutation deleteMutationClinical($id: ID!) {
-        deleteMutationClinical(id: $id)
+const MUTATION_CLINICALS_DELETE = gql`
+    mutation deleteMutationClinicals($ids: [ID!]!) {
+        deleteMutationClinicals(ids: $ids)
     }
 `;
 
@@ -794,9 +794,9 @@ const CLINICAL_UPDATE = gql`
         }
     }
 `;
-const CLINICAL_DELETE = gql`
-    mutation deleteClinical($id: ID!) {
-        deleteClinical(id: $id)
+const CLINICALS_DELETE = gql`
+    mutation deleteClinicals($ids: [ID!]!) {
+        deleteClinicals(ids: $ids)
     }
 `;
 
@@ -888,9 +888,9 @@ const CHEMO_UPDATE = gql`
         }
     }
 `;
-const CHEMO_DELETE = gql`
-    mutation deleteChemo($id: ID!) {
-        deleteChemo(id: $id)
+const CHEMOS_DELETE = gql`
+    mutation deleteChemos($ids: [ID!]!) {
+        deleteChemos(ids: $ids)
     }
 `;
 
@@ -930,9 +930,9 @@ const NCCN_GENE_UPDATE = gql`
         }
     }
 `;
-const NCCN_GENE_DELETE = gql`
-    mutation deleteNccnGene($id: ID!) {
-        deleteNccnGene(id: $id)
+const NCCN_GENES_DELETE = gql`
+    mutation deleteNccnGenes($ids: [ID!]!) {
+        deleteNccnGenes(ids: $ids)
     }
 `;
 
@@ -950,9 +950,9 @@ const REPORT_REMARK_UPDATE = gql`
         }
     }
 `;
-const REPORT_REMARK_DELETE = gql`
-    mutation deleteReportRemark($id: ID!) {
-        deleteReportRemark(id: $id)
+const REPORT_REMARKS_DELETE = gql`
+    mutation deleteReportRemarks($ids: [ID!]!) {
+        deleteReportRemarks(ids: $ids)
     }
 `;
 
@@ -974,9 +974,9 @@ const REPORT_LITERATURE_UPDATE = gql`
         }
     }
 `;
-const REPORT_LITERATURE_DELETE = gql`
-    mutation deleteReportLiterature($id: ID!) {
-        deleteReportLiterature(id: $id)
+const REPORT_LITERATURES_DELETE = gql`
+    mutation deleteReportLiteratures($ids: [ID!]!) {
+        deleteReportLiteratures(ids: $ids)
     }
 `;
 
@@ -998,9 +998,9 @@ const REPORT_FILE_UPDATE = gql`
     }
 `;
 
-const REPORT_FILE_DELETE = gql`
-    mutation deleteReportFile($id: ID!) {
-        deleteReportFile(id: $id)
+const REPORT_FILES_DELETE = gql`
+    mutation deleteReportFiles($ids: [ID!]!) {
+        deleteReportFiles(ids: $ids)
     }
 `;
 
@@ -1048,9 +1048,9 @@ const PATHWAY_UPDATE = gql`
     }
 `;
 
-const PATHWAY_DELETE = gql`
-    mutation deletePathway($id: ID!) {
-        deletePathway(id: $id)
+const PATHWAYS_DELETE = gql`
+    mutation deletePathways($ids: [ID!]!) {
+        deletePathways(ids: $ids)
     }
 `;
 
@@ -1088,9 +1088,9 @@ const PATHWAY_DRUG_CANCER_UPDATE = gql`
     }
 `;
 
-const PATHWAY_DRUG_CANCER_DELETE = gql`
-    mutation deletePathwayDrugCancer($id: ID!) {
-        deletePathwayDrugCancer(id: $id)
+const PATHWAY_DRUG_CANCERS_DELETE = gql`
+    mutation deletePathwayDrugCancers($ids: [ID!]!) {
+        deletePathwayDrugCancers(ids: $ids)
     }
 `;
 
@@ -1112,9 +1112,9 @@ const GENE_CLASS_UPDATE = gql`
     }
 `;
 
-const GENE_CLASS_DELETE = gql`
-    mutation deleteGeneClass($id: ID!) {
-        deleteGeneClass(id: $id)
+const GENE_CLASSES_DELETE = gql`
+    mutation deleteGeneClasses($ids: [ID!]!) {
+        deleteGeneClasses(ids: $ids)
     }
 `;
 
@@ -1136,9 +1136,9 @@ const DDR_CLASS_UPDATE = gql`
     }
 `;
 
-const DDR_CLASS_DELETE = gql`
-    mutation deleteDdrClass($id: ID!) {
-        deleteDdrClass(id: $id)
+const DDR_CLASSES_DELETE = gql`
+    mutation deleteDdrClasses($ids: [ID!]!) {
+        deleteDdrClasses(ids: $ids)
     }
 `;
 
@@ -1160,9 +1160,9 @@ const MUTATION_CLASS_UPDATE = gql`
     }
 `;
 
-const MUTATION_CLASS_DELETE = gql`
-    mutation deleteMutationClass($id: ID!) {
-        deleteMutationClass(id: $id)
+const MUTATION_CLASSES_DELETE = gql`
+    mutation deleteMutationClasses($ids: [ID!]!) {
+        deleteMutationClasses(ids: $ids)
     }
 `;
 
@@ -1184,9 +1184,9 @@ const DRUG_CLASS_UPDATE = gql`
     }
 `;
 
-const DRUG_CLASS_DELETE = gql`
-    mutation deleteDrugClass($id: ID!) {
-        deleteDrugClass(id: $id)
+const DRUG_CLASSES_DELETE = gql`
+    mutation deleteDrugClasses($ids: [ID!]!) {
+        deleteDrugClasses(ids: $ids)
     }
 `;
 
@@ -1208,9 +1208,9 @@ const EVIDENCE_LEVEL_UPDATE = gql`
     }
 `;
 
-const EVIDENCE_LEVEL_DELETE = gql`
-    mutation deleteEvidenceLevel($id: ID!) {
-        deleteEvidenceLevel(id: $id)
+const EVIDENCE_LEVELS_DELETE = gql`
+    mutation deleteEvidenceLevels($ids: [ID!]!) {
+        deleteEvidenceLevels(ids: $ids)
     }
 `;
 
@@ -1219,77 +1219,77 @@ export {
     DELETE_TABLE,
     GENE_NEW,
     GENE_UPDATE,
-    GENE_DELETE,
+    GENES_DELETE,
     GENE_ANNOT_NEW,
     GENE_ANNOT_UPDATE,
-    GENE_ANNOT_DELETE,
+    GENE_ANNOTS_DELETE,
     DDR_NEW,
     DDR_UPDATE,
-    DDR_DELETE,
+    DDRS_DELETE,
     TMH_NEW,
     TMH_UPDATE,
-    TMH_DELETE,
+    TMHS_DELETE,
     CANCER_NEW,
     CANCER_UPDATE,
-    CANCER_DELETE,
+    CANCERS_DELETE,
     MUTATION_CANCER_NEW,
     MUTATION_CANCER_UPDATE,
-    MUTATION_CANCER_DELETE,
+    MUTATION_CANCERS_DELETE,
     DRUG_NEW,
     DRUG_UPDATE,
-    DRUG_DELETE,
+    DRUGS_DELETE,
     DRUG_CANCER_NEW,
     DRUG_CANCER_UPDATE,
-    DRUG_CANCER_DELETE,
+    DRUG_CANCERS_DELETE,
     MUTATION_DRUG_BENEFIT_NEW,
     MUTATION_DRUG_BENEFIT_UPDATE,
-    MUTATION_DRUG_BENEFIT_DELETE,
+    MUTATION_DRUG_BENEFITS_DELETE,
     MUTATION_DRUG_RESISTANCE_NEW,
     MUTATION_DRUG_RESISTANCE_UPDATE,
-    MUTATION_DRUG_RESISTANCE_DELETE,
+    MUTATION_DRUG_RESISTANCES_DELETE,
     MUTATION_DRUG_BENEFIT_OTHER_NEW,
     MUTATION_DRUG_BENEFIT_OTHER_UPDATE,
-    MUTATION_DRUG_BENEFIT_OTHER_DELETE,
+    MUTATION_DRUG_BENEFIT_OTHERS_DELETE,
     MUTATION_CLINICAL_NEW,
     MUTATION_CLINICAL_UPDATE,
-    MUTATION_CLINICAL_DELETE,
+    MUTATION_CLINICALS_DELETE,
     CLINICAL_NEW,
     CLINICAL_UPDATE,
-    CLINICAL_DELETE,
+    CLINICALS_DELETE,
     CHEMO_NEW,
     CHEMO_UPDATE,
-    CHEMO_DELETE,
+    CHEMOS_DELETE,
     NCCN_GENE_NEW,
     NCCN_GENE_UPDATE,
-    NCCN_GENE_DELETE,
+    NCCN_GENES_DELETE,
     REPORT_REMARK_NEW,
     REPORT_REMARK_UPDATE,
-    REPORT_REMARK_DELETE,
+    REPORT_REMARKS_DELETE,
     REPORT_LITERATURE_NEW,
     REPORT_LITERATURE_UPDATE,
-    REPORT_LITERATURE_DELETE,
+    REPORT_LITERATURES_DELETE,
     REPORT_FILE_NEW,
     REPORT_FILE_UPDATE,
-    REPORT_FILE_DELETE,
+    REPORT_FILES_DELETE,
     PATHWAY_NEW,
     PATHWAY_UPDATE,
-    PATHWAY_DELETE,
+    PATHWAYS_DELETE,
     PATHWAY_DRUG_CANCER_NEW,
     PATHWAY_DRUG_CANCER_UPDATE,
-    PATHWAY_DRUG_CANCER_DELETE,
+    PATHWAY_DRUG_CANCERS_DELETE,
     GENE_CLASS_NEW,
     GENE_CLASS_UPDATE,
-    GENE_CLASS_DELETE,
+    GENE_CLASSES_DELETE,
     DDR_CLASS_NEW,
     DDR_CLASS_UPDATE,
-    DDR_CLASS_DELETE,
+    DDR_CLASSES_DELETE,
     MUTATION_CLASS_NEW,
     MUTATION_CLASS_UPDATE,
-    MUTATION_CLASS_DELETE,
+    MUTATION_CLASSES_DELETE,
     DRUG_CLASS_NEW,
     DRUG_CLASS_UPDATE,
-    DRUG_CLASS_DELETE,
+    DRUG_CLASSES_DELETE,
     EVIDENCE_LEVEL_NEW,
     EVIDENCE_LEVEL_UPDATE,
-    EVIDENCE_LEVEL_DELETE,
+    EVIDENCE_LEVELS_DELETE,
 };
