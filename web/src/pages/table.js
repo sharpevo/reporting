@@ -134,7 +134,7 @@ const databases = {
     ],
 };
 
-const Tables = () => {
+const PageTable = () => {
     const [expandedKey, setExpandedKey] = React.useState("");
     useEffect(() => {
         document.title = "Database";
@@ -187,4 +187,4 @@ const Tables = () => {
     );
 };
 
-export default Tables;
+export default PageTable;
