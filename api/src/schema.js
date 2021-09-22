@@ -503,16 +503,16 @@ module.exports = gql`
 
     type Mutation {
         newTable(label: String!, key: String!, group: String): Table
-        deleteTable(id: ID!): Boolean!
+        deleteTables(ids: [ID!]!): Boolean!
         updateTable(id: ID!, label: String, key: String, group: String): Table
 
         newField(label: String!, key: String!, table: ID!, order: Int): Field
-        deleteField(id: ID!): Boolean!
+        deleteFields(ids: [ID!]!): Boolean!
         updateField(id: ID!, label: String, key: String, group: String): Field
 
         newGeneClass(label: String!): GeneClass!
         updateGeneClass(id: ID!, label: String!): GeneClass!
-        deleteGeneClass(id: ID!): Boolean!
+        deleteGeneClasses(ids: [ID!]!): Boolean!
 
         newGene(
             name: String!
@@ -533,7 +533,7 @@ module.exports = gql`
             is_ncc: Boolean
             is_8glc: Boolean
         ): Gene!
-        deleteGene(id: ID!): Boolean!
+        deleteGenes(ids: [ID!]!): Boolean!
         updateGeneName(id: ID!, name: String!): Gene
         updateGeneGeneClass(id: ID!, geneclass: ID!): Gene
         updateGeneSource(id: ID!, source: String!): Gene
@@ -563,7 +563,7 @@ module.exports = gql`
             source: String
             literature: String
         ): GeneAnnot!
-        deleteGeneAnnot(id: ID!): Boolean!
+        deleteGeneAnnots(ids: [ID!]!): Boolean!
 
         newDdr(
             gene: String
@@ -582,7 +582,7 @@ module.exports = gql`
             literature: String
             source: String
         ): Ddr
-        deleteDdr(id: ID!): Boolean!
+        deleteDdrs(ids: [ID!]!): Boolean!
 
         newTmh(
             item: String
@@ -601,7 +601,7 @@ module.exports = gql`
             literature_detail: String
             source: String
         ): Tmh!
-        deleteTmh(id: ID!): Boolean!
+        deleteTmhs(ids: [ID!]!): Boolean!
 
         newCancer(
             name_cn: String!
@@ -624,7 +624,7 @@ module.exports = gql`
             literature: String
             remark: String
         ): Cancer!
-        deleteCancer(id: ID!): Boolean!
+        deleteCancers(ids: [ID!]!): Boolean!
 
         newMutationCancer(
             mutation: String!
@@ -653,7 +653,7 @@ module.exports = gql`
             evidence: String
             literature: String
         ): MutationCancer!
-        deleteMutationCancer(id: ID!): Boolean!
+        deleteMutationCancers(ids: [ID!]!): Boolean!
 
         newDrug(
             name_cm: String!
@@ -692,7 +692,7 @@ module.exports = gql`
             source: String
             literature: String
         ): Drug!
-        deleteDrug(id: ID!): Boolean!
+        deleteDrugs(ids: [ID!]!): Boolean!
 
         newDrugCancer(
             drug: String!
@@ -709,7 +709,7 @@ module.exports = gql`
             source: String
             literature: String
         ): DrugCancer!
-        deleteDrugCancer(id: ID!): Boolean!
+        deleteDrugCancers(ids: [ID!]!): Boolean!
 
         newMutationDrugBenefit(
             mutation: String!
@@ -726,7 +726,7 @@ module.exports = gql`
             source: String
             literature: String
         ): MutationDrugBenefit!
-        deleteMutationDrugBenefit(id: ID!): Boolean!
+        deleteMutationDrugBenefits(ids: [ID!]!): Boolean!
 
         newMutationDrugResistance(
             mutation: String!
@@ -743,7 +743,7 @@ module.exports = gql`
             source: String
             literature: String
         ): MutationDrugResistance!
-        deleteMutationDrugResistance(id: ID!): Boolean!
+        deleteMutationDrugResistances(ids: [ID!]!): Boolean!
 
         newMutationDrugBenefitOther(
             mutation: String!
@@ -760,7 +760,7 @@ module.exports = gql`
             source: String
             literature: String
         ): MutationDrugBenefitOther!
-        deleteMutationDrugBenefitOther(id: ID!): Boolean!
+        deleteMutationDrugBenefitOthers(ids: [ID!]!): Boolean!
 
         newMutationClinical(
             mutation: String!
@@ -777,7 +777,7 @@ module.exports = gql`
             evidence: String
             source: String
         ): MutationClinical!
-        deleteMutationClinical(id: ID!): Boolean!
+        deleteMutationClinicals(ids: [ID!]!): Boolean!
 
         newClinical(
             gene_annot: String
@@ -808,7 +808,7 @@ module.exports = gql`
             location: String
             remark: String
         ): MutationClinical!
-        deleteClinical(id: ID!): Boolean!
+        deleteClinicals(ids: [ID!]!): Boolean!
 
         newChemo(
             gene: String
@@ -849,7 +849,7 @@ module.exports = gql`
             effectiveness: String
             literature: String
         ): Chemo!
-        deleteChemo(id: ID!): Boolean!
+        deleteChemos(ids: [ID!]!): Boolean!
 
         newNccnGene(
             gene: String!
@@ -864,7 +864,7 @@ module.exports = gql`
             result: String
             remark: String
         ): NccnGene!
-        deleteNccnGene(id: ID!): Boolean!
+        deleteNccnGenes(ids: [ID!]!): Boolean!
 
         newReportRemark(key: String!, content: String): ReportRemark!
         updateReportRemark(
@@ -872,7 +872,7 @@ module.exports = gql`
             key: String!
             content: String
         ): ReportRemark!
-        deleteReportRemark(id: ID!): Boolean!
+        deleteReportRemarks(ids: [ID!]!): Boolean!
 
         newReportLiterature(
             pmid: String!
@@ -883,11 +883,11 @@ module.exports = gql`
             pmid: String!
             literature: String
         ): ReportLiterature!
-        deleteReportLiterature(id: ID!): Boolean!
+        deleteReportLiteratures(ids: [ID!]!): Boolean!
 
         newReportFile(file: Upload!): ReportFile!
         updateReportFile(name: String!, remark: String): ReportFile!
-        deleteReportFile(id: ID!): Boolean!
+        deleteReportFiles(ids: [ID!]!): Boolean!
 
         newPathway(
             name_en: String!
@@ -904,7 +904,7 @@ module.exports = gql`
             description: String
             image: String
         ): Pathway!
-        deletePathway(id: ID!): Boolean!
+        deletePathways(ids: [ID!]!): Boolean!
 
         newPathwayDrugCancer(
             pathway: String
@@ -917,22 +917,22 @@ module.exports = gql`
             drugs: [String]
             cancer: String
         ): PathwayDrugCancer!
-        deletePathwayDrugCancer(id: ID!): Boolean!
+        deletePathwayDrugCancers(ids: [ID!]!): Boolean!
 
         newDdrClass(label: String!): DdrClass!
         updateDdrClass(id: ID!, label: String!): DdrClass!
-        deleteDdrClass(id: ID!): Boolean!
+        deleteDdrClasses(ids: [ID!]!): Boolean!
 
         newMutationClass(label: String!): MutationClass
         updateMutationClass(id: ID!, label: String!): MutationClass
-        deleteMutationClass(id: ID!): Boolean!
+        deleteMutationClasses(ids: [ID!]!): Boolean!
 
         newDrugClass(label: String!): DrugClass
         updateDrugClass(id: ID!, label: String!): DrugClass
-        deleteDrugClass(id: ID!): Boolean!
+        deleteDrugClasses(ids: [ID!]!): Boolean!
 
         newEvidenceLevel(label: String!): EvidenceLevel
         updateEvidenceLevel(id: ID!, label: String!): EvidenceLevel
-        deleteEvidenceLevel(id: ID!): Boolean!
+        deleteEvidenceLevels(ids: [ID!]!): Boolean!
     }
 `;

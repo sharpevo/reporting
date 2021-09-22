@@ -13,10 +13,11 @@ module.exports = {
             table: mongoose.Types.ObjectId(args.table),
         });
     },
-    deleteField: async (parent, { id }, { models }) => {
-        const field = await models.Field.findById(id);
+    deleteFields: async (parent, { ids }, { models }) => {
         try {
-            await field.remove();
+            const result = await models.Field.deleteMany({
+                _id: { $in: ids },
+            });
             return true;
         } catch (err) {
             console.log(err);
@@ -48,10 +49,11 @@ module.exports = {
             group: args.group,
         });
     },
-    deleteTable: async (parent, { id }, { models }) => {
-        const table = await models.Table.findById(id);
+    deleteTables: async (parent, { ids }, { models }) => {
         try {
-            await table.remove();
+            const result = await models.Table.deleteMany({
+                _id: { $in: ids },
+            });
             return true;
         } catch (err) {
             console.log(err);
@@ -96,10 +98,11 @@ module.exports = {
             }
         );
     },
-    deleteGeneClass: async (parent, { id }, { models }) => {
-        const geneclass = models.GeneClass.findById(id);
+    deleteGeneClasses: async (parent, { ids }, { models }) => {
         try {
-            await geneclass.remove();
+            const result = await models.GeneClass.deleteMany({
+                _id: { $in: ids },
+            });
             return true;
         } catch (err) {
             console.log(err);
@@ -188,10 +191,11 @@ module.exports = {
             throw new Error(err);
         }
     },
-    deleteGene: async (parent, { id }, { models }) => {
+    deleteGenes: async (parent, { ids }, { models }) => {
         try {
-            const gene = models.Gene.findById(id);
-            await gene.remove();
+            const result = await models.Gene.deleteMany({
+                _id: { $in: ids },
+            });
             return true;
         } catch (err) {
             console.log(err);
@@ -274,10 +278,11 @@ module.exports = {
             throw new Error(err);
         }
     },
-    deleteGeneAnnot: async (parent, { id }, { models }) => {
+    deleteGeneAnnots: async (parent, { ids }, { models }) => {
         try {
-            const geneAnnot = await models.GeneAnnot.findById(id);
-            await geneAnnot.deleteOne();
+            const result = await models.GeneAnnot.deleteMany({
+                _id: { $in: ids },
+            });
             return true;
         } catch (err) {
             console.log(err);
@@ -353,10 +358,11 @@ module.exports = {
             throw new Error(err);
         }
     },
-    deleteDdr: async (parent, { id }, { models }) => {
+    deleteDdrs: async (parent, { ids }, { models }) => {
         try {
-            const ddr = await models.Ddr.findById(id);
-            await ddr.deleteOne();
+            const result = await models.Ddr.deleteMany({
+                _id: { $in: ids },
+            });
             return true;
         } catch (err) {
             console.log(err);
@@ -405,10 +411,11 @@ module.exports = {
             throw new Error(err);
         }
     },
-    deleteTmh: async (parent, { id }, { models }) => {
+    deleteTmhs: async (parent, { ids }, { models }) => {
         try {
-            const tmh = await models.Tmh.findById(id);
-            await tmh.deleteOne();
+            const result = await models.Tmh.deleteMany({
+                _id: { $in: ids },
+            });
             return true;
         } catch (err) {
             console.log(err);
@@ -480,10 +487,11 @@ module.exports = {
             throw new Error(err);
         }
     },
-    deleteCancer: async (parent, { id }, { models }) => {
+    deleteCancers: async (parent, { ids }, { models }) => {
         try {
-            const cancer = await models.Cancer.findById(id);
-            await cancer.deleteOne();
+            const result = await models.Cancer.deleteMany({
+                _id: { $in: ids },
+            });
             return true;
         } catch (err) {
             console.log(err);
@@ -630,10 +638,11 @@ module.exports = {
             throw new Error(err);
         }
     },
-    deleteMutationCancer: async (parent, { id }, { models }) => {
+    deleteMutationCancers: async (parent, { ids }, { models }) => {
         try {
-            const mc = await models.MutationCancer.findById(id);
-            await mc.deleteOne();
+            const result = await models.MutationCancer.deleteMany({
+                _id: { $in: ids },
+            });
             return true;
         } catch (err) {
             console.log(err);
@@ -737,10 +746,11 @@ module.exports = {
             throw new Error(err);
         }
     },
-    deleteDrug: async (parent, { id }, { models }) => {
+    deleteDrugs: async (parent, { ids }, { models }) => {
         try {
-            const drug = await models.Drug.findById(id);
-            await drug.deleteOne();
+            const result = await models.Drug.deleteMany({
+                _id: { $in: ids },
+            });
             return true;
         } catch (err) {
             console.log(err);
@@ -812,10 +822,11 @@ module.exports = {
             throw new Error(err);
         }
     },
-    deleteDrugCancer: async (parent, { id }, { models }) => {
+    deleteDrugCancers: async (parent, { ids }, { models }) => {
         try {
-            const drugCancer = await models.DrugCancer.findById(id);
-            await drugCancer.deleteOne();
+            const result = await models.DrugCancer.deleteMany({
+                _id: { $in: ids },
+            });
             return true;
         } catch (err) {
             console.log(err);
@@ -935,10 +946,11 @@ module.exports = {
             throw new Error(err);
         }
     },
-    deleteMutationDrugBenefit: async (parent, { id }, { models }) => {
+    deleteMutationDrugBenefits: async (parent, { ids }, { models }) => {
         try {
-            const mdb = await models.MutationDrugBenefit.findById(id);
-            await mdb.deleteOne();
+            const result = await models.MutationDrugBenefit.deleteMany({
+                _id: { $in: ids },
+            });
             return true;
         } catch (err) {
             console.log(err);
@@ -1058,10 +1070,11 @@ module.exports = {
             throw new Error(err);
         }
     },
-    deleteMutationDrugResistance: async (parent, { id }, { models }) => {
+    deleteMutationDrugResistances: async (parent, { ids }, { models }) => {
         try {
-            const mdb = await models.MutationDrugResistance.findById(id);
-            await mdb.deleteOne();
+            const result = await models.MutationDrugResistance.deleteMany({
+                _id: { $in: ids },
+            });
             return true;
         } catch (err) {
             console.log(err);
@@ -1181,10 +1194,11 @@ module.exports = {
             throw new Error(err);
         }
     },
-    deleteMutationDrugBenefitOther: async (parent, { id }, { models }) => {
+    deleteMutationDrugBenefitOthers: async (parent, { ids }, { models }) => {
         try {
-            const mdbo = await models.MutationDrugBenefitOther.findById(id);
-            await mdbo.deleteOne();
+            const result = await models.MutationDrugBenefitOther.deleteMany({
+                _id: { $in: ids },
+            });
             return true;
         } catch (err) {
             console.log(err);
@@ -1292,10 +1306,11 @@ module.exports = {
             throw new Error(err);
         }
     },
-    deleteMutationClinical: async (parent, { id }, { models }) => {
+    deleteMutationClinicals: async (parent, { ids }, { models }) => {
         try {
-            const mc = await models.MutationClinical.findById(id);
-            await mc.deleteOne();
+            const result = await models.MutationClinical.deleteMany({
+                _id: { $in: ids },
+            });
             return true;
         } catch (err) {
             console.log(err);
@@ -1442,10 +1457,11 @@ module.exports = {
             throw new Error(err);
         }
     },
-    deleteClinical: async (parent, { id }, { models }) => {
+    deleteClinicals: async (parent, { ids }, { models }) => {
         try {
-            const c = await models.Clinical.findById(id);
-            await c.deleteOne();
+            const result = await models.Clinical.deleteMany({
+                _id: { $in: ids },
+            });
             return true;
         } catch (err) {
             console.log(err);
@@ -1606,10 +1622,11 @@ module.exports = {
             throw new Error(err);
         }
     },
-    deleteChemo: async (parent, { id }, { models }) => {
+    deleteChemos: async (parent, { ids }, { models }) => {
         try {
-            const c = await models.Chemo.findById(id);
-            await c.deleteOne();
+            const result = await models.Chemo.deleteMany({
+                _id: { $in: ids },
+            });
             return true;
         } catch (err) {
             console.log(err);
@@ -1672,10 +1689,11 @@ module.exports = {
             throw new Error(err);
         }
     },
-    deleteNccnGene: async (parent, { id }, { models }) => {
+    deleteNccnGenes: async (parent, { ids }, { models }) => {
         try {
-            const ng = await models.NccnGene.findById(id);
-            await ng.deleteOne();
+            const result = await models.NccnGene.deleteMany({
+                _id: { $in: ids },
+            });
             return true;
         } catch (err) {
             console.log(err);
@@ -1708,10 +1726,11 @@ module.exports = {
             throw new Error(err);
         }
     },
-    deleteReportRemark: async (parent, { id }, { models }) => {
+    deleteReportRemarks: async (parent, { ids }, { models }) => {
         try {
-            const rr = await models.ReportRemark.findById(id);
-            await rr.deleteOne();
+            const result = await models.ReportRemark.deleteMany({
+                _id: { $in: ids },
+            });
             return true;
         } catch (err) {
             console.log(err);
@@ -1748,10 +1767,11 @@ module.exports = {
             throw new Error(err);
         }
     },
-    deleteReportLiterature: async (parent, { id }, { models }) => {
+    deleteReportLiteratures: async (parent, { ids }, { models }) => {
         try {
-            const rl = await models.ReportLiterature.findById(id);
-            await rl.deleteOne();
+            const result = await models.ReportLiterature.deleteMany({
+                _id: { $in: ids },
+            });
             return true;
         } catch (err) {
             console.log(err);
@@ -1799,10 +1819,11 @@ module.exports = {
             throw new Error(err);
         }
     },
-    deleteReportFile: async (parent, { id }, { models }) => {
+    deleteReportFiles: async (parent, { ids }, { models }) => {
         try {
-            const rf = await models.ReportFile.findById(id);
-            await rf.deleteOne();
+            const result = await models.ReportFile.deleteMany({
+                _id: { $in: ids },
+            });
             return true;
         } catch (err) {
             console.log(err);
@@ -1888,10 +1909,11 @@ module.exports = {
             throw new Error(err);
         }
     },
-    deletePathway: async (parent, { id }, { models }) => {
+    deletePathways: async (parent, { ids }, { models }) => {
         try {
-            const pathway = await models.Pathway.findById(id);
-            await pathway.deleteOne();
+            const result = await models.Pathway.deleteMany({
+                _id: { $in: ids },
+            });
             return true;
         } catch (err) {
             console.log(err);
@@ -1978,10 +2000,11 @@ module.exports = {
             throw new Error(err);
         }
     },
-    deletePathwayDrugCancer: async (parent, { id }, { models }) => {
+    deletePathwayDrugCancers: async (parent, { ids }, { models }) => {
         try {
-            const pdc = await models.PathwayDrugCancer.findById(id);
-            await pdc.deleteOne();
+            const result = await models.PathwayDrugCancer.deleteMany({
+                _id: { $in: ids },
+            });
             return true;
         } catch (err) {
             console.log(err);
@@ -2009,10 +2032,11 @@ module.exports = {
             }
         );
     },
-    deleteDdrClass: async (parent, { id }, { models }) => {
-        const ddrclass = models.DdrClass.findById(id);
+    deleteDdrClasses: async (parent, { ids }, { models }) => {
         try {
-            await ddrclass.remove();
+            const result = await models.DdrClass.deleteMany({
+                _id: { $in: ids },
+            });
             return true;
         } catch (err) {
             console.log(err);
@@ -2040,10 +2064,11 @@ module.exports = {
             }
         );
     },
-    deleteMutationClass: async (parent, { id }, { models }) => {
-        const mutationclass = models.MutationClass.findById(id);
+    deleteMutationClasses: async (parent, { ids }, { models }) => {
         try {
-            await mutationclass.remove();
+            const result = await models.MutationClass.deleteMany({
+                _id: { $in: ids },
+            });
             return true;
         } catch (err) {
             console.log(err);
@@ -2071,10 +2096,11 @@ module.exports = {
             }
         );
     },
-    deleteDrugClass: async (parent, { id }, { models }) => {
-        const drugclass = models.DrugClass.findById(id);
+    deleteDrugClasses: async (parent, { ids }, { models }) => {
         try {
-            await drugclass.remove();
+            const result = await models.DrugClass.deleteMany({
+                _id: { $in: ids },
+            });
             return true;
         } catch (err) {
             console.log(err);
@@ -2102,10 +2128,11 @@ module.exports = {
             }
         );
     },
-    deleteEvidenceLevel: async (parent, { id }, { models }) => {
-        const evidencelevel = models.EvidenceLevel.findById(id);
+    deleteEvidenceLevels: async (parent, { ids }, { models }) => {
         try {
-            await evidencelevel.remove();
+            const result = await models.EvidenceLevel.deleteMany({
+                _id: { $in: ids },
+            });
             return true;
         } catch (err) {
             console.log(err);

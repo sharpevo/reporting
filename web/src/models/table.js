@@ -39,7 +39,7 @@ tables["gene"] = {
     },
     mutation: {
         new: mutation.GENE_NEW,
-        delete: mutation.GENE_DELETE,
+        delete: mutation.GENES_DELETE,
         update: mutation.GENE_UPDATE,
     },
     columns: [
@@ -200,7 +200,7 @@ tables["gene_annot"] = {
     },
     mutation: {
         new: mutation.GENE_ANNOT_NEW,
-        delete: mutation.GENE_ANNOT_DELETE,
+        delete: mutation.GENE_ANNOTS_DELETE,
         update: mutation.GENE_ANNOT_UPDATE,
     },
     columns: [
@@ -375,7 +375,7 @@ tables["ddr"] = {
     },
     mutation: {
         new: mutation.DDR_NEW,
-        delete: mutation.DDR_DELETE,
+        delete: mutation.DDRS_DELETE,
         update: mutation.DDR_UPDATE,
     },
     columns: [
@@ -524,7 +524,7 @@ tables["tmh"] = {
     },
     mutation: {
         new: mutation.TMH_NEW,
-        delete: mutation.TMH_DELETE,
+        delete: mutation.TMHS_DELETE,
         update: mutation.TMH_UPDATE,
     },
     columns: [
@@ -671,7 +671,7 @@ tables["cancer"] = {
     },
     mutation: {
         new: mutation.CANCER_NEW,
-        delete: mutation.CANCER_DELETE,
+        delete: mutation.CANCERS_DELETE,
         update: mutation.CANCER_UPDATE,
     },
     columns: [
@@ -838,7 +838,7 @@ tables["mutation_cancer"] = {
     },
     mutation: {
         new: mutation.MUTATION_CANCER_NEW,
-        delete: mutation.MUTATION_CANCER_DELETE,
+        delete: mutation.MUTATION_CANCERS_DELETE,
         update: mutation.MUTATION_CANCER_UPDATE,
     },
     columns: [
@@ -1051,7 +1051,7 @@ tables["drug"] = {
     },
     mutation: {
         new: mutation.DRUG_NEW,
-        delete: mutation.DRUG_DELETE,
+        delete: mutation.DRUGS_DELETE,
         update: mutation.DRUG_UPDATE,
     },
     columns: [
@@ -1333,7 +1333,7 @@ tables["drug_cancer"] = {
     },
     mutation: {
         new: mutation.DRUG_CANCER_NEW,
-        delete: mutation.DRUG_CANCER_DELETE,
+        delete: mutation.DRUG_CANCERS_DELETE,
         update: mutation.DRUG_CANCER_UPDATE,
     },
     columns: [
@@ -1470,7 +1470,7 @@ tables["mutation_drug_benefit"] = {
     },
     mutation: {
         new: mutation.MUTATION_DRUG_BENEFIT_NEW,
-        delete: mutation.MUTATION_DRUG_BENEFIT_DELETE,
+        delete: mutation.MUTATION_DRUG_BENEFITS_DELETE,
         update: mutation.MUTATION_DRUG_BENEFIT_UPDATE,
     },
     columns: [
@@ -1609,7 +1609,7 @@ tables["mutation_drug_resistance"] = {
     },
     mutation: {
         new: mutation.MUTATION_DRUG_RESISTANCE_NEW,
-        delete: mutation.MUTATION_DRUG_RESISTANCE_DELETE,
+        delete: mutation.MUTATION_DRUG_RESISTANCES_DELETE,
         update: mutation.MUTATION_DRUG_RESISTANCE_UPDATE,
     },
     columns: [
@@ -1748,7 +1748,7 @@ tables["mutation_drug_benefit_other"] = {
     },
     mutation: {
         new: mutation.MUTATION_DRUG_BENEFIT_OTHER_NEW,
-        delete: mutation.MUTATION_DRUG_BENEFIT_OTHER_DELETE,
+        delete: mutation.MUTATION_DRUG_BENEFIT_OTHERS_DELETE,
         update: mutation.MUTATION_DRUG_BENEFIT_OTHER_UPDATE,
     },
     columns: [
@@ -1887,7 +1887,7 @@ tables["mutation_clinical"] = {
     },
     mutation: {
         new: mutation.MUTATION_CLINICAL_NEW,
-        delete: mutation.MUTATION_CLINICAL_DELETE,
+        delete: mutation.MUTATION_CLINICALS_DELETE,
         update: mutation.MUTATION_CLINICAL_UPDATE,
     },
     columns: [
@@ -2024,7 +2024,7 @@ tables["clinical"] = {
     },
     mutation: {
         new: mutation.CLINICAL_NEW,
-        delete: mutation.CLINICAL_DELETE,
+        delete: mutation.CLINICALS_DELETE,
         update: mutation.CLINICAL_UPDATE,
     },
     columns: [
@@ -2260,7 +2260,7 @@ tables["chemo"] = {
     },
     mutation: {
         new: mutation.CHEMO_NEW,
-        delete: mutation.CHEMO_DELETE,
+        delete: mutation.CHEMOS_DELETE,
         update: mutation.CHEMO_UPDATE,
     },
     columns: [
@@ -2569,7 +2569,7 @@ tables["nccn_gene"] = {
     },
     mutation: {
         new: mutation.NCCN_GENE_NEW,
-        delete: mutation.NCCN_GENE_DELETE,
+        delete: mutation.NCCN_GENES_DELETE,
         update: mutation.NCCN_GENE_UPDATE,
     },
     columns: [
@@ -2692,7 +2692,7 @@ tables["report_remark"] = {
     },
     mutation: {
         new: mutation.REPORT_REMARK_NEW,
-        delete: mutation.REPORT_REMARK_DELETE,
+        delete: mutation.REPORT_REMARKS_DELETE,
         update: mutation.REPORT_REMARK_UPDATE,
     },
     columns: [
@@ -2784,7 +2784,7 @@ tables["report_literature"] = {
     },
     mutation: {
         new: mutation.REPORT_LITERATURE_NEW,
-        delete: mutation.REPORT_LITERATURE_DELETE,
+        delete: mutation.REPORT_LITERATURES_DELETE,
         update: mutation.REPORT_LITERATURE_UPDATE,
     },
     columns: [
@@ -2875,7 +2875,7 @@ tables["report_file"] = {
     },
     mutation: {
         new: mutation.REPORT_FILE_NEW,
-        delete: mutation.REPORT_FILE_DELETE,
+        delete: mutation.REPORT_FILES_DELETE,
         update: mutation.REPORT_FILE_UPDATE,
     },
     columns: [
@@ -2951,7 +2951,7 @@ tables["geneclass"] = {
     },
     mutation: {
         new: mutation.GENE_CLASS_NEW,
-        delete: mutation.GENE_CLASS_DELETE,
+        delete: mutation.GENE_CLASSES_DELETE,
         update: mutation.GENE_CLASS_UPDATE,
     },
     columns: [
@@ -3004,7 +3004,7 @@ tables["ddrclass"] = {
     },
     mutation: {
         new: mutation.DDR_CLASS_NEW,
-        delete: mutation.DDR_CLASS_DELETE,
+        delete: mutation.DDR_CLASSES_DELETE,
         update: mutation.DDR_CLASS_UPDATE,
     },
     columns: [
@@ -3057,7 +3057,7 @@ tables["mutationclass"] = {
     },
     mutation: {
         new: mutation.MUTATION_CLASS_NEW,
-        delete: mutation.MUTATION_CLASS_DELETE,
+        delete: mutation.MUTATION_CLASSES_DELETE,
         update: mutation.MUTATION_CLASS_UPDATE,
     },
     columns: [
@@ -3110,7 +3110,7 @@ tables["drugclass"] = {
     },
     mutation: {
         new: mutation.DRUG_CLASS_NEW,
-        delete: mutation.DRUG_CLASS_DELETE,
+        delete: mutation.DRUG_CLASSES_DELETE,
         update: mutation.DRUG_CLASS_UPDATE,
     },
     columns: [
@@ -3163,7 +3163,7 @@ tables["evidencelevel"] = {
     },
     mutation: {
         new: mutation.EVIDENCE_LEVEL_NEW,
-        delete: mutation.EVIDENCE_LEVEL_DELETE,
+        delete: mutation.EVIDENCE_LEVELS_DELETE,
         update: mutation.EVIDENCE_LEVEL_UPDATE,
     },
     columns: [
@@ -3216,7 +3216,7 @@ tables["pathway"] = {
     },
     mutation: {
         new: mutation.PATHWAY_NEW,
-        delete: mutation.PATHWAY_DELETE,
+        delete: mutation.PATHWAYS_DELETE,
         update: mutation.PATHWAY_UPDATE,
     },
     columns: [
@@ -3351,7 +3351,7 @@ tables["pathway_drug_cancer"] = {
     },
     mutation: {
         new: mutation.PATHWAY_DRUG_CANCER_NEW,
-        delete: mutation.PATHWAY_DRUG_CANCER_DELETE,
+        delete: mutation.PATHWAY_DRUG_CANCERS_DELETE,
         update: mutation.PATHWAY_DRUG_CANCER_UPDATE,
     },
     columns: [
