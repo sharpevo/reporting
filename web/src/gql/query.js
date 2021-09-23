@@ -707,6 +707,70 @@ const PATHWAY_DRUG_CANCERS_GET = gql`
     }
 `;
 
+const REPORT_SAMPLE_TYPES_GET = gql`
+    query reportsampletypes {
+        reportsampletypes {
+            id
+            label
+        }
+    }
+`;
+
+const INSPECTION_PROJECTS_GET = gql`
+    query inspectionprojects {
+        inspectionprojects {
+            id
+            label
+        }
+    }
+`;
+
+const REPORT_SAMPLES_GET = gql`
+    query reportsamples {
+        reportsamples {
+            id
+            label
+            name
+            gender
+            age
+            sample_number
+            sample_type {
+                id
+                label
+            }
+            inspection_project {
+                id
+                label
+            }
+            date_sampled
+            date_received
+            unit_submitted
+            inspection_method
+            inspection_platform
+            reference_genome
+            clinical_diagnosis
+            cancer_from_report
+            cancer_from_data {
+                id
+                label
+            }
+            history_family
+            history_drug
+            date_reported
+            creator {
+                id
+                name
+            }
+            updator {
+                id
+                name
+            }
+            createdAt
+            updatedAt
+        }
+    }
+`;
+
 export {
     GET_TABLES,
     GENE_CLASSES_GET,
@@ -735,4 +799,7 @@ export {
     REPORT_FILES_GET,
     PATHWAYS_GET,
     PATHWAY_DRUG_CANCERS_GET,
+    REPORT_SAMPLE_TYPES_GET,
+    INSPECTION_PROJECTS_GET,
+    REPORT_SAMPLES_GET,
 };

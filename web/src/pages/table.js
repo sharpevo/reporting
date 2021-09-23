@@ -128,6 +128,14 @@ const databases = {
             key: "evidencelevel",
         },
         {
+            name: "样本 - 样本类型",
+            key: "report_sample_type",
+        },
+        {
+            name: "样本 - 检测项目",
+            key: "inspection_project",
+        },
+        {
             name: "文件",
             key: "report_file",
         },

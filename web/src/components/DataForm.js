@@ -149,6 +149,26 @@ const FormComponent = ({
                     </TextField>
                 </div>
             );
+        case "simpleselect":
+            return (
+                <div className={classes.componentMargin}>
+                    <TextField
+                        size="small"
+                        select
+                        name={formComponent.key}
+                        label={formComponent.label}
+                        required={formComponent.required}
+                        value={item[formComponent.key] || ""}
+                        onChange={handleChange}
+                    >
+                        {formComponent.values.map((entry, index) => (
+                            <MenuItem key={index} value={entry}>
+                                {entry}
+                            </MenuItem>
+                        ))}
+                    </TextField>
+                </div>
+            );
         case "switch":
             return (
                 <div className={classes.componentMargin}>
