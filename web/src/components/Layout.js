@@ -48,7 +48,6 @@ const useStyles = makeStyles((theme) => ({
 
 const Layout = ({ children }) => {
     const classes = useStyles();
-    console.log(children);
     return (
         <Box sx={{ flexGrow: 1 }}>
             <div className={classes.root}>
