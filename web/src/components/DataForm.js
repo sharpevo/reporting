@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 //import { withApollo } from '@apollo/client/react/hoc';
 import { makeStyles } from "@material-ui/core/styles";
 import { useQuery, useMutation } from "@apollo/client";
+import { format, parseISO } from "date-fns";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 //import TextField from '@material-ui/core/TextField';
@@ -19,10 +20,14 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
 import Checkbox from "@material-ui/core/Checkbox";
 
-import Chip from "@mui/material/Chip";
-import Autocomplete from "@mui/material/Autocomplete";
-import TextField from "@mui/material/TextField";
-import Stack from "@mui/material/Stack";
+import {
+    Chip,
+    Autocomplete,
+    TextField,
+    Stack,
+    AdapterDateFns,
+    LocalizationProvider,
+} from "@mui/material";
 
 import { REPORT_FILE_NEW } from "../gql/mutation";
 
@@ -297,6 +302,21 @@ const FormComponent = ({
                     </Stack>
                 </div>
             );
+        case "datepicker":
+            return (
+                <div className={classes.componentMargin}>
+                    <TextField
+                        size="small"
+                        type="date"
+                        name={formComponent.key}
+                        label={formComponent.label}
+                        InputLabelProps={{ shrink: true }}
+                        required={formComponent.required}
+                        value={item[formComponent.key] || ""}
+                        onChange={handleChange}
+                    />
+                </div>
+            );
         default:
             return <span>nil</span>;
     }
@@ -344,6 +364,15 @@ const DataFormDialog = ({
                         item[component.key] =
                             selectedItem[component.key]["path"];
                         break;
+                    case "datepicker":
+                        let v = selectedItem[component.key];
+                        if (v) {
+                            item[component.key] = format(
+                                parseISO(v),
+                                "yyyy-MM-dd"
+                            );
+                        }
+                        break;
                     default:
                         if (
                             selectedItem[component.key] &&
@@ -389,6 +418,10 @@ const DataFormDialog = ({
                 break;
             case "file":
                 value = event.target.files[0];
+                break;
+            case "date":
+                value = format(new Date(event.target.value), "yyyy-MM-dd");
+                console.log(value);
                 break;
         }
         if (values && values.length > 0) {
