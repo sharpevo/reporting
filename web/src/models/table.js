@@ -138,12 +138,12 @@ tables["gene"] = {
             return row.creator ? row.creator.name : "-";
         },
         (row) => {
-            return format(row.createdAt, "MM-DD");
+            return formatDate(row.createdAt);
         },
         (row) => {
             return row.createdAt == row.updatedAt
                 ? "-"
-                : format(row.updatedAt, "MM-DD");
+                : formatDate(row.updatedAt);
         },
         (row) => {
             return row.status ? "已审核" : "未审核";
@@ -307,12 +307,12 @@ tables["gene_annot"] = {
             return cell.creator ? cell.creator.name : "-";
         },
         (cell) => {
-            return format(cell.createdAt, "MM-DD");
+            return formatDate(cell.createdAt);
         },
         (cell) => {
             return cell.createdAt == cell.updatedAt
                 ? "-"
-                : format(cell.updatedAt, "MM-DD");
+                : formatDate(cell.updatedAt);
         },
         (cell) => {
             return cell.status ? "已审核" : "未审核";
@@ -466,12 +466,12 @@ tables["ddr"] = {
             return cell.creator ? cell.creator.name : "-";
         },
         (cell) => {
-            return format(cell.createdAt, "MM-DD");
+            return formatDate(cell.createdAt);
         },
         (cell) => {
             return cell.createdAt == cell.updatedAt
                 ? "-"
-                : format(cell.updatedAt, "MM-DD");
+                : formatDate(cell.updatedAt);
         },
         (cell) => {
             return cell.status ? "已审核" : "未审核";
@@ -615,12 +615,12 @@ tables["tmh"] = {
             return cell.creator ? cell.creator.name : "-";
         },
         (cell) => {
-            return format(cell.createdAt, "MM-DD");
+            return formatDate(cell.createdAt);
         },
         (cell) => {
             return cell.createdAt == cell.updatedAt
                 ? "-"
-                : format(cell.updatedAt, "MM-DD");
+                : formatDate(cell.updatedAt);
         },
         (cell) => {
             return cell.status ? "已审核" : "未审核";
@@ -778,12 +778,12 @@ tables["cancer"] = {
             return cell.creator ? cell.creator.name : "-";
         },
         (cell) => {
-            return format(cell.createdAt, "MM-DD");
+            return formatDate(cell.createdAt);
         },
         (cell) => {
             return cell.createdAt == cell.updatedAt
                 ? "-"
-                : format(cell.updatedAt, "MM-DD");
+                : formatDate(cell.updatedAt);
         },
         (cell) => {
             return cell.status ? "已审核" : "未审核";
@@ -969,12 +969,12 @@ tables["mutation_cancer"] = {
             return cell.creator ? cell.creator.name : "-";
         },
         (cell) => {
-            return format(cell.createdAt, "MM-DD");
+            return formatDate(cell.createdAt);
         },
         (cell) => {
             return cell.createdAt == cell.updatedAt
                 ? "-"
-                : format(cell.updatedAt, "MM-DD");
+                : formatDate(cell.updatedAt);
         },
         (cell) => {
             return cell.status ? "已审核" : "未审核";
@@ -1220,12 +1220,12 @@ tables["drug"] = {
             return cell.creator ? cell.creator.name : "-";
         },
         (cell) => {
-            return format(cell.createdAt, "MM-DD");
+            return formatDate(cell.createdAt);
         },
         (cell) => {
             return cell.createdAt == cell.updatedAt
                 ? "-"
-                : format(cell.updatedAt, "MM-DD");
+                : formatDate(cell.updatedAt);
         },
         (cell) => {
             return cell.status ? "已审核" : "未审核";
@@ -1416,12 +1416,12 @@ tables["drug_cancer"] = {
             return cell.creator ? cell.creator.name : "-";
         },
         (cell) => {
-            return format(cell.createdAt, "MM-DD");
+            return formatDate(cell.createdAt);
         },
         (cell) => {
             return cell.createdAt == cell.updatedAt
                 ? "-"
-                : format(cell.updatedAt, "MM-DD");
+                : formatDate(cell.updatedAt);
         },
         (cell) => {
             return cell.status ? "已审核" : "未审核";
@@ -1553,12 +1553,12 @@ tables["mutation_drug_benefit"] = {
             return cell.creator ? cell.creator.name : "-";
         },
         (cell) => {
-            return format(cell.createdAt, "MM-DD");
+            return formatDate(cell.createdAt);
         },
         (cell) => {
             return cell.createdAt == cell.updatedAt
                 ? "-"
-                : format(cell.updatedAt, "MM-DD");
+                : formatDate(cell.updatedAt);
         },
         (cell) => {
             return cell.status ? "已审核" : "未审核";
@@ -1692,12 +1692,12 @@ tables["mutation_drug_resistance"] = {
             return cell.creator ? cell.creator.name : "-";
         },
         (cell) => {
-            return format(cell.createdAt, "MM-DD");
+            return formatDate(cell.createdAt);
         },
         (cell) => {
             return cell.createdAt == cell.updatedAt
                 ? "-"
-                : format(cell.updatedAt, "MM-DD");
+                : formatDate(cell.updatedAt);
         },
         (cell) => {
             return cell.status ? "已审核" : "未审核";
@@ -1831,12 +1831,12 @@ tables["mutation_drug_benefit_other"] = {
             return cell.creator ? cell.creator.name : "-";
         },
         (cell) => {
-            return format(cell.createdAt, "MM-DD");
+            return formatDate(cell.createdAt);
         },
         (cell) => {
             return cell.createdAt == cell.updatedAt
                 ? "-"
-                : format(cell.updatedAt, "MM-DD");
+                : formatDate(cell.updatedAt);
         },
         (cell) => {
             return cell.status ? "已审核" : "未审核";
@@ -1970,12 +1970,12 @@ tables["mutation_clinical"] = {
             return cell.creator ? cell.creator.name : "-";
         },
         (cell) => {
-            return format(cell.createdAt, "MM-DD");
+            return formatDate(cell.createdAt);
         },
         (cell) => {
             return cell.createdAt == cell.updatedAt
                 ? "-"
-                : format(cell.updatedAt, "MM-DD");
+                : formatDate(cell.updatedAt);
         },
         (cell) => {
             return cell.status ? "已审核" : "未审核";
@@ -2163,12 +2163,12 @@ tables["clinical"] = {
             return cell.creator ? cell.creator.name : "-";
         },
         (cell) => {
-            return format(cell.createdAt, "MM-DD");
+            return formatDate(cell.createdAt);
         },
         (cell) => {
             return cell.createdAt == cell.updatedAt
                 ? "-"
-                : format(cell.updatedAt, "MM-DD");
+                : formatDate(cell.updatedAt);
         },
         (cell) => {
             return cell.status ? "已审核" : "未审核";
@@ -2439,12 +2439,12 @@ tables["chemo"] = {
             return cell.creator ? cell.creator.name : "-";
         },
         (cell) => {
-            return format(cell.createdAt, "MM-DD");
+            return formatDate(cell.createdAt);
         },
         (cell) => {
             return cell.createdAt == cell.updatedAt
                 ? "-"
-                : format(cell.updatedAt, "MM-DD");
+                : formatDate(cell.updatedAt);
         },
         (cell) => {
             return cell.status ? "已审核" : "未审核";
@@ -2644,12 +2644,12 @@ tables["nccn_gene"] = {
             return cell.creator ? cell.creator.name : "-";
         },
         (cell) => {
-            return format(cell.createdAt, "MM-DD");
+            return formatDate(cell.createdAt);
         },
         (cell) => {
             return cell.createdAt == cell.updatedAt
                 ? "-"
-                : format(cell.updatedAt, "MM-DD");
+                : formatDate(cell.updatedAt);
         },
         (cell) => {
             return cell.status ? "已审核" : "未审核";
@@ -2751,12 +2751,12 @@ tables["report_remark"] = {
             return cell.creator ? cell.creator.name : "-";
         },
         (cell) => {
-            return format(cell.createdAt, "MM-DD");
+            return formatDate(cell.createdAt);
         },
         (cell) => {
             return cell.createdAt == cell.updatedAt
                 ? "-"
-                : format(cell.updatedAt, "MM-DD");
+                : formatDate(cell.updatedAt);
         },
         (cell) => {
             return cell.status ? "已审核" : "未审核";
@@ -2843,12 +2843,12 @@ tables["report_literature"] = {
             return cell.creator ? cell.creator.name : "-";
         },
         (cell) => {
-            return format(cell.createdAt, "MM-DD");
+            return formatDate(cell.createdAt);
         },
         (cell) => {
             return cell.createdAt == cell.updatedAt
                 ? "-"
-                : format(cell.updatedAt, "MM-DD");
+                : formatDate(cell.updatedAt);
         },
         (cell) => {
             return cell.status ? "已审核" : "未审核";
@@ -2930,12 +2930,12 @@ tables["report_file"] = {
             return row.creator ? row.creator.name : "-";
         },
         (row) => {
-            return format(row.createdAt, "MM-DD");
+            return formatDate(row.createdAt);
         },
         (row) => {
             return row.createdAt == row.updatedAt
                 ? "-"
-                : format(row.updatedAt, "MM-DD");
+                : formatDate(row.updatedAt);
         },
     ],
     normalize: (obj) => {
@@ -2984,12 +2984,12 @@ tables["geneclass"] = {
             return cell.label;
         },
         (cell) => {
-            return format(cell.createdAt, "MM-DD");
+            return formatDate(cell.createdAt);
         },
         (cell) => {
             return cell.createdAt == cell.updatedAt
                 ? "-"
-                : format(cell.updatedAt, "MM-DD");
+                : formatDate(cell.updatedAt);
         },
     ],
     normalize: (obj) => {
@@ -3037,12 +3037,12 @@ tables["ddrclass"] = {
             return cell.label;
         },
         (cell) => {
-            return format(cell.createdAt, "MM-DD");
+            return formatDate(cell.createdAt);
         },
         (cell) => {
             return cell.createdAt == cell.updatedAt
                 ? "-"
-                : format(cell.updatedAt, "MM-DD");
+                : formatDate(cell.updatedAt);
         },
     ],
     normalize: (obj) => {
@@ -3090,12 +3090,12 @@ tables["mutationclass"] = {
             return cell.label;
         },
         (cell) => {
-            return format(cell.createdAt, "MM-DD");
+            return formatDate(cell.createdAt);
         },
         (cell) => {
             return cell.createdAt == cell.updatedAt
                 ? "-"
-                : format(cell.updatedAt, "MM-DD");
+                : formatDate(cell.updatedAt);
         },
     ],
     normalize: (obj) => {
@@ -3143,12 +3143,12 @@ tables["drugclass"] = {
             return cell.label;
         },
         (cell) => {
-            return format(cell.createdAt, "MM-DD");
+            return formatDate(cell.createdAt);
         },
         (cell) => {
             return cell.createdAt == cell.updatedAt
                 ? "-"
-                : format(cell.updatedAt, "MM-DD");
+                : formatDate(cell.updatedAt);
         },
     ],
     normalize: (obj) => {
@@ -3196,12 +3196,12 @@ tables["evidencelevel"] = {
             return cell.label;
         },
         (cell) => {
-            return format(cell.createdAt, "MM-DD");
+            return formatDate(cell.createdAt);
         },
         (cell) => {
             return cell.createdAt == cell.updatedAt
                 ? "-"
-                : format(cell.updatedAt, "MM-DD");
+                : formatDate(cell.updatedAt);
         },
     ],
     normalize: (obj) => {
@@ -3299,12 +3299,12 @@ tables["pathway"] = {
             return cell.creator ? cell.creator.name : "-";
         },
         (cell) => {
-            return format(cell.createdAt, "MM-DD");
+            return formatDate(cell.createdAt);
         },
         (cell) => {
             return cell.createdAt == cell.updatedAt
                 ? "-"
-                : format(cell.updatedAt, "MM-DD");
+                : formatDate(cell.updatedAt);
         },
         (cell) => {
             return cell.status ? "已审核" : "未审核";
@@ -3418,12 +3418,12 @@ tables["pathway_drug_cancer"] = {
             return cell.creator ? cell.creator.name : "-";
         },
         (cell) => {
-            return format(cell.createdAt, "MM-DD");
+            return formatDate(cell.createdAt);
         },
         (cell) => {
             return cell.createdAt == cell.updatedAt
                 ? "-"
-                : format(cell.updatedAt, "MM-DD");
+                : formatDate(cell.updatedAt);
         },
         (cell) => {
             return cell.status ? "已审核" : "未审核";
