@@ -415,6 +415,45 @@ module.exports = gql`
         updatedAt: DateTime
     }
 
+    type ReportSampleType {
+        id: ID!
+        label: String!
+    }
+
+    type InspectionProject {
+        id: ID!
+        label: String!
+    }
+
+    type ReportSample {
+        id: ID!
+        name: String
+        gender: String
+        age: String
+        sample_number: String
+        sample_type: ReportSampleType
+        inspection_project: InspectionProject
+        date_sampled: DateTime
+        date_received: DateTime
+        unit_submitted: String
+        inspection_method: String
+        inspection_platform: String
+        reference_genome: String
+        clinical_diagnosis: String
+        cancer_from_report: String
+        cancer_from_data: Cancer
+        history_family: String
+        history_drug: String
+        date_reported: DateTime
+        creator: User
+        updator: User
+        approver: User
+        status: Int
+        createdAt: DateTime
+        updatedAt: DateTime
+        label: String
+    }
+
     type Query {
         tables: [Table!]!
         table(id: ID!): Table!
@@ -499,6 +538,15 @@ module.exports = gql`
 
         pathwaydrugcancers: [PathwayDrugCancer]!
         pathwaydrugcancer(id: ID!): PathwayDrugCancer!
+
+        inspectionprojects: [InspectionProject]!
+        inspectionproject(id: ID!): InspectionProject!
+
+        reportsampletypes: [ReportSampleType]!
+        reportsampletype(id: ID!): ReportSampleType!
+
+        reportsamples: [ReportSample]!
+        reportsample(id: ID!): ReportSample!
     }
 
     type Mutation {
@@ -934,5 +982,56 @@ module.exports = gql`
         newEvidenceLevel(label: String!): EvidenceLevel
         updateEvidenceLevel(id: ID!, label: String!): EvidenceLevel
         deleteEvidenceLevels(ids: [ID!]!): Boolean!
+
+        newReportSampleType(label: String!): ReportSampleType!
+        updateReportSampleType(id: ID!, label: String!): ReportSampleType!
+        deleteReportSampleTypes(ids: [ID!]!): Boolean!
+
+        newInspectionProject(label: String!): InspectionProject!
+        updateInspectionProject(id: ID!, label: String!): InspectionProject!
+        deleteInspectionProjects(ids: [ID!]!): Boolean!
+
+        newReportSample(
+            name: String!
+            gender: String
+            age: String
+            sample_number: String!
+            sample_type: String
+            inspection_project: String
+            date_sampled: String
+            date_received: String
+            unit_submitted: String
+            inspection_method: String
+            inspection_platform: String
+            reference_genome: String
+            clinical_diagnosis: String
+            cancer_from_report: String
+            cancer_from_data: String
+            history_family: String
+            history_drug: String
+            date_reported: String
+        ): ReportSample
+        updateReportSample(
+            id: ID!
+            name: String!
+            gender: String
+            age: String
+            sample_number: String!
+            sample_type: String
+            inspection_project: String
+            date_sampled: String
+            date_received: String
+            unit_submitted: String
+            inspection_method: String
+            inspection_platform: String
+            reference_genome: String
+            clinical_diagnosis: String
+            cancer_from_report: String
+            cancer_from_data: String
+            history_family: String
+            history_drug: String
+            date_reported: String
+        ): ReportSample
+        deleteReportSamples(ids: [ID!]!): Boolean
     }
 `;

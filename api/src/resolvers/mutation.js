@@ -2139,4 +2139,237 @@ module.exports = {
             return false;
         }
     },
+
+    newReportSampleType: async (parent, { label }, { models }) => {
+        return await models.ReportSampleType.create({
+            label: label,
+        });
+    },
+    updateReportSampleType: async (parent, { id, label }, { models }) => {
+        return await models.ReportSampleType.findOneAndUpdate(
+            {
+                _id: id,
+            },
+            {
+                $set: {
+                    label: label,
+                },
+            },
+            {
+                new: true,
+            }
+        );
+    },
+    deleteReportSampleTypes: async (parent, { ids }, { models }) => {
+        try {
+            const result = await models.ReportSampleType.deleteMany({
+                _id: { $in: ids },
+            });
+            return true;
+        } catch (err) {
+            console.log(err);
+            return false;
+        }
+    },
+
+    newInspectionProject: async (parent, { label }, { models }) => {
+        return await models.InspectionProject.create({
+            label: label,
+        });
+    },
+    updateInspectionProject: async (parent, { id, label }, { models }) => {
+        return await models.InspectionProject.findOneAndUpdate(
+            {
+                _id: id,
+            },
+            {
+                $set: {
+                    label: label,
+                },
+            },
+            {
+                new: true,
+            }
+        );
+    },
+    deleteInspectionProjects: async (parent, { ids }, { models }) => {
+        try {
+            const result = await models.InspectionProject.deleteMany({
+                _id: { $in: ids },
+            });
+            return true;
+        } catch (err) {
+            console.log(err);
+            return false;
+        }
+    },
+
+    newReportSample: async (
+        parent,
+        {
+            name,
+            gender,
+            age,
+            sample_number,
+            sample_type,
+            inspection_project,
+            date_sampled,
+            date_received,
+            unit_submitted,
+            inspection_method,
+            inspection_platform,
+            reference_genome,
+            clinical_diagnosis,
+            cancer_from_report,
+            cancer_from_data,
+            history_family,
+            history_drug,
+            date_reported,
+        },
+        { models }
+    ) => {
+        let obj = {
+            name: name,
+            gender: gender,
+            age: age,
+            sample_number: sample_number,
+            date_sampled: date_sampled,
+            date_received: date_received,
+            unit_submitted: unit_submitted,
+            inspection_method: inspection_method,
+            inspection_platform: inspection_platform,
+            reference_genome: reference_genome,
+            clinical_diagnosis: clinical_diagnosis,
+            cancer_from_report: cancer_from_report,
+            history_family: history_family,
+            history_drug: history_drug,
+            date_reported: date_reported,
+        };
+        if (sample_type) {
+            const sampleTyped = await models.ReportSampleType.findOne({
+                label: sample_type,
+            });
+            if (!sampleTyped) {
+                throw new Error(`sample type '${sample_type}' does not exist`);
+            }
+            obj.sample_type = sampleTyped._id;
+        }
+        if (inspection_project) {
+            const inspectionProjectd = await models.InspectionProject.findOne({
+                label: inspection_project,
+            });
+            if (!inspectionProjectd) {
+                throw new Error(
+                    `inspection project '${inspection_project}' does not exist`
+                );
+            }
+            obj.inspection_project = inspectionProjectd._id;
+        }
+        if (cancer_from_data) {
+            const cancerd = await models.Cancer.findOne({
+                name_cn: cancer_from_data,
+            });
+            if (!cancerd) {
+                throw new Error(`cancer '${cancer_from_data}' does not exist`);
+            }
+            obj.cancer_from_data = cancerd._id;
+        }
+        try {
+            return await models.ReportSample.create(obj);
+        } catch (err) {
+            console.log(err);
+            throw new Error(err);
+        }
+    },
+    updateReportSample: async (
+        parent,
+        {
+            id,
+            name,
+            gender,
+            age,
+            sample_number,
+            sample_type,
+            inspection_project,
+            date_sampled,
+            date_received,
+            unit_submitted,
+            inspection_method,
+            inspection_platform,
+            reference_genome,
+            clinical_diagnosis,
+            cancer_from_report,
+            cancer_from_data,
+            history_family,
+            history_drug,
+            date_reported,
+        },
+        { models }
+    ) => {
+        let obj = new models.ReportSample({
+            _id: id,
+            name: name,
+            gender: gender,
+            age: age,
+            sample_number: sample_number,
+            date_sampled: date_sampled,
+            date_received: date_received,
+            unit_submitted: unit_submitted,
+            inspection_method: inspection_method,
+            inspection_platform: inspection_platform,
+            reference_genome: reference_genome,
+            clinical_diagnosis: clinical_diagnosis,
+            cancer_from_report: cancer_from_report,
+            history_family: history_family,
+            history_drug: history_drug,
+            date_reported: date_reported,
+        });
+        if (sample_type) {
+            const sampleTyped = await models.ReportSampleType.findOne({
+                label: sample_type,
+            });
+            if (!sampleTyped) {
+                throw new Error(`sample type '${sample_type}' does not exist`);
+            }
+            obj.sample_type = sampleTyped._id;
+        }
+        if (inspection_project) {
+            const inspectionProjectd = await models.InspectionProject.findOne({
+                label: inspection_project,
+            });
+            if (!inspectionProjectd) {
+                throw new Error(
+                    `inspection project '${inspection_project}' does not exist`
+                );
+            }
+            obj.inspection_project = inspectionProjectd._id;
+        }
+        if (cancer_from_data) {
+            const cancerd = await models.Cancer.findOne({
+                name_cn: cancer_from_data,
+            });
+            if (!cancerd) {
+                throw new Error(`cancer '${cancer_from_data}' does not exist`);
+            }
+            obj.cancer_from_data = cancerd._id;
+        }
+        obj.isNew = false;
+        try {
+            return await obj.save();
+        } catch (err) {
+            console.log(err);
+            throw new Error(err);
+        }
+    },
+    deleteReportSamples: async (parent, { ids }, { models }) => {
+        try {
+            const result = await models.ReportSample.deleteMany({
+                _id: { $in: ids },
+            });
+            return true;
+        } catch (err) {
+            console.log(err);
+            return false;
+        }
+    },
 };

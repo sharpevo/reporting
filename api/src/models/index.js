@@ -19,6 +19,11 @@ const ReportLiterature = require("./report_literature");
 const ReportFile = require("./report_file");
 const Pathway = require("./pathway");
 const PathwayDrugCancer = require("./pathway_drug_cancer");
+const {
+    ReportSampleType,
+    InspectionProject,
+    ReportSample,
+} = require("./report_sample");
 const models = {
     GeneClass,
     Gene,
@@ -46,6 +51,9 @@ const models = {
     ReportFile,
     Pathway,
     PathwayDrugCancer,
+    ReportSampleType,
+    InspectionProject,
+    ReportSample,
 };
 
 module.exports = models;
