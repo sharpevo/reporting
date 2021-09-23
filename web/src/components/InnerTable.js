@@ -492,7 +492,7 @@ const TableCellEllipsis = ({ formatter, row, index }) => {
     );
 };
 
-const InnerTable = ({ databaseKey }) => {
+const InnerTable = ({ databaseKey, setItem }) => {
     const table = tables[databaseKey];
     if (!table) {
         return "N/A";
@@ -533,6 +533,10 @@ const InnerTable = ({ databaseKey }) => {
             editRef.current.click();
         }
         setSelected(newSelected);
+        if (setItem) {
+            let items = rows.filter((row) => row.id == newSelected);
+            setItem(items[0]);
+        }
     };
 
     //const {loading, error, data, refetch} = useQuery(table.query.gql, {fetchPolicy: "cache-and-network"})
