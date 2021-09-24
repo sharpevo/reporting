@@ -540,7 +540,7 @@ const InnerTable = ({
                 selected.slice(selectedIndex + 1)
             );
         }
-        if (event.detail == 2) {
+        if (event.detail == 2 && editRef.current) {
             editRef.current.click();
         }
         setSelected(newSelected);
