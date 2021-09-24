@@ -283,7 +283,7 @@ tables["gene_annot"] = {
             return cell.gene ? cell.gene.label : "-";
         },
         (cell) => {
-            return trimText(cell.name_at);
+            return cell.name_at;
         },
         (cell) => {
             return cell.name_cn;
@@ -292,10 +292,10 @@ tables["gene_annot"] = {
             return cell.chr;
         },
         (cell) => {
-            return trimText(cell.description_cn);
+            return cell.description_cn;
         },
         (cell) => {
-            return trimText(cell.description_en);
+            return cell.description_en;
         },
         (cell) => {
             return cell.source;
@@ -457,10 +457,10 @@ tables["ddr"] = {
             return cell.result_detail;
         },
         (cell) => {
-            return trimText(cell.source);
+            return cell.source;
         },
         (cell) => {
-            return trimText(cell.literature);
+            return cell.literature;
         },
         (cell) => {
             return cell.creator ? cell.creator.name : "-";
@@ -603,13 +603,13 @@ tables["tmh"] = {
             return cell.result;
         },
         (cell) => {
-            return trimText(cell.result_detail);
+            return cell.result_detail;
         },
         (cell) => {
-            return trimText(cell.literature_detail);
+            return cell.literature_detail;
         },
         (cell) => {
-            return trimText(cell.source);
+            return cell.source;
         },
         (cell) => {
             return cell.creator ? cell.creator.name : "-";
@@ -760,19 +760,19 @@ tables["cancer"] = {
             return cell.name_en_abbr;
         },
         (cell) => {
-            return trimText(cell.description_cn);
+            return cell.description_cn;
         },
         (cell) => {
-            return trimText(cell.source);
+            return cell.source;
         },
         (cell) => {
-            return trimText(cell.guide);
+            return cell.guide;
         },
         (cell) => {
-            return trimText(cell.literature);
+            return cell.literature;
         },
         (cell) => {
-            return trimText(cell.remark);
+            return cell.remark;
         },
         (cell) => {
             return cell.creator ? cell.creator.name : "-";
@@ -951,19 +951,19 @@ tables["mutation_cancer"] = {
             return cell.mutationclass ? cell.mutationclass.label : "-";
         },
         (cell) => {
-            return trimText(cell.mutation_detail);
+            return cell.mutation_detail;
         },
         (cell) => {
             return cell.cancer ? cell.cancer.label : "-";
         },
         (cell) => {
-            return trimText(cell.drug_info);
+            return cell.drug_info;
         },
         (cell) => {
-            return trimText(cell.evidence);
+            return cell.evidence;
         },
         (cell) => {
-            return trimText(cell.literature);
+            return cell.literature;
         },
         (cell) => {
             return cell.creator ? cell.creator.name : "-";
@@ -1208,13 +1208,13 @@ tables["drug"] = {
         },
         //(cell) => {return cell.cancer},
         (cell) => {
-            return trimText(cell.description);
+            return cell.description;
         },
         (cell) => {
-            return trimText(cell.source);
+            return cell.source;
         },
         (cell) => {
-            return trimText(cell.literature);
+            return cell.literature;
         },
         (cell) => {
             return cell.creator ? cell.creator.name : "-";
@@ -1404,7 +1404,7 @@ tables["drug_cancer"] = {
             return cell.cancer ? cell.cancer.label : "-";
         },
         (cell) => {
-            return trimText(cell.medical_evidence);
+            return cell.medical_evidence;
         },
         (cell) => {
             return cell.source;
@@ -2157,7 +2157,7 @@ tables["clinical"] = {
             return cell.location;
         },
         (cell) => {
-            return trimText(cell.remark);
+            return cell.remark;
         },
         (cell) => {
             return cell.creator ? cell.creator.name : "-";
@@ -2421,10 +2421,10 @@ tables["chemo"] = {
             return cell.genotype;
         },
         (cell) => {
-            return trimText(cell.description);
+            return cell.description;
         },
         (cell) => {
-            return trimText(cell.description_ref);
+            return cell.description_ref;
         },
         (cell) => {
             return cell.toxicity;
@@ -2635,10 +2635,10 @@ tables["nccn_gene"] = {
             return cell.cancer ? cell.cancer.label : "-";
         },
         (cell) => {
-            return trimText(cell.result);
+            return cell.result;
         },
         (cell) => {
-            return trimText(cell.remark);
+            return cell.remark;
         },
         (cell) => {
             return cell.creator ? cell.creator.name : "-";
@@ -2745,7 +2745,7 @@ tables["report_remark"] = {
             return cell.key;
         },
         (cell) => {
-            return trimText(cell.content);
+            return cell.content;
         },
         (cell) => {
             return cell.creator ? cell.creator.name : "-";
@@ -2837,7 +2837,7 @@ tables["report_literature"] = {
             return cell.pmid;
         },
         (cell) => {
-            return trimText(cell.literature);
+            return cell.literature;
         },
         (cell) => {
             return cell.creator ? cell.creator.name : "-";
