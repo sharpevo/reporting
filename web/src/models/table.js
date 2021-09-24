@@ -1,6 +1,6 @@
 import * as query from "../gql/query";
 import * as mutation from "../gql/mutation";
-import { format } from "date-fns";
+import { format, parseISO } from "date-fns";
 
 var tables = {};
 
@@ -12,6 +12,14 @@ const trimText = (text) => {
         return text.substring(0, 10) + " ...";
     }
     return text;
+};
+
+const formatDate = (text) => {
+    if (!text) {
+        return "";
+    } else {
+        return format(parseISO(text), "MM-dd");
+    }
 };
 
 const convertBoolean = (text) => {
@@ -130,12 +138,12 @@ tables["gene"] = {
             return row.creator ? row.creator.name : "-";
         },
         (row) => {
-            return format(row.createdAt, "MM-DD");
+            return formatDate(row.createdAt);
         },
         (row) => {
             return row.createdAt == row.updatedAt
                 ? "-"
-                : format(row.updatedAt, "MM-DD");
+                : formatDate(row.updatedAt);
         },
         (row) => {
             return row.status ? "已审核" : "未审核";
@@ -275,7 +283,7 @@ tables["gene_annot"] = {
             return cell.gene ? cell.gene.label : "-";
         },
         (cell) => {
-            return trimText(cell.name_at);
+            return cell.name_at;
         },
         (cell) => {
             return cell.name_cn;
@@ -284,10 +292,10 @@ tables["gene_annot"] = {
             return cell.chr;
         },
         (cell) => {
-            return trimText(cell.description_cn);
+            return cell.description_cn;
         },
         (cell) => {
-            return trimText(cell.description_en);
+            return cell.description_en;
         },
         (cell) => {
             return cell.source;
@@ -299,12 +307,12 @@ tables["gene_annot"] = {
             return cell.creator ? cell.creator.name : "-";
         },
         (cell) => {
-            return format(cell.createdAt, "MM-DD");
+            return formatDate(cell.createdAt);
         },
         (cell) => {
             return cell.createdAt == cell.updatedAt
                 ? "-"
-                : format(cell.updatedAt, "MM-DD");
+                : formatDate(cell.updatedAt);
         },
         (cell) => {
             return cell.status ? "已审核" : "未审核";
@@ -449,21 +457,21 @@ tables["ddr"] = {
             return cell.result_detail;
         },
         (cell) => {
-            return trimText(cell.source);
+            return cell.source;
         },
         (cell) => {
-            return trimText(cell.literature);
+            return cell.literature;
         },
         (cell) => {
             return cell.creator ? cell.creator.name : "-";
         },
         (cell) => {
-            return format(cell.createdAt, "MM-DD");
+            return formatDate(cell.createdAt);
         },
         (cell) => {
             return cell.createdAt == cell.updatedAt
                 ? "-"
-                : format(cell.updatedAt, "MM-DD");
+                : formatDate(cell.updatedAt);
         },
         (cell) => {
             return cell.status ? "已审核" : "未审核";
@@ -595,24 +603,24 @@ tables["tmh"] = {
             return cell.result;
         },
         (cell) => {
-            return trimText(cell.result_detail);
+            return cell.result_detail;
         },
         (cell) => {
-            return trimText(cell.literature_detail);
+            return cell.literature_detail;
         },
         (cell) => {
-            return trimText(cell.source);
+            return cell.source;
         },
         (cell) => {
             return cell.creator ? cell.creator.name : "-";
         },
         (cell) => {
-            return format(cell.createdAt, "MM-DD");
+            return formatDate(cell.createdAt);
         },
         (cell) => {
             return cell.createdAt == cell.updatedAt
                 ? "-"
-                : format(cell.updatedAt, "MM-DD");
+                : formatDate(cell.updatedAt);
         },
         (cell) => {
             return cell.status ? "已审核" : "未审核";
@@ -752,30 +760,30 @@ tables["cancer"] = {
             return cell.name_en_abbr;
         },
         (cell) => {
-            return trimText(cell.description_cn);
+            return cell.description_cn;
         },
         (cell) => {
-            return trimText(cell.source);
+            return cell.source;
         },
         (cell) => {
-            return trimText(cell.guide);
+            return cell.guide;
         },
         (cell) => {
-            return trimText(cell.literature);
+            return cell.literature;
         },
         (cell) => {
-            return trimText(cell.remark);
+            return cell.remark;
         },
         (cell) => {
             return cell.creator ? cell.creator.name : "-";
         },
         (cell) => {
-            return format(cell.createdAt, "MM-DD");
+            return formatDate(cell.createdAt);
         },
         (cell) => {
             return cell.createdAt == cell.updatedAt
                 ? "-"
-                : format(cell.updatedAt, "MM-DD");
+                : formatDate(cell.updatedAt);
         },
         (cell) => {
             return cell.status ? "已审核" : "未审核";
@@ -943,30 +951,30 @@ tables["mutation_cancer"] = {
             return cell.mutationclass ? cell.mutationclass.label : "-";
         },
         (cell) => {
-            return trimText(cell.mutation_detail);
+            return cell.mutation_detail;
         },
         (cell) => {
             return cell.cancer ? cell.cancer.label : "-";
         },
         (cell) => {
-            return trimText(cell.drug_info);
+            return cell.drug_info;
         },
         (cell) => {
-            return trimText(cell.evidence);
+            return cell.evidence;
         },
         (cell) => {
-            return trimText(cell.literature);
+            return cell.literature;
         },
         (cell) => {
             return cell.creator ? cell.creator.name : "-";
         },
         (cell) => {
-            return format(cell.createdAt, "MM-DD");
+            return formatDate(cell.createdAt);
         },
         (cell) => {
             return cell.createdAt == cell.updatedAt
                 ? "-"
-                : format(cell.updatedAt, "MM-DD");
+                : formatDate(cell.updatedAt);
         },
         (cell) => {
             return cell.status ? "已审核" : "未审核";
@@ -1200,24 +1208,24 @@ tables["drug"] = {
         },
         //(cell) => {return cell.cancer},
         (cell) => {
-            return trimText(cell.description);
+            return cell.description;
         },
         (cell) => {
-            return trimText(cell.source);
+            return cell.source;
         },
         (cell) => {
-            return trimText(cell.literature);
+            return cell.literature;
         },
         (cell) => {
             return cell.creator ? cell.creator.name : "-";
         },
         (cell) => {
-            return format(cell.createdAt, "MM-DD");
+            return formatDate(cell.createdAt);
         },
         (cell) => {
             return cell.createdAt == cell.updatedAt
                 ? "-"
-                : format(cell.updatedAt, "MM-DD");
+                : formatDate(cell.updatedAt);
         },
         (cell) => {
             return cell.status ? "已审核" : "未审核";
@@ -1396,7 +1404,7 @@ tables["drug_cancer"] = {
             return cell.cancer ? cell.cancer.label : "-";
         },
         (cell) => {
-            return trimText(cell.medical_evidence);
+            return cell.medical_evidence;
         },
         (cell) => {
             return cell.source;
@@ -1408,12 +1416,12 @@ tables["drug_cancer"] = {
             return cell.creator ? cell.creator.name : "-";
         },
         (cell) => {
-            return format(cell.createdAt, "MM-DD");
+            return formatDate(cell.createdAt);
         },
         (cell) => {
             return cell.createdAt == cell.updatedAt
                 ? "-"
-                : format(cell.updatedAt, "MM-DD");
+                : formatDate(cell.updatedAt);
         },
         (cell) => {
             return cell.status ? "已审核" : "未审核";
@@ -1545,12 +1553,12 @@ tables["mutation_drug_benefit"] = {
             return cell.creator ? cell.creator.name : "-";
         },
         (cell) => {
-            return format(cell.createdAt, "MM-DD");
+            return formatDate(cell.createdAt);
         },
         (cell) => {
             return cell.createdAt == cell.updatedAt
                 ? "-"
-                : format(cell.updatedAt, "MM-DD");
+                : formatDate(cell.updatedAt);
         },
         (cell) => {
             return cell.status ? "已审核" : "未审核";
@@ -1684,12 +1692,12 @@ tables["mutation_drug_resistance"] = {
             return cell.creator ? cell.creator.name : "-";
         },
         (cell) => {
-            return format(cell.createdAt, "MM-DD");
+            return formatDate(cell.createdAt);
         },
         (cell) => {
             return cell.createdAt == cell.updatedAt
                 ? "-"
-                : format(cell.updatedAt, "MM-DD");
+                : formatDate(cell.updatedAt);
         },
         (cell) => {
             return cell.status ? "已审核" : "未审核";
@@ -1823,12 +1831,12 @@ tables["mutation_drug_benefit_other"] = {
             return cell.creator ? cell.creator.name : "-";
         },
         (cell) => {
-            return format(cell.createdAt, "MM-DD");
+            return formatDate(cell.createdAt);
         },
         (cell) => {
             return cell.createdAt == cell.updatedAt
                 ? "-"
-                : format(cell.updatedAt, "MM-DD");
+                : formatDate(cell.updatedAt);
         },
         (cell) => {
             return cell.status ? "已审核" : "未审核";
@@ -1962,12 +1970,12 @@ tables["mutation_clinical"] = {
             return cell.creator ? cell.creator.name : "-";
         },
         (cell) => {
-            return format(cell.createdAt, "MM-DD");
+            return formatDate(cell.createdAt);
         },
         (cell) => {
             return cell.createdAt == cell.updatedAt
                 ? "-"
-                : format(cell.updatedAt, "MM-DD");
+                : formatDate(cell.updatedAt);
         },
         (cell) => {
             return cell.status ? "已审核" : "未审核";
@@ -2149,18 +2157,18 @@ tables["clinical"] = {
             return cell.location;
         },
         (cell) => {
-            return trimText(cell.remark);
+            return cell.remark;
         },
         (cell) => {
             return cell.creator ? cell.creator.name : "-";
         },
         (cell) => {
-            return format(cell.createdAt, "MM-DD");
+            return formatDate(cell.createdAt);
         },
         (cell) => {
             return cell.createdAt == cell.updatedAt
                 ? "-"
-                : format(cell.updatedAt, "MM-DD");
+                : formatDate(cell.updatedAt);
         },
         (cell) => {
             return cell.status ? "已审核" : "未审核";
@@ -2413,10 +2421,10 @@ tables["chemo"] = {
             return cell.genotype;
         },
         (cell) => {
-            return trimText(cell.description);
+            return cell.description;
         },
         (cell) => {
-            return trimText(cell.description_ref);
+            return cell.description_ref;
         },
         (cell) => {
             return cell.toxicity;
@@ -2431,12 +2439,12 @@ tables["chemo"] = {
             return cell.creator ? cell.creator.name : "-";
         },
         (cell) => {
-            return format(cell.createdAt, "MM-DD");
+            return formatDate(cell.createdAt);
         },
         (cell) => {
             return cell.createdAt == cell.updatedAt
                 ? "-"
-                : format(cell.updatedAt, "MM-DD");
+                : formatDate(cell.updatedAt);
         },
         (cell) => {
             return cell.status ? "已审核" : "未审核";
@@ -2627,21 +2635,21 @@ tables["nccn_gene"] = {
             return cell.cancer ? cell.cancer.label : "-";
         },
         (cell) => {
-            return trimText(cell.result);
+            return cell.result;
         },
         (cell) => {
-            return trimText(cell.remark);
+            return cell.remark;
         },
         (cell) => {
             return cell.creator ? cell.creator.name : "-";
         },
         (cell) => {
-            return format(cell.createdAt, "MM-DD");
+            return formatDate(cell.createdAt);
         },
         (cell) => {
             return cell.createdAt == cell.updatedAt
                 ? "-"
-                : format(cell.updatedAt, "MM-DD");
+                : formatDate(cell.updatedAt);
         },
         (cell) => {
             return cell.status ? "已审核" : "未审核";
@@ -2737,18 +2745,18 @@ tables["report_remark"] = {
             return cell.key;
         },
         (cell) => {
-            return trimText(cell.content);
+            return cell.content;
         },
         (cell) => {
             return cell.creator ? cell.creator.name : "-";
         },
         (cell) => {
-            return format(cell.createdAt, "MM-DD");
+            return formatDate(cell.createdAt);
         },
         (cell) => {
             return cell.createdAt == cell.updatedAt
                 ? "-"
-                : format(cell.updatedAt, "MM-DD");
+                : formatDate(cell.updatedAt);
         },
         (cell) => {
             return cell.status ? "已审核" : "未审核";
@@ -2829,18 +2837,18 @@ tables["report_literature"] = {
             return cell.pmid;
         },
         (cell) => {
-            return trimText(cell.literature);
+            return cell.literature;
         },
         (cell) => {
             return cell.creator ? cell.creator.name : "-";
         },
         (cell) => {
-            return format(cell.createdAt, "MM-DD");
+            return formatDate(cell.createdAt);
         },
         (cell) => {
             return cell.createdAt == cell.updatedAt
                 ? "-"
-                : format(cell.updatedAt, "MM-DD");
+                : formatDate(cell.updatedAt);
         },
         (cell) => {
             return cell.status ? "已审核" : "未审核";
@@ -2922,12 +2930,12 @@ tables["report_file"] = {
             return row.creator ? row.creator.name : "-";
         },
         (row) => {
-            return format(row.createdAt, "MM-DD");
+            return formatDate(row.createdAt);
         },
         (row) => {
             return row.createdAt == row.updatedAt
                 ? "-"
-                : format(row.updatedAt, "MM-DD");
+                : formatDate(row.updatedAt);
         },
     ],
     normalize: (obj) => {
@@ -2976,12 +2984,12 @@ tables["geneclass"] = {
             return cell.label;
         },
         (cell) => {
-            return format(cell.createdAt, "MM-DD");
+            return formatDate(cell.createdAt);
         },
         (cell) => {
             return cell.createdAt == cell.updatedAt
                 ? "-"
-                : format(cell.updatedAt, "MM-DD");
+                : formatDate(cell.updatedAt);
         },
     ],
     normalize: (obj) => {
@@ -3029,12 +3037,12 @@ tables["ddrclass"] = {
             return cell.label;
         },
         (cell) => {
-            return format(cell.createdAt, "MM-DD");
+            return formatDate(cell.createdAt);
         },
         (cell) => {
             return cell.createdAt == cell.updatedAt
                 ? "-"
-                : format(cell.updatedAt, "MM-DD");
+                : formatDate(cell.updatedAt);
         },
     ],
     normalize: (obj) => {
@@ -3082,12 +3090,12 @@ tables["mutationclass"] = {
             return cell.label;
         },
         (cell) => {
-            return format(cell.createdAt, "MM-DD");
+            return formatDate(cell.createdAt);
         },
         (cell) => {
             return cell.createdAt == cell.updatedAt
                 ? "-"
-                : format(cell.updatedAt, "MM-DD");
+                : formatDate(cell.updatedAt);
         },
     ],
     normalize: (obj) => {
@@ -3135,12 +3143,12 @@ tables["drugclass"] = {
             return cell.label;
         },
         (cell) => {
-            return format(cell.createdAt, "MM-DD");
+            return formatDate(cell.createdAt);
         },
         (cell) => {
             return cell.createdAt == cell.updatedAt
                 ? "-"
-                : format(cell.updatedAt, "MM-DD");
+                : formatDate(cell.updatedAt);
         },
     ],
     normalize: (obj) => {
@@ -3188,12 +3196,12 @@ tables["evidencelevel"] = {
             return cell.label;
         },
         (cell) => {
-            return format(cell.createdAt, "MM-DD");
+            return formatDate(cell.createdAt);
         },
         (cell) => {
             return cell.createdAt == cell.updatedAt
                 ? "-"
-                : format(cell.updatedAt, "MM-DD");
+                : formatDate(cell.updatedAt);
         },
     ],
     normalize: (obj) => {
@@ -3291,12 +3299,12 @@ tables["pathway"] = {
             return cell.creator ? cell.creator.name : "-";
         },
         (cell) => {
-            return format(cell.createdAt, "MM-DD");
+            return formatDate(cell.createdAt);
         },
         (cell) => {
             return cell.createdAt == cell.updatedAt
                 ? "-"
-                : format(cell.updatedAt, "MM-DD");
+                : formatDate(cell.updatedAt);
         },
         (cell) => {
             return cell.status ? "已审核" : "未审核";
@@ -3410,12 +3418,12 @@ tables["pathway_drug_cancer"] = {
             return cell.creator ? cell.creator.name : "-";
         },
         (cell) => {
-            return format(cell.createdAt, "MM-DD");
+            return formatDate(cell.createdAt);
         },
         (cell) => {
             return cell.createdAt == cell.updatedAt
                 ? "-"
-                : format(cell.updatedAt, "MM-DD");
+                : formatDate(cell.updatedAt);
         },
         (cell) => {
             return cell.status ? "已审核" : "未审核";
@@ -3455,4 +3463,560 @@ tables["pathway_drug_cancer"] = {
     ],
 };
 
+tables["report_sample_type"] = {
+    query: {
+        gql: query.REPORT_SAMPLE_TYPES_GET,
+        key: "reportsampletypes",
+    },
+    mutation: {
+        new: mutation.REPORT_SAMPLE_TYPE_NEW,
+        delete: mutation.REPORT_SAMPLE_TYPES_DELETE,
+        update: mutation.REPORT_SAMPLE_TYPE_UPDATE,
+    },
+    columns: [
+        {
+            label: "名称",
+            key: "label",
+            exportable: true,
+        },
+        {
+            label: "创建日期",
+            key: "createdAt",
+            exportable: false,
+        },
+        {
+            label: "修改日期",
+            key: "updatedAt",
+            exportable: false,
+        },
+    ],
+    cellFormatters: [
+        (cell) => {
+            return cell.label;
+        },
+        (cell) => {
+            return formatDate(cell.createdAt);
+        },
+        (cell) => {
+            return cell.createdAt == cell.updatedAt
+                ? "-"
+                : formatDate(cell.updatedAt);
+        },
+    ],
+    normalize: (obj) => {
+        obj["label"] = String(obj["label"]);
+        return obj;
+    },
+    formComponents: [
+        {
+            label: "名称",
+            key: "label",
+            inputType: "text",
+        },
+    ],
+};
+
+tables["inspection_project"] = {
+    query: {
+        gql: query.INSPECTION_PROJECTS_GET,
+        key: "inspectionprojects",
+    },
+    mutation: {
+        new: mutation.INSPECTION_PROJECT_NEW,
+        delete: mutation.INSPECTION_PROJECTS_DELETE,
+        update: mutation.INSPECTION_PROJECT_UPDATE,
+    },
+    columns: [
+        {
+            label: "名称",
+            key: "label",
+            exportable: true,
+        },
+        {
+            label: "创建日期",
+            key: "createdAt",
+            exportable: false,
+        },
+        {
+            label: "修改日期",
+            key: "updatedAt",
+            exportable: false,
+        },
+    ],
+    cellFormatters: [
+        (cell) => {
+            return cell.label;
+        },
+        (cell) => {
+            return formatDate(cell.createdAt);
+        },
+        (cell) => {
+            return cell.createdAt == cell.updatedAt
+                ? "-"
+                : formatDate(cell.updatedAt);
+        },
+    ],
+    normalize: (obj) => {
+        obj["label"] = String(obj["label"]);
+        return obj;
+    },
+    formComponents: [
+        {
+            label: "名称",
+            key: "label",
+            inputType: "text",
+        },
+    ],
+};
+
+tables["report_sample"] = {
+    query: {
+        gql: query.REPORT_SAMPLES_GET,
+        key: "reportsamples",
+    },
+    mutation: {
+        new: mutation.REPORT_SAMPLE_NEW,
+        delete: mutation.REPORT_SAMPLES_DELETE,
+        update: mutation.REPORT_SAMPLE_UPDATE,
+    },
+    columns: [
+        {
+            label: "姓名",
+            key: "name",
+            exportable: true,
+        },
+        {
+            label: "性别",
+            key: "gender",
+            exportable: true,
+        },
+        {
+            label: "年龄",
+            key: "age",
+            exportable: true,
+        },
+        {
+            label: "样本编号",
+            key: "sample_number",
+            exportable: true,
+        },
+        {
+            label: "样本类型",
+            key: "sample_type",
+            exportable: true,
+        },
+        {
+            label: "检测项目",
+            key: "project",
+            exportable: true,
+        },
+        {
+            label: "采集日期",
+            key: "date_sampled",
+            exportable: true,
+        },
+        {
+            label: "接收日期",
+            key: "date_received",
+            exportable: true,
+        },
+        {
+            label: "送检单位",
+            key: "unit_submitted",
+            exportable: true,
+        },
+        {
+            label: "检测方法",
+            key: "inspection_method",
+            exportable: true,
+        },
+        {
+            label: "检测平台",
+            key: "inspection_platform",
+            exportable: true,
+        },
+        {
+            label: "参考基因组",
+            key: "reference_genome",
+            exportable: true,
+        },
+        {
+            label: "临床诊断结果",
+            key: "clinical_diagnosis",
+            exportable: true,
+        },
+        {
+            label: "报告显示癌种",
+            key: "cancer_from_report",
+            exportable: true,
+        },
+        {
+            label: "数据匹配癌种",
+            key: "cancer_from_data",
+            exportable: true,
+        },
+        {
+            label: "家族史",
+            key: "history_family",
+            exportable: true,
+        },
+        {
+            label: "用药史",
+            key: "history_drug",
+            exportable: true,
+        },
+        {
+            label: "报告日期",
+            key: "date_reported",
+            exportable: true,
+        },
+        {
+            label: "创建日期",
+            key: "createdAt",
+            exportable: false,
+        },
+        {
+            label: "修改日期",
+            key: "updatedAt",
+            exportable: false,
+        },
+        {
+            label: "审核状态",
+            key: "status",
+            exportable: false,
+        },
+        {
+            label: "审核人",
+            key: "approver",
+            exportable: false,
+        },
+    ],
+    cellFormatters: [
+        (cell) => {
+            return cell.name;
+        },
+        (cell) => {
+            return cell.gender;
+        },
+        (cell) => {
+            return cell.age;
+        },
+        (cell) => {
+            return cell.sample_number;
+        },
+        (cell) => {
+            return cell.sample_type ? cell.sample_type.label : "-";
+        },
+        (cell) => {
+            return cell.inspection_project
+                ? cell.inspection_project.label
+                : "-";
+        },
+        (cell) => {
+            return formatDate(cell.date_sampled);
+        },
+        (cell) => {
+            return formatDate(cell.date_received);
+        },
+        (cell) => {
+            return cell.unit_submitted;
+        },
+        (cell) => {
+            return cell.inspection_method;
+        },
+        (cell) => {
+            return cell.inspection_platform;
+        },
+        (cell) => {
+            return cell.reference_genome;
+        },
+        (cell) => {
+            return cell.clinical_diagnosis;
+        },
+        (cell) => {
+            return cell.cancer_from_report;
+        },
+        (cell) => {
+            return cell.cancer_from_data ? cell.cancer_from_data.label : "-";
+        },
+        (cell) => {
+            return cell.history_family;
+        },
+        (cell) => {
+            return cell.history_drug;
+        },
+        (cell) => {
+            return formatDate(cell.date_reported);
+        },
+        (cell) => {
+            return cell.creator ? cell.creator.name : "-";
+        },
+        (cell) => {
+            return formatDate(cell.createdAt);
+        },
+        (cell) => {
+            return cell.createdAt == cell.updatedAt
+                ? "-"
+                : formatDate(cell.updatedAt);
+        },
+        (cell) => {
+            return cell.status ? "已审核" : "未审核";
+        },
+        (cell) => {
+            return cell.aprrover ? cell.approver.name : "-";
+        },
+    ],
+    normalize: (obj) => {
+        obj["name"] = String(obj["name"]);
+        obj["gender"] = String(obj["gender"]);
+        obj["age"] = String(obj["age"]);
+        obj["sample_number"] = String(obj["sample_number"]);
+        obj["sample_type"] = String(obj["sample_type"]);
+        obj["project"] = String(obj["project"]);
+        obj["date_sampled"] = Date.parse(obj["date_sampled"]);
+        obj["date_received"] = Date.parse(obj["date_received"]);
+        obj["unit_submitted"] = String(obj["unit_submitted"]);
+        obj["inspection_method"] = String(obj["inspection_method"]);
+        obj["inspection_platform"] = String(obj["inspection_platform"]);
+        obj["reference_genome"] = String(obj["reference_genome"]);
+        obj["clinical_diagnosis"] = String(obj["clinical_diagnosis"]);
+        obj["cancer_from_report"] = String(obj["cancer_from_report"]);
+        obj["cancer_from_data"] = String(obj["cancer_from_data"]);
+        obj["history_family"] = String(obj["history_family"]);
+        obj["history_drug"] = String(obj["history_drug"]);
+        obj["date_reported"] = Date.parse(obj["date_reported"]);
+        return obj;
+    },
+    formComponents: [
+        {
+            label: "姓名",
+            key: "name",
+            inputType: "text",
+        },
+        {
+            label: "性别",
+            key: "gender",
+            inputType: "simpleselect",
+            values: ["男", "女"],
+        },
+        {
+            label: "年龄",
+            key: "age",
+            inputType: "text",
+        },
+        {
+            label: "样本编号",
+            key: "sample_number",
+            inputType: "text",
+        },
+        {
+            label: "样本类型",
+            key: "sample_type",
+            inputType: "singleselect",
+            query: query.REPORT_SAMPLE_TYPES_GET,
+            queryKey: "reportsampletypes",
+        },
+        {
+            label: "检测项目",
+            key: "inspection_project",
+            inputType: "singleselect",
+            query: query.INSPECTION_PROJECTS_GET,
+            queryKey: "inspectionprojects",
+        },
+        {
+            label: "采集日期",
+            key: "date_sampled",
+            inputType: "datepicker",
+        },
+        {
+            label: "接收日期",
+            key: "date_received",
+            inputType: "datepicker",
+        },
+        {
+            label: "送检单位",
+            key: "unit_submitted",
+            inputType: "text",
+        },
+        {
+            label: "检测方法",
+            key: "inspection_method",
+            inputType: "text",
+        },
+        {
+            label: "检测平台",
+            key: "inspection_platform",
+            inputType: "text",
+        },
+        {
+            label: "参考基因组",
+            key: "reference_genome",
+            inputType: "simpleselect",
+            values: ["GRCh37/hg19", "GRCh38/hg38"],
+        },
+        {
+            label: "临床诊断结果",
+            key: "clinical_diagnosis",
+            inputType: "text",
+        },
+        {
+            label: "报告显示癌种",
+            key: "cancer_from_report",
+            inputType: "text",
+        },
+        {
+            label: "数据匹配癌种",
+            key: "cancer_from_data",
+            inputType: "singleselect",
+            query: query.CANCERS_GET,
+            queryKey: "cancers",
+        },
+        {
+            label: "家族史",
+            key: "history_family",
+            inputType: "textarea",
+        },
+        {
+            label: "用药史",
+            key: "history_drug",
+            inputType: "textarea",
+        },
+        {
+            label: "报告日期",
+            key: "date_reported",
+            inputType: "datepicker",
+        },
+    ],
+};
+
+tables["report_sample_qc"] = {
+    query: {
+        gql: query.REPORT_SAMPLE_QCS_BY_SAMPLE_GET,
+        key: "reportsampleqcsbysample",
+        variables: (value) => {
+            return { sid: value };
+        },
+    },
+    mutation: {
+        new: mutation.REPORT_SAMPLE_QC_NEW,
+        delete: mutation.REPORT_SAMPLE_QCS_DELETE,
+        update: mutation.REPORT_SAMPLE_QC_UPDATE,
+    },
+    columns: [
+        {
+            label: "样本类型",
+            key: "name",
+            exportable: true,
+        },
+        {
+            label: "肿瘤细胞含量 (%)",
+            key: "perc_tumor",
+            exportable: true,
+        },
+        {
+            label: "DNA浓度 (ng/ul)",
+            key: "conc_dna",
+            exportable: true,
+        },
+        {
+            label: "DNA总量 (ng)",
+            key: "total_dna",
+            exportable: true,
+        },
+        {
+            label: "平均测序深度",
+            key: "avg_depth",
+            exportable: true,
+        },
+        {
+            label: "碱基质量Q30占比",
+            key: "perc_q30",
+            exportable: true,
+        },
+        {
+            label: "质控",
+            key: "result",
+            exportable: true,
+        },
+    ],
+    cellFormatters: [
+        (cell) => {
+            return cell.name;
+        },
+        (cell) => {
+            return cell.perc_tumor;
+        },
+        (cell) => {
+            return cell.conc_dna;
+        },
+        (cell) => {
+            return cell.total_dna;
+        },
+        (cell) => {
+            return cell.avg_depth;
+        },
+        (cell) => {
+            return cell.perc_q30;
+        },
+        (cell) => {
+            return cell.result;
+        },
+    ],
+    normalize: (obj) => {
+        obj["name"] = String(obj["name"]);
+        obj["perc_tumor"] = String(obj["perc_tumor"]);
+        obj["conc_dna"] = String(obj["conc_dna"]);
+        obj["total_dna"] = String(obj["total_dna"]);
+        obj["avg_depth"] = String(obj["avg_depth"]);
+        obj["perc_q30"] = String(obj["perc_q30"]);
+        obj["result"] = String(obj["result"]);
+        return obj;
+    },
+    formComponents: [
+        {
+            label: "样本",
+            key: "sample",
+            inputType: "singleselect",
+            query: query.REPORT_SAMPLES_GET,
+            hidden: true,
+            queryKey: "reportsamples",
+        },
+        {
+            label: "样本类型",
+            key: "name",
+            inputType: "text",
+        },
+        {
+            label: "肿瘤细胞含量",
+            key: "perc_tumor",
+            inputType: "text",
+        },
+        {
+            label: "DNA浓度",
+            key: "conc_dna",
+            inputType: "text",
+        },
+        {
+            label: "DNA总量",
+            key: "total_dna",
+            inputType: "text",
+        },
+        {
+            label: "平均测序深度",
+            key: "avg_depth",
+            inputType: "text",
+        },
+        {
+            label: "碱基质量Q30占比",
+            key: "perc_q30",
+            inputType: "text",
+        },
+        {
+            label: "质控",
+            key: "result",
+            inputType: "simpleselect",
+            values: ["合格", "警戒", "不合格"],
+        },
+    ],
+};
 export default tables;

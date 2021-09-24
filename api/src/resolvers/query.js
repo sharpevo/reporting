@@ -193,4 +193,35 @@ module.exports = {
     pathwaydrugcancer: async (parent, { id }, { models }) => {
         return await models.PathwayDrugCancer.findById(id);
     },
+
+    reportsampletypes: async (parent, args, { models }) => {
+        return await models.ReportSampleType.find({});
+    },
+    reportsampletype: async (parent, { id }, { models }) => {
+        return await models.ReportSampleType.findById(id);
+    },
+
+    inspectionprojects: async (parent, args, { models }) => {
+        return await models.InspectionProject.find({});
+    },
+    inspectionproject: async (parent, { id }, { models }) => {
+        return await models.InspectionProject.findById(id);
+    },
+
+    reportsamples: async (parent, args, { models }) => {
+        return await models.ReportSample.find({});
+    },
+    reportsample: async (parent, { id }, { models }) => {
+        return await models.ReportSample.findById(id);
+    },
+
+    reportsampleqcs: async (parent, args, { models }) => {
+        return await models.ReportSampleQc.find({});
+    },
+    reportsampleqcsbysample: async (parent, { sid }, { models }) => {
+        return await models.ReportSampleQc.find({ sample: sid });
+    },
+    reportsampleqc: async (parent, { id }, { models }) => {
+        return await models.ReportSampleQc.findById(id);
+    },
 };

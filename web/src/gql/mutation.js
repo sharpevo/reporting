@@ -1214,6 +1214,238 @@ const EVIDENCE_LEVELS_DELETE = gql`
     }
 `;
 
+const REPORT_SAMPLE_TYPE_NEW = gql`
+    mutation newReportSampleType($label: String!) {
+        newReportSampleType(label: $label) {
+            id
+            label
+        }
+    }
+`;
+
+const REPORT_SAMPLE_TYPE_UPDATE = gql`
+    mutation updateReportSampleType($id: ID!, $label: String!) {
+        updateReportSampleType(id: $id, label: $label) {
+            id
+            label
+        }
+    }
+`;
+
+const REPORT_SAMPLE_TYPES_DELETE = gql`
+    mutation deleteReportSampleTypes($ids: [ID!]!) {
+        deleteReportSampleTypes(ids: $ids)
+    }
+`;
+
+const INSPECTION_PROJECT_NEW = gql`
+    mutation newInspectionProject($label: String!) {
+        newInspectionProject(label: $label) {
+            id
+            label
+        }
+    }
+`;
+
+const INSPECTION_PROJECT_UPDATE = gql`
+    mutation updateInspectionProject($id: ID!, $label: String!) {
+        updateInspectionProject(id: $id, label: $label) {
+            id
+            label
+        }
+    }
+`;
+
+const INSPECTION_PROJECTS_DELETE = gql`
+    mutation deleteInspectionProject($ids: [ID!]!) {
+        deleteInspectionProject(ids: $ids)
+    }
+`;
+
+const REPORT_SAMPLE_NEW = gql`
+    mutation newReportSample(
+        $name: String!
+        $gender: String
+        $age: String
+        $sample_number: String!
+        $sample_type: String
+        $inspection_project: String
+        $date_sampled: String
+        $date_received: String
+        $unit_submitted: String
+        $inspection_method: String
+        $inspection_platform: String
+        $reference_genome: String
+        $clinical_diagnosis: String
+        $cancer_from_report: String
+        $cancer_from_data: String
+        $history_family: String
+        $history_drug: String
+        $date_reported: String
+    ) {
+        newReportSample(
+            name: $name
+            gender: $gender
+            age: $age
+            sample_number: $sample_number
+            sample_type: $sample_type
+            inspection_project: $inspection_project
+            date_sampled: $date_sampled
+            date_received: $date_received
+            unit_submitted: $unit_submitted
+            inspection_method: $inspection_method
+            inspection_platform: $inspection_platform
+            reference_genome: $reference_genome
+            clinical_diagnosis: $clinical_diagnosis
+            cancer_from_report: $cancer_from_report
+            cancer_from_data: $cancer_from_data
+            history_family: $history_family
+            history_drug: $history_drug
+            date_reported: $date_reported
+        ) {
+            id
+            label
+        }
+    }
+`;
+
+const REPORT_SAMPLE_UPDATE = gql`
+    mutation updateReportSample(
+        $id: ID!
+        $name: String!
+        $gender: String
+        $age: String
+        $sample_number: String!
+        $sample_type: String
+        $inspection_project: String
+        $date_sampled: String
+        $date_received: String
+        $unit_submitted: String
+        $inspection_method: String
+        $inspection_platform: String
+        $reference_genome: String
+        $clinical_diagnosis: String
+        $cancer_from_report: String
+        $cancer_from_data: String
+        $history_family: String
+        $history_drug: String
+        $date_reported: String
+    ) {
+        updateReportSample(
+            id: $id
+            name: $name
+            gender: $gender
+            age: $age
+            sample_number: $sample_number
+            sample_type: $sample_type
+            inspection_project: $inspection_project
+            date_sampled: $date_sampled
+            date_received: $date_received
+            unit_submitted: $unit_submitted
+            inspection_method: $inspection_method
+            inspection_platform: $inspection_platform
+            reference_genome: $reference_genome
+            clinical_diagnosis: $clinical_diagnosis
+            cancer_from_report: $cancer_from_report
+            cancer_from_data: $cancer_from_data
+            history_family: $history_family
+            history_drug: $history_drug
+            date_reported: $date_reported
+        ) {
+            id
+            label
+        }
+    }
+`;
+
+const REPORT_SAMPLES_DELETE = gql`
+    mutation deleteReportSamples($ids: [ID!]!) {
+        deleteReportSamples(ids: $ids)
+    }
+`;
+
+const REPORT_SAMPLE_QC_NEW = gql`
+    mutation newReportSampleQc(
+        $sample: String!
+        $name: String
+        $perc_tumor: String
+        $conc_dna: String
+        $total_dna: String
+        $avg_depth: String
+        $perc_q30: String
+        $result: String
+    ) {
+        newReportSampleQc(
+            sample: $sample
+            name: $name
+            perc_tumor: $perc_tumor
+            conc_dna: $conc_dna
+            total_dna: $total_dna
+            avg_depth: $avg_depth
+            perc_q30: $perc_q30
+            result: $result
+        ) {
+            id
+            sample {
+                id
+                label
+            }
+            name
+            perc_tumor
+            conc_dna
+            total_dna
+            avg_depth
+            perc_q30
+            result
+        }
+    }
+`;
+
+const REPORT_SAMPLE_QC_UPDATE = gql`
+    mutation updateReportSampleQc(
+        $id: ID!
+        $sample: String
+        $name: String
+        $perc_tumor: String
+        $conc_dna: String
+        $total_dna: String
+        $avg_depth: String
+        $perc_q30: String
+        $result: String
+    ) {
+        updateReportSampleQc(
+            id: $id
+            sample: $sample
+            name: $name
+            perc_tumor: $perc_tumor
+            conc_dna: $conc_dna
+            total_dna: $total_dna
+            avg_depth: $avg_depth
+            perc_q30: $perc_q30
+            result: $result
+        ) {
+            id
+            sample {
+                id
+                label
+            }
+            name
+            perc_tumor
+            conc_dna
+            total_dna
+            avg_depth
+            perc_q30
+            result
+        }
+    }
+`;
+
+const REPORT_SAMPLE_QCS_DELETE = gql`
+    mutation deleteReportSampleQcs($ids: [ID!]!) {
+        deleteReportSampleQcs(ids: $ids)
+    }
+`;
+
 export {
     NEW_TABLE,
     DELETE_TABLE,
@@ -1292,4 +1524,16 @@ export {
     EVIDENCE_LEVEL_NEW,
     EVIDENCE_LEVEL_UPDATE,
     EVIDENCE_LEVELS_DELETE,
+    REPORT_SAMPLE_TYPE_NEW,
+    REPORT_SAMPLE_TYPE_UPDATE,
+    REPORT_SAMPLE_TYPES_DELETE,
+    INSPECTION_PROJECT_NEW,
+    INSPECTION_PROJECT_UPDATE,
+    INSPECTION_PROJECTS_DELETE,
+    REPORT_SAMPLE_NEW,
+    REPORT_SAMPLE_UPDATE,
+    REPORT_SAMPLES_DELETE,
+    REPORT_SAMPLE_QC_NEW,
+    REPORT_SAMPLE_QC_UPDATE,
+    REPORT_SAMPLE_QCS_DELETE,
 };

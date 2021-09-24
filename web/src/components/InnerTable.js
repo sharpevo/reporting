@@ -146,6 +146,8 @@ const TableToolbar = ({
     selectedId,
     setSelected,
     editRef,
+    queryVariables,
+    defaultValues,
 }) => {
     const classes = useToolbarStyles();
     if (selectedId.length > 0) {
@@ -240,7 +242,9 @@ const TableToolbar = ({
     };
 
     const [rm, loading, error] = useMutation(tables[table].mutation["delete"], {
-        refetchQueries: [{ query: tables[table].query.gql }],
+        refetchQueries: [
+            { query: tables[table].query.gql, variables: queryVariables },
+        ],
         onCompleted: (data) => {
             console.log("done", data);
         },
@@ -359,8 +363,10 @@ const TableToolbar = ({
                 setOpen={setOpenDataFormDialog}
                 mutation={tables[table].mutation}
                 query={tables[table].query.gql}
+                defaultValues={defaultValues}
                 selectedItem={selectedItem}
                 setSelectedItem={setSelectedItem}
+                queryVariables={queryVariables}
                 formComponents={tables[table].formComponents}
             />
         </Toolbar>
@@ -445,7 +451,8 @@ const tableStyles = makeStyles((theme) => ({
         whiteSpace: "nowrap",
         overflow: "hidden",
         textOverflow: "ellipsis",
-        maxWidth: "200px",
+        maxWidth: "100px",
+        fontSize: "10px",
     },
     visuallyHidden: {
         border: 0,
@@ -461,13 +468,10 @@ const tableStyles = makeStyles((theme) => ({
     tableRow: {
         "&.Mui-selected, &.Mui-selected:hover": {
             backgroundColor: "#f5f5f5",
-            "& > .MuiTableCell-root": {
-                fontWeight: "bold",
-            },
         },
     },
     head: {
-        backgroundColor: "#f5f5f5",
+        fontWeight: "bold",
     },
     body: {
         fontSize: 14,
@@ -492,7 +496,12 @@ const TableCellEllipsis = ({ formatter, row, index }) => {
     );
 };
 
-const InnerTable = ({ databaseKey }) => {
+const InnerTable = ({
+    databaseKey,
+    setItem,
+    queryVariableValue,
+    defaultValues,
+}) => {
     const table = tables[databaseKey];
     if (!table) {
         return "N/A";
@@ -529,14 +538,23 @@ const InnerTable = ({ databaseKey }) => {
                 selected.slice(selectedIndex + 1)
             );
         }
-        if (event.detail == 2) {
+        if (event.detail == 2 && editRef.current) {
             editRef.current.click();
         }
         setSelected(newSelected);
+        if (setItem) {
+            let items = rows.filter((row) => row.id == name);
+            setItem(items[0]);
+        }
     };
 
     //const {loading, error, data, refetch} = useQuery(table.query.gql, {fetchPolicy: "cache-and-network"})
+    let queryVariables = {};
+    if (table.query.variables) {
+        queryVariables = table.query.variables(queryVariableValue);
+    }
     const { loading, error, data, refetch } = useQuery(table.query.gql, {
+        variables: queryVariables,
         onError: ({ graphQLErrors, networkError, operation, forward }) => {
             if (graphQLErrors) {
                 for (let err of graphQLErrors) {
@@ -576,6 +594,8 @@ const InnerTable = ({ databaseKey }) => {
                 setSelected={setSelected}
                 editRef={editRef}
                 table={databaseKey}
+                queryVariables={queryVariables}
+                defaultValues={defaultValues}
             />
             <TableContainer className={classes.table}>
                 <Table aria-labelledby="tableTitle" size="small">
@@ -583,6 +603,7 @@ const InnerTable = ({ databaseKey }) => {
                         <TableRow>
                             {columns.map((column, index) => (
                                 <TableCell
+                                    style={{ fontWeight: "bold" }}
                                     key={index}
                                     align={index == 0 ? "left" : "right"}
                                     className={classes.tableCell}
