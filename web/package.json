@@ -27,6 +27,7 @@
         "@material-ui/styles": "^4.11.4",
         "@mui/icons-material": "^5.0.0",
         "@mui/material": "^5.0.0",
+        "@mui/styles": "^5.0.1",
         "@types/react": "^17.0.24",
         "apollo-link": "^1.2.14",
         "apollo-link-context": "1.0.19",

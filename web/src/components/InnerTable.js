@@ -451,7 +451,8 @@ const tableStyles = makeStyles((theme) => ({
         whiteSpace: "nowrap",
         overflow: "hidden",
         textOverflow: "ellipsis",
-        maxWidth: "200px",
+        maxWidth: "100px",
+        fontSize: "10px",
     },
     visuallyHidden: {
         border: 0,
@@ -467,13 +468,10 @@ const tableStyles = makeStyles((theme) => ({
     tableRow: {
         "&.Mui-selected, &.Mui-selected:hover": {
             backgroundColor: "#f5f5f5",
-            "& > .MuiTableCell-root": {
-                fontWeight: "bold",
-            },
         },
     },
     head: {
-        backgroundColor: "#f5f5f5",
+        fontWeight: "bold",
     },
     body: {
         fontSize: 14,
@@ -605,6 +603,7 @@ const InnerTable = ({
                         <TableRow>
                             {columns.map((column, index) => (
                                 <TableCell
+                                    style={{ fontWeight: "bold" }}
                                     key={index}
                                     align={index == 0 ? "left" : "right"}
                                     className={classes.tableCell}
