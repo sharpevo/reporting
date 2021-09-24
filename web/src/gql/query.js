@@ -771,6 +771,44 @@ const REPORT_SAMPLES_GET = gql`
     }
 `;
 
+const REPORT_SAMPLE_QCS_GET = gql`
+    query reportsampleqcs {
+        reportsampleqcs {
+            id
+            sample {
+                id
+                label
+            }
+            name
+            perc_tumor
+            conc_dna
+            total_dna
+            avg_depth
+            perc_q30
+            result
+        }
+    }
+`;
+
+const REPORT_SAMPLE_QCS_BY_SAMPLE_GET = gql`
+    query reportsampleqcsbysample($sid: ID!) {
+        reportsampleqcsbysample(sid: $sid) {
+            id
+            sample {
+                id
+                label
+            }
+            name
+            perc_tumor
+            conc_dna
+            total_dna
+            avg_depth
+            perc_q30
+            result
+        }
+    }
+`;
+
 export {
     GET_TABLES,
     GENE_CLASSES_GET,
@@ -802,4 +840,6 @@ export {
     REPORT_SAMPLE_TYPES_GET,
     INSPECTION_PROJECTS_GET,
     REPORT_SAMPLES_GET,
+    REPORT_SAMPLE_QCS_GET,
+    REPORT_SAMPLE_QCS_BY_SAMPLE_GET,
 };

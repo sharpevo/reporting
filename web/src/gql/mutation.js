@@ -1364,6 +1364,88 @@ const REPORT_SAMPLES_DELETE = gql`
     }
 `;
 
+const REPORT_SAMPLE_QC_NEW = gql`
+    mutation newReportSampleQc(
+        $sample: String!
+        $name: String
+        $perc_tumor: String
+        $conc_dna: String
+        $total_dna: String
+        $avg_depth: String
+        $perc_q30: String
+        $result: String
+    ) {
+        newReportSampleQc(
+            sample: $sample
+            name: $name
+            perc_tumor: $perc_tumor
+            conc_dna: $conc_dna
+            total_dna: $total_dna
+            avg_depth: $avg_depth
+            perc_q30: $perc_q30
+            result: $result
+        ) {
+            id
+            sample {
+                id
+                label
+            }
+            name
+            perc_tumor
+            conc_dna
+            total_dna
+            avg_depth
+            perc_q30
+            result
+        }
+    }
+`;
+
+const REPORT_SAMPLE_QC_UPDATE = gql`
+    mutation updateReportSampleQc(
+        $id: ID!
+        $sample: String
+        $name: String
+        $perc_tumor: String
+        $conc_dna: String
+        $total_dna: String
+        $avg_depth: String
+        $perc_q30: String
+        $result: String
+    ) {
+        updateReportSampleQc(
+            id: $id
+            sample: $sample
+            name: $name
+            perc_tumor: $perc_tumor
+            conc_dna: $conc_dna
+            total_dna: $total_dna
+            avg_depth: $avg_depth
+            perc_q30: $perc_q30
+            result: $result
+        ) {
+            id
+            sample {
+                id
+                label
+            }
+            name
+            perc_tumor
+            conc_dna
+            total_dna
+            avg_depth
+            perc_q30
+            result
+        }
+    }
+`;
+
+const REPORT_SAMPLE_QCS_DELETE = gql`
+    mutation deleteReportSampleQcs($ids: [ID!]!) {
+        deleteReportSampleQcs(ids: $ids)
+    }
+`;
+
 export {
     NEW_TABLE,
     DELETE_TABLE,
@@ -1451,4 +1533,7 @@ export {
     REPORT_SAMPLE_NEW,
     REPORT_SAMPLE_UPDATE,
     REPORT_SAMPLES_DELETE,
+    REPORT_SAMPLE_QC_NEW,
+    REPORT_SAMPLE_QC_UPDATE,
+    REPORT_SAMPLE_QCS_DELETE,
 };

@@ -3888,4 +3888,135 @@ tables["report_sample"] = {
         },
     ],
 };
+
+tables["report_sample_qc"] = {
+    query: {
+        gql: query.REPORT_SAMPLE_QCS_BY_SAMPLE_GET,
+        key: "reportsampleqcsbysample",
+        variables: (value) => {
+            return { sid: value };
+        },
+    },
+    mutation: {
+        new: mutation.REPORT_SAMPLE_QC_NEW,
+        delete: mutation.REPORT_SAMPLE_QCS_DELETE,
+        update: mutation.REPORT_SAMPLE_QC_UPDATE,
+    },
+    columns: [
+        {
+            label: "样本类型",
+            key: "name",
+            exportable: true,
+        },
+        {
+            label: "肿瘤细胞含量 (%)",
+            key: "perc_tumor",
+            exportable: true,
+        },
+        {
+            label: "DNA浓度 (ng/ul)",
+            key: "conc_dna",
+            exportable: true,
+        },
+        {
+            label: "DNA总量 (ng)",
+            key: "total_dna",
+            exportable: true,
+        },
+        {
+            label: "平均测序深度",
+            key: "avg_depth",
+            exportable: true,
+        },
+        {
+            label: "碱基质量Q30占比",
+            key: "perc_q30",
+            exportable: true,
+        },
+        {
+            label: "质控",
+            key: "result",
+            exportable: true,
+        },
+    ],
+    cellFormatters: [
+        (cell) => {
+            return cell.name;
+        },
+        (cell) => {
+            return cell.perc_tumor;
+        },
+        (cell) => {
+            return cell.conc_dna;
+        },
+        (cell) => {
+            return cell.total_dna;
+        },
+        (cell) => {
+            return cell.avg_depth;
+        },
+        (cell) => {
+            return cell.perc_q30;
+        },
+        (cell) => {
+            return cell.result;
+        },
+    ],
+    normalize: (obj) => {
+        obj["name"] = String(obj["name"]);
+        obj["perc_tumor"] = String(obj["perc_tumor"]);
+        obj["conc_dna"] = String(obj["conc_dna"]);
+        obj["total_dna"] = String(obj["total_dna"]);
+        obj["avg_depth"] = String(obj["avg_depth"]);
+        obj["perc_q30"] = String(obj["perc_q30"]);
+        obj["result"] = String(obj["result"]);
+        return obj;
+    },
+    formComponents: [
+        {
+            label: "样本",
+            key: "sample",
+            inputType: "singleselect",
+            query: query.REPORT_SAMPLES_GET,
+            hidden: true,
+            queryKey: "reportsamples",
+        },
+        {
+            label: "样本类型",
+            key: "name",
+            inputType: "text",
+        },
+        {
+            label: "肿瘤细胞含量",
+            key: "perc_tumor",
+            inputType: "text",
+        },
+        {
+            label: "DNA浓度",
+            key: "conc_dna",
+            inputType: "text",
+        },
+        {
+            label: "DNA总量",
+            key: "total_dna",
+            inputType: "text",
+        },
+        {
+            label: "平均测序深度",
+            key: "avg_depth",
+            inputType: "text",
+        },
+        {
+            label: "碱基质量Q30占比",
+            key: "perc_q30",
+            inputType: "text",
+        },
+        {
+            label: "质控",
+            key: "result",
+            inputType: "simpleselect",
+            values: ["合格", "警戒", "不合格"],
+        },
+    ],
+};
 export default tables;
