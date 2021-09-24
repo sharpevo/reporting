@@ -454,6 +454,18 @@ module.exports = gql`
         label: String
     }
 
+    type ReportSampleQc {
+        id: ID!
+        sample: ReportSample!
+        name: String
+        perc_tumor: String
+        conc_dna: String
+        total_dna: String
+        avg_depth: String
+        perc_q30: String
+        result: String
+    }
+
     type Query {
         tables: [Table!]!
         table(id: ID!): Table!
@@ -547,6 +559,10 @@ module.exports = gql`
 
         reportsamples: [ReportSample]!
         reportsample(id: ID!): ReportSample!
+
+        reportsampleqcs: [ReportSampleQc]!
+        reportsampleqcsbysample(sid: ID!): [ReportSampleQc]!
+        reportsampleqc(id: ID!): ReportSampleQc!
     }
 
     type Mutation {
@@ -1033,5 +1049,28 @@ module.exports = gql`
             date_reported: String
         ): ReportSample
         deleteReportSamples(ids: [ID!]!): Boolean
+
+        newReportSampleQc(
+            sample: String!
+            name: String
+            perc_tumor: String
+            conc_dna: String
+            total_dna: String
+            avg_depth: String
+            perc_q30: String
+            result: String
+        ): ReportSampleQc
+        updateReportSampleQc(
+            id: ID!
+            sample: String
+            name: String
+            perc_tumor: String
+            conc_dna: String
+            total_dna: String
+            avg_depth: String
+            perc_q30: String
+            result: String
+        ): ReportSampleQc
+        deleteReportSampleQcs(ids: [ID!]!): Boolean
     }
 `;

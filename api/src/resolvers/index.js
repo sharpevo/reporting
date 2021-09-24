@@ -19,6 +19,7 @@ const Pathway = require("./pathway");
 const PathwayDrugCancer = require("./pathway_drug_cancer");
 const { GraphQLUpload } = require("graphql-upload");
 const ReportSample = require("./report_sample");
+const ReportSampleQc = require("./report_sample_qc");
 module.exports = {
     DateTime: DateTimeResolver,
     Upload: GraphQLUpload,
@@ -41,4 +42,5 @@ module.exports = {
     Pathway,
     PathwayDrugCancer,
     ReportSample,
+    ReportSampleQc,
 };

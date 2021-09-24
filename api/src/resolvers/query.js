@@ -214,4 +214,14 @@ module.exports = {
     reportsample: async (parent, { id }, { models }) => {
         return await models.ReportSample.findById(id);
     },
+
+    reportsampleqcs: async (parent, args, { models }) => {
+        return await models.ReportSampleQc.find({});
+    },
+    reportsampleqcsbysample: async (parent, { sid }, { models }) => {
+        return await models.ReportSampleQc.find({ sample: sid });
+    },
+    reportsampleqc: async (parent, { id }, { models }) => {
+        return await models.ReportSampleQc.findById(id);
+    },
 };

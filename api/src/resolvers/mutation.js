@@ -2372,4 +2372,115 @@ module.exports = {
             return false;
         }
     },
+
+    newReportSampleQc: async (
+        parent,
+        {
+            sample,
+            name,
+            perc_tumor,
+            conc_dna,
+            total_dna,
+            avg_depth,
+            perc_q30,
+            result,
+        },
+        { models }
+    ) => {
+        let obj = {
+            name: name,
+            perc_tumor: perc_tumor,
+            conc_dna: conc_dna,
+            total_dna: total_dna,
+            avg_depth: avg_depth,
+            perc_q30: perc_q30,
+            result: result,
+        };
+        if (sample) {
+            let sampleSplited = sample.split("(");
+            if (sampleSplited.length != 2) {
+                throw new Error(`invalid sample '${sample}'`);
+            }
+            let sampleNameSplited = sampleSplited[1].split(")");
+            if (sampleNameSplited.length != 2) {
+                throw new Error(`invalid sample '${sample}'`);
+            }
+            const sampled = await models.ReportSample.findOne({
+                sample_number: sampleSplited[0],
+                name: sampleNameSplited[0],
+            });
+            if (!sampled) {
+                throw new Error(`sample '${sample}' does not exist`);
+            }
+            obj.sample = sampled._id;
+        }
+        try {
+            return await models.ReportSampleQc.create(obj);
+        } catch (err) {
+            console.log(err);
+            throw new Error(err);
+        }
+    },
+    updateReportSampleQc: async (
+        parent,
+        {
+            id,
+            sample,
+            name,
+            perc_tumor,
+            conc_dna,
+            total_dna,
+            avg_depth,
+            perc_q30,
+            result,
+        },
+        { models }
+    ) => {
+        let obj = new models.ReportSampleQc({
+            _id: id,
+            name: name,
+            perc_tumor: perc_tumor,
+            conc_dna: conc_dna,
+            total_dna: total_dna,
+            avg_depth: avg_depth,
+            perc_q30: perc_q30,
+            result: result,
+        });
+        if (sample) {
+            let sampleSplited = sample.split("(");
+            if (sampleSplited.length != 2) {
+                throw new Error(`invalid sample '${sample}'`);
+            }
+            let sampleNameSplited = sampleSplited[1].split(")");
+            if (sampleNameSplited.length != 2) {
+                throw new Error(`invalid sample '${sample}'`);
+            }
+            const sampled = await models.ReportSample.findOne({
+                sample_number: sampleSplited[0],
+                name: sampleNameSplited[0],
+            });
+            if (!sampled) {
+                throw new Error(`sample '${sample}' does not exist`);
+            }
+            obj.sample = sampled._id;
+        }
+        obj.isNew = false;
+        try {
+            return await obj.save();
+        } catch (err) {
+            console.log(err);
+            throw new Error(err);
+        }
+    },
+    deleteReportSampleQcs: async (parent, { ids }, { models }) => {
+        try {
+            const result = await models.ReportSampleQc.deleteMany({
+                _id: { $in: ids },
+            });
+            return true;
+        } catch (err) {
+            console.log(err);
+            return false;
+        }
+    },
 };
