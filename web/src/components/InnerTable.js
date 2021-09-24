@@ -545,7 +545,7 @@ const InnerTable = ({
         }
         setSelected(newSelected);
         if (setItem) {
-            let items = rows.filter((row) => row.id == newSelected);
+            let items = rows.filter((row) => row.id == name);
             setItem(items[0]);
         }
     };
