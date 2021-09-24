@@ -18,6 +18,7 @@ import {
     Paper,
     Typography,
 } from "@mui/material";
+import { makeStyles } from "@mui/styles";
 import InnerTable from "../components/InnerTable";
 import { format, parseISO } from "date-fns";
 const formatDate = (text) => {
@@ -105,7 +106,14 @@ const contents = [
     },
 ];
 
+const useStyles = makeStyles({
+    container: {
+        maxWidth: 800,
+    },
+});
+
 const PageSample = () => {
+    const classes = useStyles();
     const [sample, setSample] = React.useState({});
     const [activeStep, setActiveStep] = React.useState(0);
 
@@ -127,10 +135,12 @@ const PageSample = () => {
                 <Step>
                     <StepLabel>Select or Create sample</StepLabel>
                     <StepContent>
-                        <InnerTable
-                            databaseKey="report_sample"
-                            setItem={setSample}
-                        />
+                        <Paper className={classes.container}>
+                            <InnerTable
+                                databaseKey="report_sample"
+                                setItem={setSample}
+                            />
+                        </Paper>
                         <Box sx={{ mb: 2 }}>
                             <div>
                                 <Button
@@ -148,9 +158,16 @@ const PageSample = () => {
                 <Step>
                     <StepLabel>Create or Edit QC</StepLabel>
                     <StepContent>
-                        <Card sx={{ maxWidth: 800 }}>
-                            <CardContent>
-                                {sample ? (
+                        <Typography
+                            variant="body2"
+                            color="text.secondary"
+                            sx={{ mb: 2 }}
+                        >
+                            Sample
+                        </Typography>
+                        {sample.id ? (
+                            <Card className={classes.container}>
+                                <CardContent>
                                     <Grid
                                         container
                                         spacing={2}
@@ -158,27 +175,50 @@ const PageSample = () => {
                                         alignment="center"
                                     >
                                         {contents.map((content, index) => (
-                                            <Grid item key={index} xs={4}>
+                                            <Grid
+                                                item
+                                                key={index}
+                                                xs={4}
+                                                style={{ fontSize: "10px" }}
+                                            >
                                                 <Typography
                                                     variant="caption"
-                                                    color="text.secondary"
+                                                    color="textSecondary"
                                                 >
                                                     {content.label}
                                                 </Typography>
-                                                <Typography variant="body1">
+                                                <br />
+                                                <Typography variant="caption">
                                                     {content.value(sample)}
                                                 </Typography>
                                             </Grid>
                                         ))}
                                     </Grid>
-                                ) : (
-                                    <span>N/A</span>
-                                )}
-                            </CardContent>
-                        </Card>
-                        <TableContainer>
-                            <Table></Table>
-                        </TableContainer>
+                                </CardContent>
+                            </Card>
+                        ) : (
+                            <span>N/A</span>
+                        )}
+                        <Typography
+                            variant="body2"
+                            color="text.secondary"
+                            sx={{ mb: 2, mt: 2 }}
+                        >
+                            QC
+                        </Typography>
+                        {sample.id ? (
+                            <Paper className={classes.container}>
+                                <InnerTable
+                                    databaseKey="report_sample_qc"
+                                    queryVariableValue={sample.id}
+                                    defaultValues={[
+                                        { key: "sample", value: sample.label },
+                                    ]}
+                                />
+                            </Paper>
+                        ) : (
+                            <span>N/A</span>
+                        )}
                         <Box sx={{ mb: 2 }}>
                             <div>
                                 <Button
@@ -201,7 +241,7 @@ const PageSample = () => {
                     </StepContent>
                 </Step>
                 <Step>
-                    <StepLabel>Review and Submit</StepLabel>
+                    <StepLabel>Upload vcf</StepLabel>
                     <StepContent>
                         <Box sx={{ mb: 2 }}>
                             <div>

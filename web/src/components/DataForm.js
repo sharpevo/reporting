@@ -258,6 +258,7 @@ const FormComponent = ({
                 <div className={classes.componentMargin}>
                     <Stack spacing={3} sx={{ width: 500 }}>
                         <Autocomplete
+                            sx={formComponent.hidden ? { display: "none" } : {}}
                             size="small"
                             options={entries.map((entry) => entry.label)}
                             name={formComponent.key}
@@ -339,6 +340,8 @@ const DataFormDialog = ({
     selectedItem,
     setSelectedItem,
     formComponents,
+    queryVariables,
+    defaultValues,
 }) => {
     const [item, setItem] = useState({});
     //const [tmpValue, setTmpValue] = useState({})
@@ -346,7 +349,7 @@ const DataFormDialog = ({
     const [isOpenSnackbar, setOpenSnackbar] = useState(false);
     useEffect(() => {
         //console.log("effect", selectedItem)
-        if (Object.keys(selectedItem).length != 0) {
+        if (selectedItem.id) {
             //console.log("synced")
             formComponents.map((component) => {
                 switch (component.inputType) {
@@ -385,15 +388,19 @@ const DataFormDialog = ({
                         }
                 }
             });
+        } else {
+            if (defaultValues) {
+                defaultValues.map((defaultValue) => {
+                    item[defaultValue.key] = defaultValue.value;
+                });
+            }
         }
     }, [selectedItem]);
     const classes = useStyles();
     const [submit, loading, error] = useMutation(
-        Object.keys(selectedItem).length != 0
-            ? mutation["update"]
-            : mutation["new"],
+        selectedItem.id ? mutation["update"] : mutation["new"],
         {
-            refetchQueries: [{ query: query }],
+            refetchQueries: [{ query: query, variables: queryVariables }],
             onCompleted: (data) => {
                 //console.log("done", data)
             },

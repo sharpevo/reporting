@@ -146,6 +146,8 @@ const TableToolbar = ({
     selectedId,
     setSelected,
     editRef,
+    queryVariables,
+    defaultValues,
 }) => {
     const classes = useToolbarStyles();
     if (selectedId.length > 0) {
@@ -240,7 +242,9 @@ const TableToolbar = ({
     };
 
     const [rm, loading, error] = useMutation(tables[table].mutation["delete"], {
-        refetchQueries: [{ query: tables[table].query.gql }],
+        refetchQueries: [
+            { query: tables[table].query.gql, variables: queryVariables },
+        ],
         onCompleted: (data) => {
             console.log("done", data);
         },
@@ -359,8 +363,10 @@ const TableToolbar = ({
                 setOpen={setOpenDataFormDialog}
                 mutation={tables[table].mutation}
                 query={tables[table].query.gql}
+                defaultValues={defaultValues}
                 selectedItem={selectedItem}
                 setSelectedItem={setSelectedItem}
+                queryVariables={queryVariables}
                 formComponents={tables[table].formComponents}
             />
         </Toolbar>
@@ -492,7 +498,12 @@ const TableCellEllipsis = ({ formatter, row, index }) => {
     );
 };
 
-const InnerTable = ({ databaseKey, setItem }) => {
+const InnerTable = ({
+    databaseKey,
+    setItem,
+    queryVariableValue,
+    defaultValues,
+}) => {
     const table = tables[databaseKey];
     if (!table) {
         return "N/A";
@@ -540,7 +551,12 @@ const InnerTable = ({ databaseKey, setItem }) => {
     };
 
     //const {loading, error, data, refetch} = useQuery(table.query.gql, {fetchPolicy: "cache-and-network"})
+    let queryVariables = {};
+    if (table.query.variables) {
+        queryVariables = table.query.variables(queryVariableValue);
+    }
     const { loading, error, data, refetch } = useQuery(table.query.gql, {
+        variables: queryVariables,
         onError: ({ graphQLErrors, networkError, operation, forward }) => {
             if (graphQLErrors) {
                 for (let err of graphQLErrors) {
@@ -580,6 +596,8 @@ const InnerTable = ({ databaseKey, setItem }) => {
                 setSelected={setSelected}
                 editRef={editRef}
                 table={databaseKey}
+                queryVariables={queryVariables}
+                defaultValues={defaultValues}
             />
             <TableContainer className={classes.table}>
                 <Table aria-labelledby="tableTitle" size="small">
