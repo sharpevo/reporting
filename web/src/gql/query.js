@@ -757,6 +757,16 @@ const REPORT_SAMPLES_GET = gql`
             history_family
             history_drug
             date_reported
+            file_main {
+                id
+                label
+                path
+            }
+            file_matched {
+                id
+                label
+                path
+            }
             creator {
                 id
                 name

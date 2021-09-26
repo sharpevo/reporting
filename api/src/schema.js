@@ -445,6 +445,8 @@ module.exports = gql`
         history_family: String
         history_drug: String
         date_reported: DateTime
+        file_main: ReportFile
+        file_matched: ReportFile
         creator: User
         updator: User
         approver: User
@@ -1047,6 +1049,11 @@ module.exports = gql`
             history_family: String
             history_drug: String
             date_reported: String
+        ): ReportSample
+        updateReportSampleFile(
+            id: ID!
+            key: String!
+            fid: String!
         ): ReportSample
         deleteReportSamples(ids: [ID!]!): Boolean
 

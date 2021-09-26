@@ -10,4 +10,10 @@ module.exports = {
     cancer_from_data: async (reportSample, args, { models }) => {
         return await models.Cancer.findById(reportSample.cancer_from_data);
     },
+    file_main: async (reportSample, args, { models }) => {
+        return await models.ReportFile.findById(reportSample.file_main);
+    },
+    file_matched: async (reportSample, args, { models }) => {
+        return await models.ReportFile.findById(reportSample.file_matched);
+    },
 };

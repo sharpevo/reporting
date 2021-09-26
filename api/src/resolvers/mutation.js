@@ -2361,6 +2361,25 @@ module.exports = {
             throw new Error(err);
         }
     },
+    updateReportSampleFile: async (parent, { id, key, fid }, { models }) => {
+        const reportSampled = await models.ReportSample.findOneAndUpdate(
+            {
+                _id: id,
+            },
+            {
+                $set: {
+                    [key]: fid,
+                },
+            },
+            {
+                new: true,
+            }
+        );
+        if (!reportSampled) {
+            throw new Error(`sample ${id} does not exist`);
+        }
+        return reportSampled;
+    },
     deleteReportSamples: async (parent, { ids }, { models }) => {
         try {
             const result = await models.ReportSample.deleteMany({

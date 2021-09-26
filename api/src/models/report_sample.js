@@ -93,6 +93,14 @@ const reportSampleSchema = new mongoose.Schema(
         date_reported: {
             type: Date,
         },
+        file_main: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "ReportFile",
+        },
+        file_matched: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "ReportFile",
+        },
         creator: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "User",
