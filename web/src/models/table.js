@@ -3671,6 +3671,16 @@ tables["report_sample"] = {
             exportable: true,
         },
         {
+            label: "主样本文件",
+            key: "file_main",
+            exportable: false,
+        },
+        {
+            label: "匹配样本文件",
+            key: "file_matched",
+            exportable: false,
+        },
+        {
             label: "创建日期",
             key: "createdAt",
             exportable: false,
@@ -3747,6 +3757,12 @@ tables["report_sample"] = {
         },
         (cell) => {
             return formatDate(cell.date_reported);
+        },
+        (cell) => {
+            return cell.file_main ? cell.file_main.label : "未上传";
+        },
+        (cell) => {
+            return cell.file_matched ? cell.file_matched.label : "未上传";
         },
         (cell) => {
             return cell.creator ? cell.creator.name : "-";

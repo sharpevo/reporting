@@ -1357,6 +1357,24 @@ const REPORT_SAMPLE_UPDATE = gql`
         }
     }
 `;
+const REPORT_SAMPLE_FILE_UPDATE = gql`
+    mutation updateReportSampleFile($id: ID!, $key: String!, $fid: String!) {
+        updateReportSampleFile(id: $id, key: $key, fid: $fid) {
+            id
+            label
+            file_main {
+                id
+                label
+                path
+            }
+            file_matched {
+                id
+                label
+                path
+            }
+        }
+    }
+`;
 
 const REPORT_SAMPLES_DELETE = gql`
     mutation deleteReportSamples($ids: [ID!]!) {
@@ -1532,6 +1550,7 @@ export {
     INSPECTION_PROJECTS_DELETE,
     REPORT_SAMPLE_NEW,
     REPORT_SAMPLE_UPDATE,
+    REPORT_SAMPLE_FILE_UPDATE,
     REPORT_SAMPLES_DELETE,
     REPORT_SAMPLE_QC_NEW,
     REPORT_SAMPLE_QC_UPDATE,
