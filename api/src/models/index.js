@@ -56,6 +56,9 @@ const models = {
     InspectionProject,
     ReportSample,
     ReportSampleQc,
+    ReportSampleType,
+    InspectionProject,
+    ReportSample,
 };
 
 module.exports = models;
