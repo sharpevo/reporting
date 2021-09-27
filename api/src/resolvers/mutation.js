@@ -2303,6 +2303,8 @@ module.exports = {
             history_family,
             history_drug,
             date_reported,
+            file_main,
+            file_matched,
         },
         { models }
     ) => {
@@ -2352,6 +2354,24 @@ module.exports = {
                 throw new Error(`cancer '${cancer_from_data}' does not exist`);
             }
             obj.cancer_from_data = cancerd._id;
+        }
+        if (file_main) {
+            const filed = await models.ReportFile.findOne({ path: file_main });
+            if (!filed) {
+                throw new Error(`file_main '${file_main}' does not exist`);
+            }
+            obj.file_main = filed._id;
+        }
+        if (file_matched) {
+            const filed = await models.ReportFile.findOne({
+                path: file_matched,
+            });
+            if (!filed) {
+                throw new Error(
+                    `file_matched '${file_matched}' does not exist`
+                );
+            }
+            obj.file_matched = filed._id;
         }
         obj.isNew = false;
         try {

@@ -1049,6 +1049,8 @@ module.exports = gql`
             history_family: String
             history_drug: String
             date_reported: String
+            file_main: String
+            file_matched: String
         ): ReportSample
         updateReportSampleFile(
             id: ID!
@@ -1069,7 +1071,7 @@ module.exports = gql`
         ): ReportSampleQc
         updateReportSampleQc(
             id: ID!
-            sample: String
+            sample: String!
             name: String
             perc_tumor: String
             conc_dna: String
