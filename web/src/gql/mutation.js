@@ -1330,6 +1330,8 @@ const REPORT_SAMPLE_UPDATE = gql`
         $history_family: String
         $history_drug: String
         $date_reported: String
+        $file_main: String
+        $file_matched: String
     ) {
         updateReportSample(
             id: $id
@@ -1351,6 +1353,8 @@ const REPORT_SAMPLE_UPDATE = gql`
             history_family: $history_family
             history_drug: $history_drug
             date_reported: $date_reported
+            file_main: $file_main
+            file_matched: $file_matched
         ) {
             id
             label
@@ -1422,7 +1426,7 @@ const REPORT_SAMPLE_QC_NEW = gql`
 const REPORT_SAMPLE_QC_UPDATE = gql`
     mutation updateReportSampleQc(
         $id: ID!
-        $sample: String
+        $sample: String!
         $name: String
         $perc_tumor: String
         $conc_dna: String

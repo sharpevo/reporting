@@ -3,24 +3,22 @@ import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { useQuery, useMutation } from "@apollo/client";
 import { format, parseISO } from "date-fns";
-import Button from "@material-ui/core/Button";
-import Typography from "@material-ui/core/Typography";
-//import TextField from '@material-ui/core/TextField';
-import Dialog from "@material-ui/core/Dialog";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
-import DialogActions from "@material-ui/core/DialogActions";
-import Snackbar from "@material-ui/core/Snackbar";
-import FormControl from "@material-ui/core/FormControl";
-import Select from "@material-ui/core/Select";
-import InputLabel from "@material-ui/core/InputLabel";
-import MenuItem from "@material-ui/core/MenuItem";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Switch from "@material-ui/core/Switch";
-import Checkbox from "@material-ui/core/Checkbox";
-
 import {
+    Button,
+    Typography,
+    Dialog,
+    DialogTitle,
+    DialogContent,
+    DialogContentText,
+    DialogActions,
+    Snackbar,
+    FormControl,
+    Select,
+    InputLabel,
+    MenuItem,
+    FormControlLabel,
+    Switch,
+    Checkbox,
     Chip,
     Autocomplete,
     TextField,
@@ -30,6 +28,7 @@ import {
 } from "@mui/material";
 
 import { REPORT_FILE_NEW } from "../gql/mutation";
+import InnerTable from "./InnerTable";
 
 const componentMinWidth = 500;
 const componentStyles = makeStyles((theme) => ({
@@ -48,6 +47,8 @@ const componentStyles = makeStyles((theme) => ({
 const FormComponent = ({
     formComponent,
     item,
+    itemId,
+    itemLabel,
     handleChange,
     setItem,
     setErrorMessage,
@@ -233,9 +234,19 @@ const FormComponent = ({
         case "reportfile":
             return (
                 <div className={classes.componentMargin}>
+                    <Typography variant="body2" color="text.secondary">
+                        {formComponent.label}
+                    </Typography>
                     <FormControlLabel
+                        style={{ marginLeft: 4 }}
                         control={
-                            <Button variant="contained" component="span">
+                            <Button
+                                variant="contained"
+                                component="span"
+                                size="small"
+                                color="primary"
+                                style={{ marginRight: 4 }}
+                            >
                                 Upload
                                 <input
                                     name={formComponent.key}
@@ -245,10 +256,8 @@ const FormComponent = ({
                                 />
                             </Button>
                         }
-                        labelPlacement="start"
-                        label={formComponent.label}
+                        label=""
                     />
-                    path:{item[formComponent.key]}
                 </div>
             );
         case "singleselect":
@@ -256,7 +265,7 @@ const FormComponent = ({
             //getOptionLabel={(option) => option}
             return (
                 <div className={classes.componentMargin}>
-                    <Stack spacing={3} sx={{ width: 500 }}>
+                    <Stack spacing={3} style={{ width: componentMinWidth }}>
                         <Autocomplete
                             sx={formComponent.hidden ? { display: "none" } : {}}
                             size="small"
@@ -282,7 +291,7 @@ const FormComponent = ({
             //getOptionLabel={(option) => option}
             return (
                 <div className={classes.componentMargin}>
-                    <Stack spacing={3} sx={{ width: 500 }}>
+                    <Stack spacing={3} style={{ width: componentMinWidth }}>
                         <Autocomplete
                             multiple
                             size="small"
@@ -316,6 +325,28 @@ const FormComponent = ({
                         value={item[formComponent.key] || ""}
                         onChange={handleChange}
                     />
+                </div>
+            );
+        case "table":
+            //console.log(formComponent, itemId, formComponent);
+            return (
+                <div>
+                    {itemId ? (
+                        <div className={classes.componentMargin}>
+                            <Typography variant="body2" color="text.secondary">
+                                {formComponent.label}
+                            </Typography>
+                            <InnerTable
+                                databaseKey={formComponent.databaseKey}
+                                queryVariableValue={itemId}
+                                defaultValues={formComponent.defaultValues(
+                                    itemLabel
+                                )}
+                            />
+                        </div>
+                    ) : (
+                        <span></span>
+                    )}
                 </div>
             );
         default:
@@ -364,8 +395,9 @@ const DataFormDialog = ({
                             component.key,
                             selectedItem[component.key]
                         );
-                        item[component.key] =
-                            selectedItem[component.key]["path"];
+                        item[component.key] = selectedItem[component.key]
+                            ? selectedItem[component.key]["path"]
+                            : "";
                         break;
                     case "datepicker":
                         let v = selectedItem[component.key];
@@ -388,12 +420,12 @@ const DataFormDialog = ({
                         }
                 }
             });
-        } else {
-            if (defaultValues) {
-                defaultValues.map((defaultValue) => {
-                    item[defaultValue.key] = defaultValue.value;
-                });
-            }
+        }
+        console.log(defaultValues);
+        if (defaultValues) {
+            defaultValues.map((defaultValue) => {
+                item[defaultValue.key] = defaultValue.value;
+            });
         }
     }, [selectedItem]);
     const classes = useStyles();
@@ -498,6 +530,8 @@ const DataFormDialog = ({
                                 TransitionProps={() => {
                                     console.log("enter");
                                 }}
+                                itemId={selectedItem.id}
+                                itemLabel={selectedItem.label}
                                 item={item}
                                 setItem={setItem}
                                 //tmpValue={tmpValue}
