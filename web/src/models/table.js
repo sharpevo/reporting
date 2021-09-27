@@ -3701,6 +3701,12 @@ tables["report_sample"] = {
             exportable: false,
         },
     ],
+    collapse: [
+        {
+            label: "QC",
+            databaseKey: "report_sample_qc",
+        },
+    ],
     cellFormatters: [
         (cell) => {
             return cell.name;
@@ -3901,6 +3907,32 @@ tables["report_sample"] = {
             label: "报告日期",
             key: "date_reported",
             inputType: "datepicker",
+        },
+        {
+            label: "QC",
+            inputType: "table",
+            databaseKey: "report_sample_qc",
+            queryVariableValue: (sample) => {
+                return sample.id;
+            },
+            defaultValues: (obj) => {
+                return [
+                    {
+                        key: "sample",
+                        value: obj,
+                    },
+                ];
+            },
+        },
+        {
+            label: "主样本(建议: 肿瘤活检)",
+            key: "file_main",
+            inputType: "reportfile",
+        },
+        {
+            label: "匹配样本(建议: 血样)",
+            key: "file_matched",
+            inputType: "reportfile",
         },
     ],
 };
