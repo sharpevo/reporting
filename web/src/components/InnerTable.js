@@ -20,33 +20,26 @@ import IconButton from "@material-ui/core/IconButton";
 import Tooltip from "@material-ui/core/Tooltip";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
-import FilterListIcon from "@material-ui/icons/FilterList";
-import GetAppIcon from "@material-ui/icons/GetApp";
-import PublishIcon from "@material-ui/icons/Publish";
-import FirstPageIcon from "@material-ui/icons/FirstPage";
 import KeyboardArrowLeft from "@material-ui/icons/KeyboardArrowLeft";
 import KeyboardArrowRight from "@material-ui/icons/KeyboardArrowRight";
-import LastPageIcon from "@material-ui/icons/LastPage";
 import { useQuery, useMutation } from "@apollo/client";
 import XLSX from "xlsx";
-import SaveAltIcon from "@material-ui/icons/SaveAlt";
-import CloudUploadOutlinedIcon from "@material-ui/icons/CloudUploadOutlined";
-import styled from "styled-components";
 
-import EditIcon from "@material-ui/icons/Edit";
-import DeleteOutlinedIcon from "@material-ui/icons/DeleteOutlined";
-import InsertDriveFileOutlinedIcon from "@material-ui/icons/InsertDriveFileOutlined";
-import DescriptionOutlinedIcon from "@material-ui/icons/DescriptionOutlined";
-import NoteAddOutlinedIcon from "@material-ui/icons/NoteAddOutlined";
-import NoteAddIcon from "@material-ui/icons/NoteAdd";
-import InsertDriveFileIcon from "@material-ui/icons/InsertDriveFile";
-import DescriptionIcon from "@material-ui/icons/Description";
-import DeleteIcon from "@material-ui/icons/Delete";
-import AddCircleIcon from "@material-ui/icons/AddCircle";
+import styled from "styled-components";
 
 import UploadTableDialog from "../components/TableUpload";
 import tables from "../models/table";
 import DataFormDialog from "../components/DataForm";
+
+import EditIcon from "@mui/icons-material/Edit";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
+import DeleteIcon from "@mui/icons-material/Delete";
+import DescriptionIcon from "@mui/icons-material/Description";
+import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
+import NoteAddIcon from "@mui/icons-material/NoteAdd";
+import LastPageIcon from "@mui/icons-material/LastPage";
+import FirstPageIcon from "@mui/icons-material/FirstPage";
+import SelectAllIcon from "@mui/icons-material/SelectAll";
 
 const exportFile = (data) => {
     const ws = XLSX.utils.aoa_to_sheet(data.data);
@@ -148,6 +141,7 @@ const TableToolbar = ({
     editRef,
     queryVariables,
     defaultValues,
+    onSelectAllClick,
 }) => {
     const classes = useToolbarStyles();
     if (selectedId.length > 0) {
@@ -306,6 +300,11 @@ const TableToolbar = ({
                             </IconButton>
                         </Tooltip>
                     )}
+                    <Tooltip title="Select All">
+                        <IconButton onClick={() => onSelectAllClick()}>
+                            <SelectAllIcon fontSize="small" />
+                        </IconButton>
+                    </Tooltip>
                     <Tooltip title="Upload">
                         <IconButton onClick={() => ref.current.click()}>
                             <NoteAddIcon fontSize="small" />
@@ -585,6 +584,15 @@ const InnerTable = ({
         rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
     //console.log(rows)
 
+    const handleSelectAllClick = () => {
+        if (selected.length == rows.length) {
+            setSelected([]);
+        } else {
+            const newSelecteds = rows.map((row) => row.id);
+            setSelected(newSelecteds);
+        }
+    };
+
     return (
         <div className={classes.root}>
             <TableToolbar
@@ -596,6 +604,7 @@ const InnerTable = ({
                 table={databaseKey}
                 queryVariables={queryVariables}
                 defaultValues={defaultValues}
+                onSelectAllClick={handleSelectAllClick}
             />
             <TableContainer className={classes.table}>
                 <Table aria-labelledby="tableTitle" size="small">
