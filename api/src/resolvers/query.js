@@ -224,4 +224,11 @@ module.exports = {
     reportsampleqc: async (parent, { id }, { models }) => {
         return await models.ReportSampleQc.findById(id);
     },
+
+    reporttemplates: async (parent, args, { models }) => {
+        return await models.ReportTemplate.find({});
+    },
+    reporttemplate: async (parent, { id }, { models }) => {
+        return await models.ReportTemplate.findById(id);
+    },
 };

@@ -1468,6 +1468,78 @@ const REPORT_SAMPLE_QCS_DELETE = gql`
     }
 `;
 
+const REPORT_TEMPLATE_NEW = gql`
+    mutation newReportTemplate(
+        $name: String!
+        $image_cover_front: String
+        $image_cover_back: String
+        $header_left: String
+        $header_right: String
+        $footer_left: String
+        $footer_right: String
+        $module: String
+    ) {
+        newReportTemplate(
+            name: $name
+            image_cover_front: $image_cover_front
+            image_cover_back: $image_cover_back
+            header_left: $header_left
+            header_right: $header_right
+            footer_left: $footer_left
+            footer_right: $footer_right
+            module: $module
+        ) {
+            id
+            label
+        }
+    }
+`;
+
+const REPORT_TEMPLATE_UPDATE = gql`
+    mutation updateReportTemplate(
+        $id: String!
+        $name: String!
+        $image_cover_front: String
+        $image_cover_back: String
+        $header_left: String
+        $header_right: String
+        $footer_left: String
+        $footer_right: String
+        $module: String
+    ) {
+        updateReportTemplate(
+            id: $id
+            name: $name
+            image_cover_front: $image_cover_front
+            image_cover_back: $image_cover_back
+            header_left: $header_left
+            header_right: $header_right
+            footer_left: $footer_left
+            footer_right: $footer_right
+            module: $module
+        ) {
+            id
+            label
+        }
+    }
+`;
+
+const REPORT_TEMPLATE_MODULE_UPDATE = gql`
+    mutation updateReportTemplateModule($id: String!, $module: String!) {
+        updateReportTemplateModule(id: $id, module: $module) {
+            id
+            label
+            module
+        }
+    }
+`;
+
+const REPORT_TEMPLATES_DELETE = gql`
+    mutation deleteReportTemplates($ids: [ID!]!) {
+        deleteReportTemplates(ids: $ids)
+    }
+`;
+
 export {
     NEW_TABLE,
     DELETE_TABLE,
@@ -1559,4 +1631,8 @@ export {
     REPORT_SAMPLE_QC_NEW,
     REPORT_SAMPLE_QC_UPDATE,
     REPORT_SAMPLE_QCS_DELETE,
+    REPORT_TEMPLATE_NEW,
+    REPORT_TEMPLATE_UPDATE,
+    REPORT_TEMPLATE_MODULE_UPDATE,
+    REPORT_TEMPLATES_DELETE,
 };

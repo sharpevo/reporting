@@ -14,6 +14,7 @@ import {
     IconButton,
     Grid,
 } from "@mui/material";
+import AssignmentIcon from "@mui/icons-material/Assignment";
 import Changelog from "./changelog";
 
 const useStyles = makeStyles((theme) => ({
@@ -75,6 +76,14 @@ const Layout = ({ children }) => {
                             to="/samples"
                         >
                             <ContactsIcon />
+                        </IconButton>
+                        <IconButton
+                            size="large"
+                            color="inherit"
+                            component={Link}
+                            to="/template"
+                        >
+                            <AssignmentIcon />
                         </IconButton>
                     </Toolbar>
                 </AppBar>

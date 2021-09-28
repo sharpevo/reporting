@@ -19,6 +19,7 @@ const ReportLiterature = require("./report_literature");
 const ReportFile = require("./report_file");
 const Pathway = require("./pathway");
 const PathwayDrugCancer = require("./pathway_drug_cancer");
+const ReportTemplate = require("./report_template");
 const {
     ReportSampleType,
     InspectionProject,
@@ -59,6 +60,7 @@ const models = {
     ReportSampleType,
     InspectionProject,
     ReportSample,
+    ReportTemplate,
 };
 
 module.exports = models;
