@@ -819,6 +819,33 @@ const REPORT_SAMPLE_QCS_BY_SAMPLE_GET = gql`
     }
 `;
 
+const REPORT_TEMPLATES_GET = gql`
+    query reporttemplates {
+        reporttemplates {
+            id
+            name
+            module
+            image_cover_front {
+                id
+                label
+                path
+            }
+            image_cover_back {
+                id
+                label
+                path
+            }
+            header_left
+            header_right
+            footer_left
+            footer_right
+            createdAt
+            updatedAt
+            label
+        }
+    }
+`;
+
 export {
     GET_TABLES,
     GENE_CLASSES_GET,
@@ -852,4 +879,5 @@ export {
     REPORT_SAMPLES_GET,
     REPORT_SAMPLE_QCS_GET,
     REPORT_SAMPLE_QCS_BY_SAMPLE_GET,
+    REPORT_TEMPLATES_GET,
 };
