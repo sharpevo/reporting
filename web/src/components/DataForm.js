@@ -101,7 +101,8 @@ const FormComponent = ({
         }
         if (error) console.log(error);
         //console.log(formComponent, data)
-        entries = data[formComponent.queryKey];
+        const entryObjs = data[formComponent.queryKey];
+        entries = entryObjs.map((obj) => obj.label);
     }
 
     switch (formComponent.inputType) {
@@ -269,7 +270,7 @@ const FormComponent = ({
                         <Autocomplete
                             sx={formComponent.hidden ? { display: "none" } : {}}
                             size="small"
-                            options={entries.map((entry) => entry.label)}
+                            options={entries}
                             name={formComponent.key}
                             value={item[formComponent.key] || ""}
                             onChange={(event, values) =>
@@ -295,7 +296,7 @@ const FormComponent = ({
                         <Autocomplete
                             multiple
                             size="small"
-                            options={entries.map((entry) => entry.label)}
+                            options={entries}
                             name={formComponent.key}
                             value={item[formComponent.key] || []}
                             onChange={(event, values) =>
