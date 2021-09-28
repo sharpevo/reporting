@@ -46,11 +46,6 @@ const geneAnnotSchema = new mongoose.Schema(
 );
 
 geneAnnotSchema.index({ gene: 1 }, { unique: true });
-geneAnnotSchema.virtual("label").get(function() {
-    return this.gene.label;
-});
-geneAnnotSchema.set("toObject", { virtuals: true, getters: true });
-geneAnnotSchema.set("toJSON", { virtuals: true, getters: true });
 
 const GeneAnnot = mongoose.model("GeneAnnot", geneAnnotSchema);
 
