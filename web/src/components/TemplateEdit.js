@@ -104,16 +104,21 @@ const TemplateEditDialog = ({
     modules,
     setModules,
     onModuleChanged,
+    setSelectedItem,
 }) => {
     //console.log("t", modules);
     const [checked, setChecked] = React.useState([0]);
 
     const handleClose = () => {
         setOpen(false);
+        setSelectedItem({});
+        setModules([]);
     };
     const handleSubmit = () => {
         setOpen(false);
         onModuleChanged(modules);
+        setSelectedItem({});
+        setModules([]);
     };
     return (
         <Dialog

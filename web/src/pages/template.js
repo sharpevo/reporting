@@ -367,8 +367,6 @@ const PageTemplate = () => {
                 //console.log("updatem", v);
             }
         });
-        setSelectedItem({});
-        setModules([]);
     };
 
     return (
@@ -379,6 +377,7 @@ const PageTemplate = () => {
                 modules={modules}
                 setModules={setModules}
                 onModuleChanged={handleModuleUpdate}
+                setSelectedItem={setSelectedItem}
             />
             <DataFormDialog
                 isOpen={isOpenDataFormDialog}
@@ -450,7 +449,7 @@ const PageTemplate = () => {
                     </Grid>
                 ))}
             </Grid>
-            <IconButton onClick={() => handleAddClick()}>
+            <IconButton onClick={(event) => handleAddClick(event)}>
                 <AddCircleIcon />
             </IconButton>
         </Box>
