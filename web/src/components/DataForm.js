@@ -421,6 +421,8 @@ const DataFormDialog = ({
                         }
                 }
             });
+        } else {
+            setItem({});
         }
         console.log(defaultValues);
         if (defaultValues) {
