@@ -468,6 +468,22 @@ module.exports = gql`
         result: String
     }
 
+    type ReportTemplate {
+        id: ID!
+        name: String!
+        image_cover_front: ReportFile
+        image_cover_back: ReportFile
+        header_left: String
+        header_right: String
+        footer_left: String
+        footer_right: String
+        module: String
+        createdAt: DateTime
+        updatedAt: DateTime
+
+        label: String
+    }
+
     type Query {
         tables: [Table!]!
         table(id: ID!): Table!
@@ -565,6 +581,9 @@ module.exports = gql`
         reportsampleqcs: [ReportSampleQc]!
         reportsampleqcsbysample(sid: ID!): [ReportSampleQc]!
         reportsampleqc(id: ID!): ReportSampleQc!
+
+        reporttemplates: [ReportTemplate]!
+        reporttemplate(id: ID!): ReportTemplate
     }
 
     type Mutation {
@@ -1081,5 +1100,29 @@ module.exports = gql`
             result: String
         ): ReportSampleQc
         deleteReportSampleQcs(ids: [ID!]!): Boolean
+
+        newReportTemplate(
+            name: String!
+            image_cover_front: String
+            image_cover_back: String
+            header_left: String
+            header_right: String
+            footer_left: String
+            footer_right: String
+            module: String
+        ): ReportTemplate
+        updateReportTemplate(
+            id: String!
+            name: String!
+            image_cover_front: String
+            image_cover_back: String
+            header_left: String
+            header_right: String
+            footer_left: String
+            footer_right: String
+            module: String
+        ): ReportTemplate
+        updateReportTemplateModule(id: String!, module: String!): ReportTemplate
+        deleteReportTemplates(ids: [ID!]!): Boolean
     }
 `;

@@ -2522,4 +2522,132 @@ module.exports = {
             return false;
         }
     },
+
+    newReportTemplate: async (
+        parent,
+        {
+            name,
+            image_cover_front,
+            image_cover_back,
+            header_left,
+            header_right,
+            footer_left,
+            footer_right,
+            module,
+        },
+        { models }
+    ) => {
+        let obj = {
+            name: name,
+            header_left: header_left,
+            header_right: header_right,
+            footer_left: footer_left,
+            footer_right: footer_right,
+            module: module,
+        };
+        if (image_cover_front) {
+            const frontFiled = await models.ReportFile.findOne({
+                path: image_cover_front,
+            });
+            if (!frontFiled) {
+                throw new Error(`front cover image does not exist`);
+            }
+            obj.image_cover_front = frontFiled._id;
+        }
+        if (image_cover_back) {
+            const backFiled = await models.ReportFile.findOne({
+                path: image_cover_back,
+            });
+            if (!backFiled) {
+                throw new Error(`back cover image does not exist`);
+            }
+            obj.image_cover_back = backFiled._id;
+        }
+        try {
+            return await models.ReportTemplate.create(obj);
+        } catch (err) {
+            console.log(err);
+            throw new Error(err);
+        }
+    },
+    updateReportTemplate: async (
+        parent,
+        {
+            id,
+            name,
+            image_cover_front,
+            image_cover_back,
+            header_left,
+            header_right,
+            footer_left,
+            footer_right,
+            module,
+        },
+        { models }
+    ) => {
+        let obj = new models.ReportTemplate({
+            _id: id,
+            name: name,
+            header_left: header_left,
+            header_right: header_right,
+            footer_left: footer_left,
+            footer_right: footer_right,
+            module: module,
+        });
+        if (image_cover_front) {
+            const frontFiled = await models.ReportFile.findOne({
+                path: image_cover_front,
+            });
+            if (!frontFiled) {
+                throw new Error(`front cover image does not exist`);
+            }
+            obj.image_cover_front = frontFiled._id;
+        }
+        if (image_cover_back) {
+            const backFiled = await models.ReportFile.findOne({
+                path: image_cover_back,
+            });
+            if (!backFiled) {
+                throw new Error(`back cover image does not exist`);
+            }
+            obj.image_cover_back = backFiled._id;
+        }
+        obj.isNew = false;
+        try {
+            return await obj.save();
+        } catch (err) {
+            console.log(err);
+            throw new Error(err);
+        }
+    },
+    updateReportTemplateModule: async (parent, { id, module }, { models }) => {
+        const reportTemplated = await models.ReportTemplate.findOneAndUpdate(
+            {
+                _id: id,
+            },
+            {
+                $set: {
+                    module: module,
+                },
+            },
+            {
+                new: true,
+            }
+        );
+        if (!reportTemplated) {
+            throw new Error(`template ${id} does not exist`);
+        }
+        return reportTemplated;
+    },
+    deleteReportTemplates: async (parent, { ids }, { models }) => {
+        try {
+            const result = await models.ReportTemplate.deleteMany({
+                _id: { $in: ids },
+            });
+            return true;
+        } catch (err) {
+            console.log(err);
+            throw new Error(err);
+        }
+    },
 };
