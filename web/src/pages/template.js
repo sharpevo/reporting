@@ -3,6 +3,13 @@ import {
     Box,
     Paper,
     IconButton,
+    Avatar,
+    ListItemAvatar,
+    Dialog,
+    DialogTitle,
+    List,
+    ListItem,
+    ListItemText,
     Grid,
     Typography,
     Button,
@@ -16,12 +23,14 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import CloseIcon from "@mui/icons-material/Close";
+import AccountTreeIcon from "@mui/icons-material/AccountTree";
 import { useQuery, useMutation } from "@apollo/client";
 import { makeStyles } from "@mui/styles";
 import DataFormDialog from "../components/DataForm";
 import TemplateEditDialog from "../components/TemplateEdit";
 import * as query from "../gql/query";
 import * as mutation from "../gql/mutation";
+import { blue } from "@mui/material/colors";
 
 const useStyles = makeStyles({
     container: {
@@ -255,6 +264,36 @@ const defaultModules = [
     },
 ];
 
+const ImportDefaultModuleDialog = ({ onClose, open, setOpen, parseModule }) => {
+    const handleListItemClick = () => {
+        setOpen(false);
+        parseModule(JSON.stringify(defaultModules));
+    };
+    return (
+        <Dialog open={open}>
+            <DialogTitle>No module configured</DialogTitle>
+            <List sx={{ pt: 0 }} style={{ minWidth: 500 }}>
+                <ListItem button onClick={() => handleListItemClick(true)}>
+                    <ListItemAvatar>
+                        <Avatar sx={{ bgcolor: blue[100], color: blue[600] }}>
+                            <AccountTreeIcon />
+                        </Avatar>
+                    </ListItemAvatar>
+                    <ListItemText primary="import default modules" />
+                </ListItem>
+                <ListItem button onClick={() => setOpen(false)}>
+                    <ListItemAvatar>
+                        <Avatar sx={{ bgcolor: blue[100], color: blue[600] }}>
+                            <CloseIcon />
+                        </Avatar>
+                    </ListItemAvatar>
+                    <ListItemText primary="close" />
+                </ListItem>
+            </List>
+        </Dialog>
+    );
+};
+
 const PageTemplate = () => {
     const classes = useStyles();
     const [modules, setModules] = React.useState([]);
@@ -263,6 +302,13 @@ const PageTemplate = () => {
         isOpenTemplateEditDialog,
         setOpenTemplateEditDialog,
     ] = React.useState(false);
+    const [
+        isOpenImportDefaultModuleDialog,
+        setOpenImportDefaultModuleDialog,
+    ] = React.useState(false);
+    const [isImportDefaultModule, setImportDefaultModule] = React.useState(
+        false
+    );
     const [selectedItem, setSelectedItem] = React.useState({});
 
     const handleAddClick = (event) => {
@@ -345,10 +391,18 @@ const PageTemplate = () => {
     const handleModuleEdit = (item) => {
         //console.log(JSON.stringify(defaultModules));
         setSelectedItem(item);
+        if (!item.module) {
+            setOpenImportDefaultModuleDialog(true);
+        } else {
+            parseModule(item.module);
+        }
+    };
+
+    const parseModule = (module) => {
         let dialog = true;
-        if (item.module) {
+        if (module) {
             try {
-                setModules(JSON.parse(item.module));
+                setModules(JSON.parse(module));
             } catch (e) {
                 alert(e);
                 dialog = false;
@@ -371,6 +425,11 @@ const PageTemplate = () => {
 
     return (
         <Box>
+            <ImportDefaultModuleDialog
+                open={isOpenImportDefaultModuleDialog}
+                setOpen={setOpenImportDefaultModuleDialog}
+                parseModule={parseModule}
+            />
             <TemplateEditDialog
                 isOpen={isOpenTemplateEditDialog}
                 setOpen={setOpenTemplateEditDialog}
