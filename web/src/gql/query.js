@@ -707,6 +707,145 @@ const PATHWAY_DRUG_CANCERS_GET = gql`
     }
 `;
 
+const REPORT_SAMPLE_TYPES_GET = gql`
+    query reportsampletypes {
+        reportsampletypes {
+            id
+            label
+        }
+    }
+`;
+
+const INSPECTION_PROJECTS_GET = gql`
+    query inspectionprojects {
+        inspectionprojects {
+            id
+            label
+        }
+    }
+`;
+
+const REPORT_SAMPLES_GET = gql`
+    query reportsamples {
+        reportsamples {
+            id
+            label
+            name
+            gender
+            age
+            sample_number
+            sample_type {
+                id
+                label
+            }
+            inspection_project {
+                id
+                label
+            }
+            date_sampled
+            date_received
+            unit_submitted
+            inspection_method
+            inspection_platform
+            reference_genome
+            clinical_diagnosis
+            cancer_from_report
+            cancer_from_data {
+                id
+                label
+            }
+            history_family
+            history_drug
+            date_reported
+            file_main {
+                id
+                label
+                path
+            }
+            file_matched {
+                id
+                label
+                path
+            }
+            creator {
+                id
+                name
+            }
+            updator {
+                id
+                name
+            }
+            createdAt
+            updatedAt
+        }
+    }
+`;
+
+const REPORT_SAMPLE_QCS_GET = gql`
+    query reportsampleqcs {
+        reportsampleqcs {
+            id
+            sample {
+                id
+                label
+            }
+            name
+            perc_tumor
+            conc_dna
+            total_dna
+            avg_depth
+            perc_q30
+            result
+        }
+    }
+`;
+
+const REPORT_SAMPLE_QCS_BY_SAMPLE_GET = gql`
+    query reportsampleqcsbysample($sid: ID!) {
+        reportsampleqcsbysample(sid: $sid) {
+            id
+            sample {
+                id
+                label
+            }
+            name
+            perc_tumor
+            conc_dna
+            total_dna
+            avg_depth
+            perc_q30
+            result
+        }
+    }
+`;
+
+const REPORT_TEMPLATES_GET = gql`
+    query reporttemplates {
+        reporttemplates {
+            id
+            name
+            module
+            image_cover_front {
+                id
+                label
+                path
+            }
+            image_cover_back {
+                id
+                label
+                path
+            }
+            header_left
+            header_right
+            footer_left
+            footer_right
+            createdAt
+            updatedAt
+            label
+        }
+    }
+`;
+
 export {
     GET_TABLES,
     GENE_CLASSES_GET,
@@ -735,4 +874,10 @@ export {
     REPORT_FILES_GET,
     PATHWAYS_GET,
     PATHWAY_DRUG_CANCERS_GET,
+    REPORT_SAMPLE_TYPES_GET,
+    INSPECTION_PROJECTS_GET,
+    REPORT_SAMPLES_GET,
+    REPORT_SAMPLE_QCS_GET,
+    REPORT_SAMPLE_QCS_BY_SAMPLE_GET,
+    REPORT_TEMPLATES_GET,
 };

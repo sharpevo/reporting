@@ -18,6 +18,9 @@ const NccnGene = require("./nccn_gene");
 const Pathway = require("./pathway");
 const PathwayDrugCancer = require("./pathway_drug_cancer");
 const { GraphQLUpload } = require("graphql-upload");
+const ReportSample = require("./report_sample");
+const ReportSampleQc = require("./report_sample_qc");
+const ReportTemplate = require("./report_template");
 module.exports = {
     DateTime: DateTimeResolver,
     Upload: GraphQLUpload,
@@ -39,4 +42,7 @@ module.exports = {
     NccnGene,
     Pathway,
     PathwayDrugCancer,
+    ReportSample,
+    ReportSampleQc,
+    ReportTemplate,
 };

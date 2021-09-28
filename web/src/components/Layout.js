@@ -1,11 +1,20 @@
 import React from "react";
-import styled from "style-components";
-import Grid from "@material-ui/core/Grid";
-import { makeStyles, useTheme } from "@material-ui/core/styles";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import Typography from "@material-ui/core/Typography";
+import { Link } from "react-router-dom";
+import { makeStyles } from "@material-ui/core/styles";
+import HomeIcon from "@mui/icons-material/Home";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import ContactsIcon from "@mui/icons-material/Contacts";
+import StorageIcon from "@mui/icons-material/Storage";
+import DocumentScannerIcon from "@mui/icons-material/DocumentScanner";
+import {
+    AppBar,
+    Toolbar,
+    Typography,
+    Box,
+    IconButton,
+    Grid,
+} from "@mui/material";
+import AssignmentIcon from "@mui/icons-material/Assignment";
 import Changelog from "./changelog";
 
 const useStyles = makeStyles((theme) => ({
@@ -40,27 +49,55 @@ const useStyles = makeStyles((theme) => ({
 
 const Layout = ({ children }) => {
     const classes = useStyles();
-    const theme = useTheme();
     return (
-        <div className={classes.root}>
-            <CssBaseline />
-            <AppBar position="fixed">
-                <Toolbar>
-                    <Typography variant="h6" noWrap>
-                        iGeneTech
-                    </Typography>
-                </Toolbar>
-            </AppBar>
-            <main className={classes.content}>
-                <div className={classes.toolbar}></div>
-                <Grid container spacing={0} justifyContent="center">
-                    <Grid item xs={12}>
-                        {children}
-                        <Changelog />
+        <Box sx={{ flexGrow: 1 }}>
+            <div className={classes.root}>
+                <AppBar position="fixed">
+                    <Toolbar variant="dense">
+                        <Typography
+                            variant="h6"
+                            component="div"
+                            sx={{ flexGrow: 1 }}
+                        >
+                            iGeneTech
+                        </Typography>
+                        <IconButton
+                            size="large"
+                            color="inherit"
+                            component={Link}
+                            to="/tables"
+                        >
+                            <StorageIcon />
+                        </IconButton>
+                        <IconButton
+                            size="large"
+                            color="inherit"
+                            component={Link}
+                            to="/samples"
+                        >
+                            <ContactsIcon />
+                        </IconButton>
+                        <IconButton
+                            size="large"
+                            color="inherit"
+                            component={Link}
+                            to="/template"
+                        >
+                            <AssignmentIcon />
+                        </IconButton>
+                    </Toolbar>
+                </AppBar>
+                <main className={classes.content}>
+                    <div className={classes.toolbar}></div>
+                    <Grid container spacing={0} justifyContent="center">
+                        <Grid item xs={12}>
+                            {children}
+                            <Changelog />
+                        </Grid>
                     </Grid>
-                </Grid>
-            </main>
-        </div>
+                </main>
+            </div>
+        </Box>
     );
 };
 
