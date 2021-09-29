@@ -24,8 +24,10 @@ import KeyboardArrowLeft from "@material-ui/icons/KeyboardArrowLeft";
 import KeyboardArrowRight from "@material-ui/icons/KeyboardArrowRight";
 import { useQuery, useMutation } from "@apollo/client";
 import XLSX from "xlsx";
+//import styled from "styled-components";
+import { styled, alpha } from "@mui/material/styles";
 
-import styled from "styled-components";
+import { InputBase } from "@mui/material";
 
 import UploadTableDialog from "../components/TableUpload";
 import tables from "../models/table";
@@ -40,6 +42,7 @@ import NoteAddIcon from "@mui/icons-material/NoteAdd";
 import LastPageIcon from "@mui/icons-material/LastPage";
 import FirstPageIcon from "@mui/icons-material/FirstPage";
 import SelectAllIcon from "@mui/icons-material/SelectAll";
+import SearchIcon from "@mui/icons-material/Search";
 
 const exportFile = (data) => {
     const ws = XLSX.utils.aoa_to_sheet(data.data);
@@ -48,10 +51,6 @@ const exportFile = (data) => {
     XLSX.writeFile(wb, "template.xlsx");
 };
 
-const HiddenArea = styled.div`
-    display: none;
-`;
-
 const DataInput = ({ handleFile, selectFile }) => {
     const handleChange = (e) => {
         const files = e.target.files;
@@ -59,7 +58,7 @@ const DataInput = ({ handleFile, selectFile }) => {
         e.currentTarget.value = ""; // enable same file on change
     };
     return (
-        <HiddenArea>
+        <div style={{ display: "none" }}>
             <form className="form-inline">
                 <div className="form-group">
                     <label htmlFor="file">
@@ -76,7 +75,7 @@ const DataInput = ({ handleFile, selectFile }) => {
                     />
                 </div>
             </form>
-        </HiddenArea>
+        </div>
     );
 };
 
@@ -132,6 +131,48 @@ const useToolbarStyles = makeStyles((theme) => ({
     },
 }));
 
+const Search = styled("div")(({ theme }) => ({
+    position: "relative",
+    borderRadius: theme.shape.borderRadius,
+    backgroundColor: alpha(theme.palette.common.white, 0.15),
+    "&:hover": {
+        backgroundColor: alpha(theme.palette.common.white, 0.25),
+    },
+    marginLeft: 0,
+    width: "100%",
+    [theme.breakpoints.up("sm")]: {
+        marginLeft: theme.spacing(1),
+        width: "auto",
+    },
+}));
+
+const SearchIconWrapper = styled("div")(({ theme }) => ({
+    padding: theme.spacing(0, 2),
+    margin: theme.spacing(0, 0, 0, -5),
+    height: "100%",
+    position: "absolute",
+    pointerEvents: "none",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+}));
+
+const StyledInputBase = styled(InputBase)(({ theme }) => ({
+    color: "inherit",
+    "& .MuiInputBase-input": {
+        padding: theme.spacing(1, 1, 1, 0),
+        // vertical padding + font size from searchIcon
+        paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+        transition: theme.transitions.create("width"),
+        width: "100%",
+        [theme.breakpoints.up("sm")]: {
+            width: "12ch",
+            //"&:focus": {
+            //width: "20ch",
+            //},
+        },
+    },
+}));
 const TableToolbar = ({
     columns,
     rows,
@@ -142,6 +183,7 @@ const TableToolbar = ({
     queryVariables,
     defaultValues,
     onSelectAllClick,
+    setFilter,
 }) => {
     const classes = useToolbarStyles();
     if (selectedId.length > 0) {
@@ -280,6 +322,28 @@ const TableToolbar = ({
         setOpenDataFormDialog(true);
     };
 
+    const handleSearch = (event) => {
+        setSelected([]);
+        let value = event.target.value;
+        if (value) {
+            setFilter(() => (row) => {
+                let matched = false;
+                tables[table].cellFormatters.map((formatter) => {
+                    if (formatter(row)) {
+                        if (formatter(row).includes(value)) {
+                            matched = true;
+                        }
+                    }
+                });
+                return matched;
+            });
+        } else {
+            setFilter(() => (row) => {
+                return true;
+            });
+        }
+    };
+
     return (
         <Toolbar disableGutters={true} variant="dense">
             <Grid justifyContent="space-between" container>
@@ -332,21 +396,30 @@ const TableToolbar = ({
                     <DataInput handleFile={handleFile} selectFile={ref} />
                 </Grid>
                 <Grid item>
-                    {selectedId.length > 0 ? (
-                        <Typography
-                            variant="caption"
-                            id="tableTitle"
-                            component="div"
-                        >
-                            {selectedId.length} selected
-                        </Typography>
-                    ) : (
-                        <Typography
-                            variant="caption"
-                            id="tableTitle"
-                            component="div"
-                        ></Typography>
-                    )}
+                    <Search>
+                        <SearchIconWrapper>
+                            {selectedId.length > 0 ? (
+                                <Typography
+                                    variant="caption"
+                                    id="tableTitle"
+                                    component="div"
+                                >
+                                    {selectedId.length} selected
+                                </Typography>
+                            ) : (
+                                <Typography
+                                    variant="caption"
+                                    id="tableTitle"
+                                    component="div"
+                                ></Typography>
+                            )}
+                        </SearchIconWrapper>
+                        <StyledInputBase
+                            onChange={(event) => handleSearch(event)}
+                            placeholder="search..."
+                            fontSize="small"
+                        />
+                    </Search>
                 </Grid>
             </Grid>
             <UploadTableDialog
@@ -510,6 +583,9 @@ const InnerTable = ({
     const [selected, setSelected] = React.useState([]);
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
+    const [filter, setFilter] = React.useState(() => (row) => {
+        return true;
+    });
 
     const handleChangePage = (event, newPage) => {
         console.log("page", newPage);
@@ -576,7 +652,7 @@ const InnerTable = ({
         console.log(error);
         return <p>error: {String(error)}</p>;
     }
-    const rows = data[table.query.key];
+    const rows = data[table.query.key].filter(filter);
     const columns = table.columns;
     const cellFormatters = table.cellFormatters;
 
@@ -598,6 +674,7 @@ const InnerTable = ({
             <TableToolbar
                 columns={columns}
                 rows={rows}
+                table={table}
                 selectedId={selected}
                 setSelected={setSelected}
                 editRef={editRef}
@@ -605,6 +682,7 @@ const InnerTable = ({
                 queryVariables={queryVariables}
                 defaultValues={defaultValues}
                 onSelectAllClick={handleSelectAllClick}
+                setFilter={setFilter}
             />
             <TableContainer className={classes.table}>
                 <Table aria-labelledby="tableTitle" size="small">
