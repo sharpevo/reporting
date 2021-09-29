@@ -3581,6 +3581,11 @@ tables["report_sample"] = {
     },
     columns: [
         {
+            label: "样本编号",
+            key: "sample_number",
+            exportable: true,
+        },
+        {
             label: "姓名",
             key: "name",
             exportable: true,
@@ -3595,81 +3600,76 @@ tables["report_sample"] = {
             key: "age",
             exportable: true,
         },
-        {
-            label: "样本编号",
-            key: "sample_number",
-            exportable: true,
-        },
-        {
-            label: "样本类型",
-            key: "sample_type",
-            exportable: true,
-        },
-        {
-            label: "检测项目",
-            key: "project",
-            exportable: true,
-        },
-        {
-            label: "采集日期",
-            key: "date_sampled",
-            exportable: true,
-        },
-        {
-            label: "接收日期",
-            key: "date_received",
-            exportable: true,
-        },
-        {
-            label: "送检单位",
-            key: "unit_submitted",
-            exportable: true,
-        },
-        {
-            label: "检测方法",
-            key: "inspection_method",
-            exportable: true,
-        },
-        {
-            label: "检测平台",
-            key: "inspection_platform",
-            exportable: true,
-        },
-        {
-            label: "参考基因组",
-            key: "reference_genome",
-            exportable: true,
-        },
-        {
-            label: "临床诊断结果",
-            key: "clinical_diagnosis",
-            exportable: true,
-        },
+        //{
+        //label: "样本类型",
+        //key: "sample_type",
+        //exportable: true,
+        //},
+        //{
+        //label: "检测项目",
+        //key: "project",
+        //exportable: true,
+        //},
+        //{
+        //label: "采集日期",
+        //key: "date_sampled",
+        //exportable: true,
+        //},
+        //{
+        //label: "接收日期",
+        //key: "date_received",
+        //exportable: true,
+        //},
+        //{
+        //label: "送检单位",
+        //key: "unit_submitted",
+        //exportable: true,
+        //},
+        //{
+        //label: "检测方法",
+        //key: "inspection_method",
+        //exportable: true,
+        //},
+        //{
+        //label: "检测平台",
+        //key: "inspection_platform",
+        //exportable: true,
+        //},
+        //{
+        //label: "参考基因组",
+        //key: "reference_genome",
+        //exportable: true,
+        //},
+        //{
+        //label: "临床诊断结果",
+        //key: "clinical_diagnosis",
+        //exportable: true,
+        //},
         {
             label: "报告显示癌种",
             key: "cancer_from_report",
             exportable: true,
         },
-        {
-            label: "数据匹配癌种",
-            key: "cancer_from_data",
-            exportable: true,
-        },
-        {
-            label: "家族史",
-            key: "history_family",
-            exportable: true,
-        },
-        {
-            label: "用药史",
-            key: "history_drug",
-            exportable: true,
-        },
-        {
-            label: "报告日期",
-            key: "date_reported",
-            exportable: true,
-        },
+        //{
+        //label: "数据匹配癌种",
+        //key: "cancer_from_data",
+        //exportable: true,
+        //},
+        //{
+        //label: "家族史",
+        //key: "history_family",
+        //exportable: true,
+        //},
+        //{
+        //label: "用药史",
+        //key: "history_drug",
+        //exportable: true,
+        //},
+        //{
+        //label: "报告日期",
+        //key: "date_reported",
+        //exportable: true,
+        //},
         {
             label: "主样本文件",
             key: "file_main",
@@ -3681,25 +3681,30 @@ tables["report_sample"] = {
             exportable: false,
         },
         {
+            label: "创建人",
+            key: "creator",
+            exportable: false,
+        },
+        {
             label: "创建日期",
             key: "createdAt",
             exportable: false,
         },
-        {
-            label: "修改日期",
-            key: "updatedAt",
-            exportable: false,
-        },
-        {
-            label: "审核状态",
-            key: "status",
-            exportable: false,
-        },
-        {
-            label: "审核人",
-            key: "approver",
-            exportable: false,
-        },
+        //{
+        //label: "修改日期",
+        //key: "updatedAt",
+        //exportable: false,
+        //},
+        //{
+        //label: "审核状态",
+        //key: "status",
+        //exportable: false,
+        //},
+        //{
+        //label: "审核人",
+        //key: "approver",
+        //exportable: false,
+        //},
     ],
     collapse: [
         {
@@ -3709,6 +3714,9 @@ tables["report_sample"] = {
     ],
     cellFormatters: [
         (cell) => {
+            return cell.sample_number;
+        },
+        (cell) => {
             return cell.name;
         },
         (cell) => {
@@ -3717,53 +3725,50 @@ tables["report_sample"] = {
         (cell) => {
             return cell.age;
         },
-        (cell) => {
-            return cell.sample_number;
-        },
-        (cell) => {
-            return cell.sample_type ? cell.sample_type.label : "-";
-        },
-        (cell) => {
-            return cell.inspection_project
-                ? cell.inspection_project.label
-                : "-";
-        },
-        (cell) => {
-            return formatDate(cell.date_sampled);
-        },
-        (cell) => {
-            return formatDate(cell.date_received);
-        },
-        (cell) => {
-            return cell.unit_submitted;
-        },
-        (cell) => {
-            return cell.inspection_method;
-        },
-        (cell) => {
-            return cell.inspection_platform;
-        },
-        (cell) => {
-            return cell.reference_genome;
-        },
-        (cell) => {
-            return cell.clinical_diagnosis;
-        },
+        //(cell) => {
+        //return cell.sample_type ? cell.sample_type.label : "-";
+        //},
+        //(cell) => {
+        //return cell.inspection_project
+        //? cell.inspection_project.label
+        //: "-";
+        //},
+        //(cell) => {
+        //return formatDate(cell.date_sampled);
+        //},
+        //(cell) => {
+        //return formatDate(cell.date_received);
+        //},
+        //(cell) => {
+        //return cell.unit_submitted;
+        //},
+        //(cell) => {
+        //return cell.inspection_method;
+        //},
+        //(cell) => {
+        //return cell.inspection_platform;
+        //},
+        //(cell) => {
+        //return cell.reference_genome;
+        //},
+        //(cell) => {
+        //return cell.clinical_diagnosis;
+        //},
         (cell) => {
             return cell.cancer_from_report;
         },
-        (cell) => {
-            return cell.cancer_from_data ? cell.cancer_from_data.label : "-";
-        },
-        (cell) => {
-            return cell.history_family;
-        },
-        (cell) => {
-            return cell.history_drug;
-        },
-        (cell) => {
-            return formatDate(cell.date_reported);
-        },
+        //(cell) => {
+        //return cell.cancer_from_data ? cell.cancer_from_data.label : "-";
+        //},
+        //(cell) => {
+        //return cell.history_family;
+        //},
+        //(cell) => {
+        //return cell.history_drug;
+        //},
+        //(cell) => {
+        //return formatDate(cell.date_reported);
+        //},
         (cell) => {
             return cell.file_main ? cell.file_main.label : "未上传";
         },
@@ -3776,17 +3781,17 @@ tables["report_sample"] = {
         (cell) => {
             return formatDate(cell.createdAt);
         },
-        (cell) => {
-            return cell.createdAt == cell.updatedAt
-                ? "-"
-                : formatDate(cell.updatedAt);
-        },
-        (cell) => {
-            return cell.status ? "已审核" : "未审核";
-        },
-        (cell) => {
-            return cell.aprrover ? cell.approver.name : "-";
-        },
+        //(cell) => {
+        //return cell.createdAt == cell.updatedAt
+        //? "-"
+        //: formatDate(cell.updatedAt);
+        //},
+        //(cell) => {
+        //return cell.status ? "已审核" : "未审核";
+        //},
+        //(cell) => {
+        //return cell.aprrover ? cell.approver.name : "-";
+        //},
     ],
     normalize: (obj) => {
         obj["name"] = String(obj["name"]);
