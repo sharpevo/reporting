@@ -19,6 +19,7 @@ import {
     Menu,
     MenuItem,
 } from "@mui/material";
+import reportsample from "../img/reportsample.png";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
@@ -463,7 +464,7 @@ const PageTemplate = () => {
                     <Grid item key={index}>
                         <ImageListItem sx={{ width: 200 }}>
                             <img
-                                src="http://192.168.1.94:8090/upload/picture/3521b92716bc6943231610135714d5c9.jpg"
+                                src={reportsample}
                                 alt={template.title}
                                 loading="lazy"
                                 onClick={() => handleModuleEdit(template)}
@@ -474,9 +475,6 @@ const PageTemplate = () => {
                                 actionIcon={
                                     <IconButton
                                         size="small"
-                                        sx={{
-                                            color: "rgba(255, 255, 255, 0.54)",
-                                        }}
                                         onClick={() =>
                                             handleDeleteClick(template)
                                         }
