@@ -92,52 +92,52 @@ const formComponents = [
 
 const defaultModules = [
     {
-        name: "1. 受检者基本信息",
+        name: "受检者基本信息",
         key: "sample",
         enabled: true,
     },
     {
-        name: "2. 检测结果总览",
+        name: "检测结果总览",
         key: "result",
         enabled: true,
     },
     {
-        name: "3. NCCN指南建议检测基因列表",
+        name: "NCCN指南建议检测基因列表",
         key: "nccn",
         enabled: true,
     },
     {
-        name: "4. 用药及预后综合提示",
+        name: "用药及预后综合提示",
         key: "drug",
         enabled: true,
         modules: [
             {
-                name: "4.1 靶向用药检测结果",
+                name: "靶向用药检测结果",
                 key: "target_med",
                 enabled: true,
             },
             {
-                name: "4.2 免疫治疗相关检测结果",
+                name: "免疫治疗相关检测结果",
                 key: "immu",
                 enabled: true,
                 modules: [
                     {
-                        name: "4.2.1 肿瘤突变负荷（TMB)检测结果",
+                        name: "肿瘤突变负荷（TMB)检测结果",
                         key: "tmb_result",
                         enabled: true,
                     },
                     {
-                        name: "4.2.2 微卫星不稳定性（MSI)检测结果",
+                        name: "微卫星不稳定性（MSI)检测结果",
                         key: "msi_result",
                         enabled: true,
                     },
                     {
-                        name: "4.2.3 免疫疗效相关基因检测结果",
+                        name: "免疫疗效相关基因检测结果",
                         key: "immu_gene_result",
                         enabled: true,
                     },
                     {
-                        name: "4.2.4 HLA分型检测结果",
+                        name: "HLA分型检测结果",
                         key: "hla_result",
                         enabled: true,
                     },
@@ -146,64 +146,64 @@ const defaultModules = [
         ],
     },
     {
-        name: "5 化疗药物疗效相关位点检测结果",
+        name: "化疗药物疗效相关位点检测结果",
         key: "chemo",
         enabled: true,
     },
     {
-        name: "6 遗传性肿瘤相关致病基因检测结果",
+        name: "遗传性肿瘤相关致病基因检测结果",
         key: "genetic_result",
         enabled: true,
     },
     {
-        name: "7 靶向用药解析",
+        name: "靶向用药解析",
         key: "target_drug",
         enabled: true,
         modules: [
             {
-                name: "7.1 靶药相关基因变异结果汇总",
+                name: "靶药相关基因变异结果汇总",
                 key: "target_drug_gene",
                 enabled: true,
             },
             {
-                name: "7.2 靶向药物临床用药解析",
+                name: "靶向药物临床用药解析",
                 key: "target_drug_clinical",
                 enabled: true,
             },
         ],
     },
     {
-        name: "8 免疫治疗相关指标检测结果解析",
+        name: "免疫治疗相关指标检测结果解析",
         key: "immu_index",
         enabled: true,
         modules: [
             {
-                name: "8.1.TMB 检测结果解析",
+                name: "TMB 检测结果解析",
                 key: "tmb_anna",
                 enabled: true,
             },
             {
-                name: "8.2 MSI 检测结果解析",
+                name: "MSI 检测结果解析",
                 key: "msi_anna",
                 enabled: true,
             },
             {
-                name: "8.3 免疫药物疗效预测相关基因检测结果解析",
+                name: "免疫药物疗效预测相关基因检测结果解析",
                 key: "immu_gene_anna",
                 enabled: true,
                 modules: [
                     {
-                        name: "8.3.1 免疫疗效正相关基因",
+                        name: "免疫疗效正相关基因",
                         key: "immu_gene_pos",
                         enabled: true,
                     },
                     {
-                        name: "8.3.2 免疫疗效负相关基因",
+                        name: "免疫疗效负相关基因",
                         key: "immu_gene_neg",
                         enabled: true,
                     },
                     {
-                        name: "8.3.3 免疫检查点抑制剂治疗预后影响因素 HLA-I",
+                        name: "免疫检查点抑制剂治疗预后影响因素 HLA-I",
                         key: "immu_inh",
                         enabled: true,
                     },
@@ -212,22 +212,22 @@ const defaultModules = [
         ],
     },
     {
-        name: "9 化疗药物疗效相关位点检测解析",
+        name: "化疗药物疗效相关位点检测解析",
         key: "chemo_drug",
         enabled: true,
     },
     {
-        name: "10 PD-1/PD-L1药物",
+        name: "PD-1/PD-L1药物",
         key: "pd_drug",
         enabled: true,
     },
     {
-        name: "11 遗传变异解析",
+        name: "遗传变异解析",
         key: "genetic_anna",
         enabled: true,
     },
     {
-        name: "12 变异结果汇总",
+        name: "变异结果汇总",
         key: "var",
         enabled: true,
     },
@@ -242,17 +242,17 @@ const defaultModules = [
         enabled: true,
         modules: [
             {
-                name: "1 基因注释",
+                name: "基因注释",
                 key: "gene_anno",
                 enabled: true,
             },
             {
-                name: "2 肿瘤基因检测列表",
+                name: "肿瘤基因检测列表",
                 key: "gene_list",
                 enabled: true,
             },
             {
-                name: "3 样本质控信息",
+                name: "样本质控信息",
                 key: "qc",
                 enabled: true,
             },
