@@ -68,7 +68,10 @@ const ModuleList = ({ modules, pl, rootModules, setModules }) => {
                                     size="small"
                                 />
                             </ListItemIcon>
-                            <ListItemText primary={module.name} />
+                            <ListItemText
+                                primary={module.name}
+                                sx={{ ml: -3 }}
+                            />
                         </ListItemButton>
                     </ListItem>
                     {module.modules && (
