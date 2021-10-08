@@ -231,4 +231,11 @@ module.exports = {
     reporttemplate: async (parent, { id }, { models }) => {
         return await models.ReportTemplate.findById(id);
     },
+
+    reporttasks: async (parent, args, { models }) => {
+        return await models.ReportTask.find({});
+    },
+    reporttask: async (parent, { id }, { models }) => {
+        return await models.ReportTask.findById(id);
+    },
 };

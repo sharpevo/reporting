@@ -4072,4 +4072,118 @@ tables["report_sample_qc"] = {
         },
     ],
 };
+
+tables["report_task"] = {
+    query: {
+        gql: query.REPORT_TASKS_GET,
+        key: "reporttasks",
+    },
+    mutation: {
+        new: mutation.REPORT_TASK_NEW,
+        delete: mutation.REPORT_TASKS_DELETE,
+        update: mutation.REPORT_TASK_UPDATE,
+    },
+    columns: [
+        {
+            label: "任务名称",
+            key: "name",
+            exportable: true,
+        },
+        {
+            label: "样本",
+            key: "sample",
+            exportable: true,
+        },
+        {
+            label: "模版",
+            key: "template",
+            exportable: true,
+        },
+        {
+            label: "创建时间",
+            key: "createdAT",
+            exportable: false,
+        },
+        {
+            label: "开始时间",
+            key: "date_started",
+            exportable: false,
+        },
+        {
+            label: "完成时间",
+            key: "date_started",
+            exportable: false,
+        },
+        {
+            label: "状态",
+            key: "task_status",
+            exportable: true,
+        },
+        //{
+        //label: "报告状态",
+        //key: "task_report",
+        //exportable: false,
+        //},
+    ],
+    cellFormatters: [
+        (cell) => {
+            return cell.name;
+        },
+        (cell) => {
+            return cell.sample ? cell.sample.label : "-";
+        },
+        (cell) => {
+            return cell.template ? cell.template.label : "-";
+        },
+        (cell) => {
+            return formatDate(cell.createdAt);
+        },
+        (cell) => {
+            return formatDate(cell.date_started);
+        },
+        (cell) => {
+            return formatDate(cell.date_completed);
+        },
+        (cell) => {
+            let task_status = "";
+            switch (cell.task_status) {
+                case 0:
+                    return "未开始";
+                case 1:
+                    return "进行中";
+                case 2:
+                    return "已完成";
+                default:
+                    return "异常";
+            }
+        },
+    ],
+    normalize: (obj) => {
+        obj["name"] = String(obj["name"]);
+        obj["sample"] = String(obj["sample"]);
+        obj["template"] = String(obj["template"]);
+        return obj;
+    },
+    formComponents: [
+        {
+            label: "任务名称",
+            key: "name",
+            inputType: "text",
+        },
+        {
+            label: "样本",
+            key: "sample",
+            inputType: "singleselect",
+            query: query.REPORT_SAMPLES_GET,
+            queryKey: "reportsamples",
+        },
+        {
+            label: "模版",
+            key: "template",
+            inputType: "singleselect",
+            query: query.REPORT_TEMPLATES_GET,
+            queryKey: "reporttemplates",
+        },
+    ],
+};
 export default tables;

@@ -21,6 +21,7 @@ const { GraphQLUpload } = require("graphql-upload");
 const ReportSample = require("./report_sample");
 const ReportSampleQc = require("./report_sample_qc");
 const ReportTemplate = require("./report_template");
+const ReportTask = require("./report_task");
 module.exports = {
     DateTime: DateTimeResolver,
     Upload: GraphQLUpload,
@@ -45,4 +46,5 @@ module.exports = {
     ReportSample,
     ReportSampleQc,
     ReportTemplate,
+    ReportTask,
 };

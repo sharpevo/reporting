@@ -846,6 +846,35 @@ const REPORT_TEMPLATES_GET = gql`
     }
 `;
 
+const REPORT_TASKS_GET = gql`
+    query reporttasks {
+        reporttasks {
+            id
+            sample {
+                id
+                label
+            }
+            template {
+                id
+                label
+            }
+            task_status
+            date_started
+            date_completed
+            creator {
+                id
+                name
+            }
+            updator {
+                id
+                name
+            }
+            createdAt
+            updatedAt
+        }
+    }
+`;
+
 export {
     GET_TABLES,
     GENE_CLASSES_GET,
@@ -880,4 +909,5 @@ export {
     REPORT_SAMPLE_QCS_GET,
     REPORT_SAMPLE_QCS_BY_SAMPLE_GET,
     REPORT_TEMPLATES_GET,
+    REPORT_TASKS_GET,
 };

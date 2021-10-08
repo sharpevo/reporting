@@ -1540,6 +1540,56 @@ const REPORT_TEMPLATES_DELETE = gql`
     }
 `;
 
+const REPORT_TASK_NEW = gql`
+    mutation newReportTask(
+        $name: String
+        $sample: String!
+        $template: String!
+        $date_started: String
+        $date_completed: String
+    ) {
+        newReportTask(
+            name: $name
+            sample: $sample
+            template: $template
+            date_started: $date_started
+            date_completed: $date_completed
+        ) {
+            id
+            label
+        }
+    }
+`;
+
+const REPORT_TASK_UPDATE = gql`
+    mutation updateReportTask(
+        $id: String!
+        $name: String
+        $sample: String!
+        $template: String!
+        $date_started: String
+        $date_completed: String
+    ) {
+        updateReportTask(
+            id: $id
+            name: $name
+            sample: $sample
+            template: $template
+            date_started: $date_started
+            date_completed: $date_completed
+        ) {
+            id
+            label
+        }
+    }
+`;
+
+const REPORT_TASKS_DELETE = gql`
+    mutation deleteReportTasks($ids: [ID!]!) {
+        deleteReportTasks(ids: $ids)
+    }
+`;
+
 export {
     NEW_TABLE,
     DELETE_TABLE,
@@ -1635,4 +1685,7 @@ export {
     REPORT_TEMPLATE_UPDATE,
     REPORT_TEMPLATE_MODULE_UPDATE,
     REPORT_TEMPLATES_DELETE,
+    REPORT_TASK_NEW,
+    REPORT_TASK_UPDATE,
+    REPORT_TASKS_DELETE,
 };
