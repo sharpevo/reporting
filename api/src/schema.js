@@ -484,6 +484,24 @@ module.exports = gql`
         label: String
     }
 
+    type ReportTask {
+        id: ID!
+        sample: ReportSample
+        template: ReportTemplate
+        name: String
+        date_started: DateTime
+        date_completed: DateTime
+        task_status: Int
+        error_message: String
+        creator: User
+        updator: User
+        approver: User
+        status: Int
+        createdAt: DateTime
+        updatedAt: DateTime
+        label: String
+    }
+
     type Query {
         tables: [Table!]!
         table(id: ID!): Table!
@@ -584,6 +602,9 @@ module.exports = gql`
 
         reporttemplates: [ReportTemplate]!
         reporttemplate(id: ID!): ReportTemplate
+
+        reporttasks: [ReportTask]!
+        reporttask(id: ID!): ReportTask
     }
 
     type Mutation {
@@ -1124,5 +1145,22 @@ module.exports = gql`
         ): ReportTemplate
         updateReportTemplateModule(id: String!, module: String!): ReportTemplate
         deleteReportTemplates(ids: [ID!]!): Boolean
+
+        newReportTask(
+            name: String
+            sample: String!
+            template: String!
+            date_started: String
+            date_completed: String
+        ): ReportTask
+        updateReportTask(
+            id: String!
+            name: String
+            sample: String!
+            template: String!
+            date_started: String
+            date_completed: String
+        ): ReportTask
+        deleteReportTasks(ids: [ID!]!): Boolean
     }
 `;

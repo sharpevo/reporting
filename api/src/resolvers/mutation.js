@@ -2650,4 +2650,106 @@ module.exports = {
             throw new Error(err);
         }
     },
+
+    newReportTask: async (
+        parent,
+        { sample, template, name, date_started, date_completed },
+        { models }
+    ) => {
+        let obj = {
+            name: name,
+            date_started: date_started,
+            date_completed: date_completed,
+        };
+        if (sample) {
+            let sampleSplited = sample.split("(");
+            if (sampleSplited.length != 2) {
+                throw new Error(`invalid sample '${sample}'`);
+            }
+            let sampleNameSplited = sampleSplited[1].split(")");
+            if (sampleNameSplited.length != 2) {
+                throw new Error(`invalid sample '${sample}'`);
+            }
+            const sampled = await models.ReportSample.findOne({
+                sample_number: sampleSplited[0],
+                name: sampleNameSplited[0],
+            });
+            if (!sampled) {
+                throw new Error(`sample '${sample}' does not exist`);
+            }
+            obj.sample = sampled._id;
+        }
+        if (template) {
+            const templated = await models.ReportTemplate.findOne({
+                name: template,
+            });
+            if (!templated) {
+                throw new Error(`template '${template}' does not exist`);
+            }
+            obj.template = templated._id;
+        }
+        try {
+            return await models.ReportTask.create(obj);
+        } catch (err) {
+            console.log(err);
+            throw new Error(err);
+        }
+    },
+    updateReportTask: async (
+        parent,
+        { id, sample, template, name, date_started, date_completed },
+        { models }
+    ) => {
+        let obj = new models.ReportTask({
+            _id: id,
+            name: name,
+            date_started: date_started,
+            date_completed: date_completed,
+        });
+        if (sample) {
+            let sampleSplited = sample.split("(");
+            if (sampleSplited.length != 2) {
+                throw new Error(`invalid sample '${sample}'`);
+            }
+            let sampleNameSplited = sampleSplited[1].split(")");
+            if (sampleNameSplited.length != 2) {
+                throw new Error(`invalid sample '${sample}'`);
+            }
+            const sampled = await models.ReportSample.findOne({
+                sample_number: sampleSplited[0],
+                name: sampleNameSplited[0],
+            });
+            if (!sampled) {
+                throw new Error(`sample '${sample}' does not exist`);
+            }
+            obj.sample = sampled._id;
+        }
+        if (template) {
+            const templated = await models.ReportTemplate.findOne({
+                name: template,
+            });
+            if (!templated) {
+                throw new Error(`template '${template}' does not exist`);
+            }
+            obj.template = templated._id;
+        }
+        obj.isNew = false;
+        try {
+            return await obj.save();
+        } catch (err) {
+            console.log(err);
+            throw new Error(err);
+        }
+    },
+    deleteReportTasks: async (parent, { ids }, { models }) => {
+        try {
+            const result = await models.ReportTask.deleteMany({
+                _id: { $in: ids },
+            });
+            return true;
+        } catch (err) {
+            console.log(err);
+            throw new Error(err);
+        }
+    },
 };
