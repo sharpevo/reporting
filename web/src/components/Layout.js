@@ -6,6 +6,7 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import ContactsIcon from "@mui/icons-material/Contacts";
 import StorageIcon from "@mui/icons-material/Storage";
 import DocumentScannerIcon from "@mui/icons-material/DocumentScanner";
+import AssignmentTurnedInIcon from "@mui/icons-material/AssignmentTurnedIn";
 import {
     AppBar,
     Toolbar,
@@ -84,6 +85,14 @@ const Layout = ({ children }) => {
                             to="/template"
                         >
                             <AssignmentIcon />
+                        </IconButton>
+                        <IconButton
+                            size="large"
+                            color="inherit"
+                            component={Link}
+                            to="/tasks"
+                        >
+                            <AssignmentTurnedInIcon />
                         </IconButton>
                     </Toolbar>
                 </AppBar>

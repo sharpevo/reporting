@@ -7,6 +7,7 @@ import PageTable from "./table";
 import PageReport from "./report";
 import PageSample from "./sample";
 import PageTemplate from "./template";
+import PageTask from "./task";
 
 const Pages = () => {
     return (
@@ -17,6 +18,7 @@ const Pages = () => {
                 <Route path="/samples" component={PageSample} />
                 <Route path="/reports" component={PageReport} />
                 <Route path="/template" component={PageTemplate} />
+                <Route path="/tasks" component={PageTask} />
             </Layout>
         </Router>
     );
