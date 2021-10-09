@@ -470,7 +470,10 @@ const DataFormDialog = ({
         console.log(defaultValues);
         if (defaultValues) {
             defaultValues.map((defaultValue) => {
-                item[defaultValue.key] = defaultValue.value;
+                setItem({
+                    ...item,
+                    [defaultValue.key]: defaultValue.value,
+                });
             });
         }
     }, [selectedItem]);
