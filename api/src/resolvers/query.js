@@ -19,8 +19,14 @@ module.exports = {
         return await models.GeneClass.findById(id);
     },
 
-    genes: async (parent, args, { models }) => {
-        return await models.Gene.find({});
+    genes: async (parent, { label }, { models }) => {
+        if (label) {
+            return await models.Gene.find({
+                name: { $regex: ".*" + label + ".*" },
+            });
+        } else {
+            return await models.Gene.find({});
+        }
     },
     gene: async (parent, { id }, { models }) => {
         return await models.Gene.findById(id);
@@ -208,8 +214,17 @@ module.exports = {
         return await models.InspectionProject.findById(id);
     },
 
-    reportsamples: async (parent, args, { models }) => {
-        return await models.ReportSample.find({});
+    reportsamples: async (parent, { label }, { models }) => {
+        if (label) {
+            return await models.ReportSample.find({
+                $or: [
+                    { name: { $regex: ".*" + label + ".*" } },
+                    { sample_number: { $regex: ".*" + label + ".*" } },
+                ],
+            });
+        } else {
+            return await models.ReportSample.find({});
+        }
     },
     reportsample: async (parent, { id }, { models }) => {
         return await models.ReportSample.findById(id);

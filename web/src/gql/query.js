@@ -29,8 +29,8 @@ const GENE_CLASSES_GET = gql`
 `;
 
 const GENES_GET = gql`
-    query genes {
-        genes {
+    query genes($label: String) {
+        genes(label: $label) {
             id
             name
             geneclass {
@@ -726,8 +726,8 @@ const INSPECTION_PROJECTS_GET = gql`
 `;
 
 const REPORT_SAMPLES_GET = gql`
-    query reportsamples {
-        reportsamples {
+    query reportsamples($label: String) {
+        reportsamples(label: $label) {
             id
             label
             name

@@ -4174,6 +4174,7 @@ tables["report_task"] = {
             label: "样本",
             key: "sample",
             inputType: "singleselect",
+            lazy: true,
             query: query.REPORT_SAMPLES_GET,
             queryKey: "reportsamples",
         },
