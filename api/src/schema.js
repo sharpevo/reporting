@@ -512,7 +512,7 @@ module.exports = gql`
         geneclasses: [GeneClass!]!
         geneclass(id: ID!): GeneClass!
 
-        genes: [Gene]!
+        genes(label: String): [Gene]!
         gene(id: ID!): Gene!
 
         geneannots: [GeneAnnot]!
@@ -593,7 +593,7 @@ module.exports = gql`
         reportsampletypes: [ReportSampleType]!
         reportsampletype(id: ID!): ReportSampleType!
 
-        reportsamples: [ReportSample]!
+        reportsamples(label: String): [ReportSample]!
         reportsample(id: ID!): ReportSample!
 
         reportsampleqcs: [ReportSampleQc]!
