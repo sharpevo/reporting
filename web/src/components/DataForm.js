@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 //import { withApollo } from '@apollo/client/react/hoc';
 import { makeStyles } from "@material-ui/core/styles";
-import { useQuery, useMutation } from "@apollo/client";
+import { useQuery, useLazyQuery, useMutation, useMemo } from "@apollo/client";
 import { format, parseISO } from "date-fns";
 import {
     Button,
@@ -53,10 +53,27 @@ const FormComponent = ({
     setItem,
     setErrorMessage,
 }) => {
+    const [entries, setEntries] = useState([]);
+    const [lazyValue, setLazyValue] = useState();
+    useEffect(() => {
+        if (formComponent.lazy) {
+            if (lazyValue) {
+                console.log("loading");
+                getLazyData({
+                    variables: {
+                        label: lazyValue,
+                    },
+                });
+            }
+        } else {
+            getLazyData();
+        }
+    }, [lazyValue]);
     const classes = componentStyles();
     if (!formComponent) {
         return <span>N/A</span>;
     }
+
     const handleReportFileChange = (event) => {
         upload({ variables: { file: event.target.files[0] } }).then((v) => {
             if (v.errors) {
@@ -93,16 +110,20 @@ const FormComponent = ({
         },
     });
 
-    let entries = [];
+    let getLazyData = () => {};
     if (formComponent.query) {
-        const { loading, error, data, refetch } = useQuery(formComponent.query);
-        if (loading) {
-            return <span>loading...</span>;
-        }
-        if (error) console.log(error);
-        //console.log(formComponent, data)
-        const entryObjs = data[formComponent.queryKey];
-        entries = entryObjs.map((obj) => obj.label);
+        const [getData, { loading, data, error }] = useLazyQuery(
+            formComponent.query,
+            {
+                fetchPolicy: "network-only",
+                onCompleted: (data) => {
+                    console.log(data);
+                    const entryObjs = data[formComponent.queryKey];
+                    setEntries(entryObjs.map((obj) => obj.label));
+                },
+            }
+        );
+        getLazyData = getData;
     }
 
     switch (formComponent.inputType) {
@@ -264,12 +285,23 @@ const FormComponent = ({
         case "singleselect":
             //value={tmpValue[formComponent.key]}
             //getOptionLabel={(option) => option}
+            let lazyParams = {};
+            if (formComponent.lazy) {
+                lazyParams = {
+                    filterOptions: (x) => x,
+                    onInputChange: (event, inputValue) => {
+                        setLazyValue(inputValue);
+                    },
+                    noOptionsText: "search as type",
+                };
+            }
             return (
                 <div className={classes.componentMargin}>
                     <Stack spacing={3} style={{ width: componentMinWidth }}>
                         <Autocomplete
                             sx={formComponent.hidden ? { display: "none" } : {}}
                             size="small"
+                            {...lazyParams}
                             options={entries}
                             name={formComponent.key}
                             value={item[formComponent.key] || ""}
@@ -290,10 +322,21 @@ const FormComponent = ({
         case "multiselect":
             //value={tmpValue[formComponent.key]}
             //getOptionLabel={(option) => option}
+            let lazyParamsMulti = {};
+            if (formComponent.lazy) {
+                lazyParamsMulti = {
+                    filterOptions: (x) => x,
+                    onInputChange: (event, inputValue) => {
+                        setLazyValue(inputValue);
+                    },
+                    noOptionsText: "search as type",
+                };
+            }
             return (
                 <div className={classes.componentMargin}>
                     <Stack spacing={3} style={{ width: componentMinWidth }}>
                         <Autocomplete
+                            {...lazyParamsMulti}
                             multiple
                             size="small"
                             options={entries}
