@@ -14,8 +14,14 @@ import {
     Box,
     IconButton,
     Grid,
+    Tabs,
+    Tab,
 } from "@mui/material";
 import AssignmentIcon from "@mui/icons-material/Assignment";
+import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
+import AssignmentReturnedIcon from "@mui/icons-material/AssignmentReturned";
+import ContentPasteIcon from "@mui/icons-material/ContentPaste";
+import NoteAltIcon from "@mui/icons-material/NoteAlt";
 import Changelog from "./changelog";
 
 const useStyles = makeStyles((theme) => ({
@@ -50,6 +56,11 @@ const useStyles = makeStyles((theme) => ({
 
 const Layout = ({ children }) => {
     const classes = useStyles();
+    const [tab, setTab] = React.useState(0);
+
+    const handleTabChange = (event, newTab) => {
+        setTab(newTab);
+    };
     return (
         <Box sx={{ flexGrow: 1 }}>
             <div className={classes.root}>
@@ -62,37 +73,38 @@ const Layout = ({ children }) => {
                         >
                             iGeneTech
                         </Typography>
+
+                        <Tabs
+                            textColor="inherit"
+                            value={tab}
+                            onChange={handleTabChange}
+                            centered
+                        >
+                            <Tab component={Link} to="/tables" label="TABLE" />
+                            <Tab
+                                component={Link}
+                                to="/samples"
+                                label="SAMPLE"
+                            />
+                            <Tab
+                                component={Link}
+                                to="/templates"
+                                label="TEMPLATE"
+                            />
+                            <Tab component={Link} to="/tasks" label="TASK" />
+                            <Tab
+                                component={Link}
+                                to="/reports"
+                                label="REPORT"
+                            />
+                        </Tabs>
                         <IconButton
                             size="large"
                             color="inherit"
                             component={Link}
                             to="/tables"
                         >
-                            <StorageIcon />
-                        </IconButton>
-                        <IconButton
-                            size="large"
-                            color="inherit"
-                            component={Link}
-                            to="/samples"
-                        >
-                            <ContactsIcon />
-                        </IconButton>
-                        <IconButton
-                            size="large"
-                            color="inherit"
-                            component={Link}
-                            to="/template"
-                        >
-                            <AssignmentIcon />
-                        </IconButton>
-                        <IconButton
-                            size="large"
-                            color="inherit"
-                            component={Link}
-                            to="/tasks"
-                        >
-                            <AssignmentTurnedInIcon />
+                            <AccountCircleIcon />
                         </IconButton>
                     </Toolbar>
                 </AppBar>

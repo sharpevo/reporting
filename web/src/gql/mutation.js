@@ -1590,6 +1590,33 @@ const REPORT_TASKS_DELETE = gql`
     }
 `;
 
+const REPORT_REPORT_NEW = gql`
+    mutation newReportReport($task: String!) {
+        newReportReport(task: $task) {
+            id
+            label
+        }
+    }
+`;
+
+const REPORT_REPORT_UPDATE = gql`
+    mutation updateReportReport($id: String!, $task: String!) {
+        updateReportReport(id: $id, task: $task) {
+            id
+            task {
+                id
+                label
+            }
+        }
+    }
+`;
+
+const REPORT_REPORTS_DELETE = gql`
+    mutation deleteReportReports($ids: [ID!]!) {
+        deleteReportReports(ids: $ids)
+    }
+`;
+
 export {
     NEW_TABLE,
     DELETE_TABLE,
@@ -1688,4 +1715,7 @@ export {
     REPORT_TASK_NEW,
     REPORT_TASK_UPDATE,
     REPORT_TASKS_DELETE,
+    REPORT_REPORT_NEW,
+    REPORT_REPORT_UPDATE,
+    REPORT_REPORTS_DELETE,
 };

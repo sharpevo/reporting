@@ -1,27 +1,20 @@
 const mongoose = require("mongoose");
 
-const reportTaskSchema = new mongoose.Schema(
+const reportReportSchema = new mongoose.Schema(
     {
-        sample: {
+        task: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: "ReportSample",
+            ref: "ReportTask",
             required: true,
         },
-        template: {
+        pdf_file: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: "ReportTemplate",
-            required: true,
+            ref: "ReportFile",
         },
-        name: {
-            type: String,
-        },
-        date_started: {
+        date_generated: {
             type: Date,
         },
-        date_completed: {
-            type: Date,
-        },
-        task_status: {
+        report_status: {
             type: Number,
             default: 0,
         },
@@ -46,6 +39,6 @@ const reportTaskSchema = new mongoose.Schema(
     }
 );
 
-const ReportTask = mongoose.model("ReportTask", reportTaskSchema);
+const ReportReport = mongoose.model("ReportReport", reportReportSchema);
 
-module.exports = ReportTask;
+module.exports = ReportReport;
