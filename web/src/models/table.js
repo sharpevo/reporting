@@ -2943,6 +2943,8 @@ tables["report_file"] = {
         obj["name"] = convertBoolean(obj["name"]);
         return obj;
     },
+    disable_bcu: true,
+    disable_scu: true,
     formComponents: [
         {
             label: "",
@@ -3321,6 +3323,7 @@ tables["pathway"] = {
         obj["image"] = String(obj["image"]);
         return obj;
     },
+    disable_bcu: true,
     formComponents: [
         {
             label: "通路名称英文",
@@ -4164,6 +4167,7 @@ tables["report_task"] = {
         obj["template"] = String(obj["template"]);
         return obj;
     },
+    disable_bcu: true,
     formComponents: [
         {
             label: "任务名称",
@@ -4304,6 +4308,8 @@ tables["report_report"] = {
         obj["task"] = String(obj["task"]);
         return obj;
     },
+    disable_scu: true,
+    disable_bcu: true,
     formComponents: [
         {
             label: "任务",
