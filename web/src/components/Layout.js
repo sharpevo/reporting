@@ -76,7 +76,6 @@ const Layout = ({ children }) => {
 
                         <Tabs
                             textColor="inherit"
-                            indicatorColor="secondary"
                             value={tab}
                             onChange={handleTabChange}
                             centered
