@@ -4187,4 +4187,131 @@ tables["report_task"] = {
         },
     ],
 };
+
+tables["report_report"] = {
+    query: {
+        gql: query.REPORT_REPORTS_GET,
+        key: "reportreports",
+    },
+    mutation: {
+        new: mutation.REPORT_REPORT_NEW,
+        delete: mutation.REPORT_REPORTS_DELETE,
+        update: mutation.REPORT_REPORT_UPDATE,
+    },
+    columns: [
+        {
+            label: "样本信息",
+            key: "sample",
+            exportable: false,
+        },
+        {
+            label: "任务模版",
+            key: "template",
+            exportable: false,
+        },
+        {
+            label: "生成时间",
+            key: "date_generated",
+            exportable: false,
+        },
+        {
+            label: "报告状态",
+            key: "report_status",
+            exportable: false,
+        },
+        {
+            label: "报告",
+            key: "pdf_file",
+            exportable: false,
+        },
+        {
+            label: "创建人",
+            key: "creator",
+            exportable: false,
+        },
+        {
+            label: "创建日期",
+            key: "createdAt",
+            exportable: false,
+        },
+        {
+            label: "修改日期",
+            key: "updatedAt",
+            exportable: false,
+        },
+        {
+            label: "审核状态",
+            key: "status",
+            exportable: false,
+        },
+        {
+            label: "审核人",
+            key: "approver",
+            exportable: false,
+        },
+    ],
+    cellFormatters: [
+        (cell) => {
+            return cell.task
+                ? cell.task.sample
+                    ? cell.task.sample.label
+                    : "-"
+                : "-";
+        },
+        (cell) => {
+            return cell.task
+                ? cell.task.template
+                    ? cell.task.template.label
+                    : "-"
+                : "-";
+        },
+        (cell) => {
+            return formatDate(cell.date_generated);
+        },
+        (cell) => {
+            let task_status = "";
+            switch (cell.task_status) {
+                case 0:
+                    return "未生成";
+                case 1:
+                    return "已生成";
+                default:
+                    return "异常";
+            }
+        },
+        (cell) => {
+            return cell.pdf_file ? cell.pdf_file.label : "-";
+        },
+        (cell) => {
+            return cell.creator ? cell.creator.name : "-";
+        },
+        (cell) => {
+            return formatDate(cell.createdAt);
+        },
+        (cell) => {
+            return cell.createdAt == cell.updatedAt
+                ? "-"
+                : formatDate(cell.updatedAt);
+        },
+        (cell) => {
+            return cell.status ? "已审核" : "未审核";
+        },
+        (cell) => {
+            return cell.aprrover ? cell.approver.name : "-";
+        },
+    ],
+    normalize: (obj) => {
+        obj["task"] = String(obj["task"]);
+        return obj;
+    },
+    formComponents: [
+        {
+            label: "任务",
+            key: "task",
+            inputType: "singleselect",
+            query: query.REPORT_TASKS_GET,
+            queryKey: "reporttasks",
+        },
+    ],
+};
 export default tables;

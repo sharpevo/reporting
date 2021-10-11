@@ -861,6 +861,45 @@ const REPORT_TASKS_GET = gql`
             task_status
             date_started
             date_completed
+            label
+            creator {
+                id
+                name
+            }
+            updator {
+                id
+                name
+            }
+            createdAt
+            updatedAt
+        }
+    }
+`;
+
+const REPORT_REPORTS_GET = gql`
+    query reportreports {
+        reportreports {
+            id
+            task {
+                id
+                label
+                sample {
+                    id
+                    label
+                }
+                template {
+                    id
+                    label
+                }
+            }
+            date_generated
+            report_status
+            error_message
+            pdf_file {
+                id
+                label
+                path
+            }
             creator {
                 id
                 name
@@ -910,4 +949,5 @@ export {
     REPORT_SAMPLE_QCS_BY_SAMPLE_GET,
     REPORT_TEMPLATES_GET,
     REPORT_TASKS_GET,
+    REPORT_REPORTS_GET,
 };
