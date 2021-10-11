@@ -2752,4 +2752,55 @@ module.exports = {
             throw new Error(err);
         }
     },
+
+    newReportReport: async (parent, { task }, { models }) => {
+        let obj = {};
+        if (task) {
+            const taskd = await models.ReportTask.findById(task);
+            if (!taskd) {
+                throw new Error(`task '${task}' does not exist`);
+            }
+            obj.task = taskd._id;
+        }
+        try {
+            return await models.ReportReport.create(obj);
+        } catch (err) {
+            console.log(err);
+            throw new Error(err);
+        }
+    },
+    updateReportReport: async (parent, { id, task }, { models }) => {
+        const taskd = await models.ReportTask.findById(task);
+        if (!taskd) {
+            throw new Error(`task '${task}' does not exist`);
+        }
+        const reportReportd = await models.ReportReport.findOneAndUpdate(
+            {
+                _id: id,
+            },
+            {
+                $set: {
+                    task: taskd._id,
+                },
+            },
+            {
+                new: true,
+            }
+        );
+        if (!reportReportd) {
+            throw new Error(`report ${id} does not exist`);
+        }
+        return reportReportd;
+    },
+    deleteReportReports: async (parent, { ids }, { models }) => {
+        try {
+            const result = await models.ReportReport.deleteMany({
+                _id: { $in: ids },
+            });
+            return true;
+        } catch (err) {
+            console.log(err);
+            throw new Error(err);
+        }
+    },
 };
