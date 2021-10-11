@@ -348,32 +348,35 @@ const TableToolbar = ({
         <Toolbar disableGutters={true} variant="dense">
             <Grid justifyContent="space-between" container>
                 <Grid item>
-                    {selectedId.length == 1 ? (
-                        <Tooltip title="Edit">
-                            <IconButton
-                                onClick={() => handleEdit()}
-                                ref={editRef}
-                            >
-                                <EditIcon fontSize="small" />
-                            </IconButton>
-                        </Tooltip>
-                    ) : (
-                        <Tooltip title="Add">
-                            <IconButton onClick={() => handleAdd()}>
-                                <AddCircleIcon fontSize="small" />
-                            </IconButton>
-                        </Tooltip>
-                    )}
+                    {!tables[table].disable_scu &&
+                        (selectedId.length == 1 ? (
+                            <Tooltip title="Edit">
+                                <IconButton
+                                    onClick={() => handleEdit()}
+                                    ref={editRef}
+                                >
+                                    <EditIcon fontSize="small" />
+                                </IconButton>
+                            </Tooltip>
+                        ) : (
+                            <Tooltip title="Add">
+                                <IconButton onClick={() => handleAdd()}>
+                                    <AddCircleIcon fontSize="small" />
+                                </IconButton>
+                            </Tooltip>
+                        ))}
                     <Tooltip title="Select All">
                         <IconButton onClick={() => onSelectAllClick()}>
                             <SelectAllIcon fontSize="small" />
                         </IconButton>
                     </Tooltip>
-                    <Tooltip title="Upload">
-                        <IconButton onClick={() => ref.current.click()}>
-                            <NoteAddIcon fontSize="small" />
-                        </IconButton>
-                    </Tooltip>
+                    {!tables[table].disable_bcu && (
+                        <Tooltip title="Upload">
+                            <IconButton onClick={() => ref.current.click()}>
+                                <NoteAddIcon fontSize="small" />
+                            </IconButton>
+                        </Tooltip>
+                    )}
                     <Tooltip title="Download">
                         <IconButton onClick={() => exportFile(dataExp)}>
                             {selectedId.length > 0 ? (
@@ -383,16 +386,18 @@ const TableToolbar = ({
                             )}
                         </IconButton>
                     </Tooltip>
-                    <Tooltip title="Delete">
-                        <span>
-                            <IconButton
-                                onClick={() => deleteData()}
-                                disabled={selectedId.length == 0}
-                            >
-                                <DeleteIcon fontSize="small" />
-                            </IconButton>
-                        </span>
-                    </Tooltip>
+                    {!tables[table].disable_d && (
+                        <Tooltip title="Delete">
+                            <span>
+                                <IconButton
+                                    onClick={() => deleteData()}
+                                    disabled={selectedId.length == 0}
+                                >
+                                    <DeleteIcon fontSize="small" />
+                                </IconButton>
+                            </span>
+                        </Tooltip>
+                    )}
                     <DataInput handleFile={handleFile} selectFile={ref} />
                 </Grid>
                 <Grid item>

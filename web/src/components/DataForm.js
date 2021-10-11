@@ -467,7 +467,7 @@ const DataFormDialog = ({
         } else {
             setItem({});
         }
-        console.log(defaultValues);
+        //console.log(defaultValues);
         if (defaultValues) {
             defaultValues.map((defaultValue) => {
                 setItem({
