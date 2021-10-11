@@ -16,9 +16,9 @@ const Pages = () => {
                 <Route exact path="/home" component={PageHome} />
                 <Route path="/tables" component={PageTable} />
                 <Route path="/samples" component={PageSample} />
-                <Route path="/reports" component={PageReport} />
-                <Route path="/template" component={PageTemplate} />
+                <Route path="/templates" component={PageTemplate} />
                 <Route path="/tasks" component={PageTask} />
+                <Route path="/reports" component={PageReport} />
             </Layout>
         </Router>
     );
