@@ -781,6 +781,62 @@ const REPORT_SAMPLES_GET = gql`
     }
 `;
 
+const REPORT_SAMPLE_GET_BY_LABEL = gql`
+    query reportsamplebylabel($label: String) {
+        reportsamplebylabel(label: $label) {
+            id
+            label
+            name
+            gender
+            age
+            sample_number
+            sample_type {
+                id
+                label
+            }
+            inspection_project {
+                id
+                label
+            }
+            date_sampled
+            date_received
+            unit_submitted
+            inspection_method
+            inspection_platform
+            reference_genome
+            clinical_diagnosis
+            cancer_from_report
+            cancer_from_data {
+                id
+                label
+            }
+            history_family
+            history_drug
+            date_reported
+            file_main {
+                id
+                label
+                path
+            }
+            file_matched {
+                id
+                label
+                path
+            }
+            creator {
+                id
+                name
+            }
+            updator {
+                id
+                name
+            }
+            createdAt
+            updatedAt
+        }
+    }
+`;
+
 const REPORT_SAMPLE_QCS_GET = gql`
     query reportsampleqcs {
         reportsampleqcs {
@@ -945,6 +1001,7 @@ export {
     REPORT_SAMPLE_TYPES_GET,
     INSPECTION_PROJECTS_GET,
     REPORT_SAMPLES_GET,
+    REPORT_SAMPLE_GET_BY_LABEL,
     REPORT_SAMPLE_QCS_GET,
     REPORT_SAMPLE_QCS_BY_SAMPLE_GET,
     REPORT_TEMPLATES_GET,

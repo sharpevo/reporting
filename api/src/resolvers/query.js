@@ -226,6 +226,24 @@ module.exports = {
             return await models.ReportSample.find({});
         }
     },
+    reportsamplebylabel: async (parent, { label }, { models }) => {
+        let sampleSplited = label.split("(");
+        if (sampleSplited.length != 2) {
+            throw new Error(`invalid sample '${label}'`);
+        }
+        let sampleNameSplited = sampleSplited[1].split(")");
+        if (sampleNameSplited.length != 2) {
+            throw new Error(`invalid sample '${label}'`);
+        }
+        const sampled = await models.ReportSample.findOne({
+            sample_number: sampleSplited[0],
+            name: sampleNameSplited[0],
+        });
+        if (!sampled) {
+            throw new Error(`sample '${sample}' does not exist`);
+        }
+        return sampled;
+    },
     reportsample: async (parent, { id }, { models }) => {
         return await models.ReportSample.findById(id);
     },

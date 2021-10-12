@@ -1,6 +1,8 @@
+import * as React from "react";
 import * as query from "../gql/query";
 import * as mutation from "../gql/mutation";
 import { format, parseISO } from "date-fns";
+import SamplePreview from "../components/PreviewSample";
 
 var tables = {};
 
@@ -4181,6 +4183,9 @@ tables["report_task"] = {
             lazy: true,
             query: query.REPORT_SAMPLES_GET,
             queryKey: "reportsamples",
+            previewComponent: (sampleLabel) => {
+                return <SamplePreview sampleLabel={sampleLabel} />;
+            },
         },
         {
             label: "模版",

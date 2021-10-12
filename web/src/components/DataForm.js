@@ -317,6 +317,9 @@ const FormComponent = ({
                             )}
                         />
                     </Stack>
+                    {formComponent.previewComponent &&
+                        item[formComponent.key] &&
+                        formComponent.previewComponent(item[formComponent.key])}
                 </div>
             );
         case "multiselect":

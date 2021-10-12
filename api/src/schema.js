@@ -609,6 +609,7 @@ module.exports = gql`
         reportsampletype(id: ID!): ReportSampleType!
 
         reportsamples(label: String): [ReportSample]!
+        reportsamplebylabel(label: String): ReportSample
         reportsample(id: ID!): ReportSample!
 
         reportsampleqcs: [ReportSampleQc]!
