@@ -594,6 +594,7 @@ module.exports = gql`
         reportliterature(id: ID!): ReportLiterature!
 
         reportfiles: [ReportFile]!
+        reportfilebylabel(label: String!): ReportFile
         reportfile(id: ID!): ReportFile!
 
         pathways: [Pathway]!

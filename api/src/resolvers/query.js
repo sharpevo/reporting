@@ -182,6 +182,9 @@ module.exports = {
     reportfiles: async (parent, args, { models }) => {
         return await models.ReportFile.find({});
     },
+    reportfilebylabel: async (parent, { label }, { models }) => {
+        return await models.ReportFile.findOne({ path: label });
+    },
     reportfile: async (parent, { id }, { models }) => {
         return await models.ReportFile.findById(id);
     },
