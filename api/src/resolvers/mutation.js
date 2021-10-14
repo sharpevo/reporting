@@ -2792,6 +2792,30 @@ module.exports = {
         }
         return reportReportd;
     },
+    updateReportReportFile: async (parent, { id, file }, { models }) => {
+        const filed = await models.ReportFile.findById(file);
+        if (!filed) {
+            throw new Error(`file '${file}' does not exist`);
+        }
+        const reportReportd = await models.ReportReport.findOneAndUpdate(
+            {
+                _id: id,
+            },
+            {
+                $set: {
+                    pdf_file: filed._id,
+                    date_generated: Date.now(),
+                },
+            },
+            {
+                new: true,
+            }
+        );
+        if (!reportReportd) {
+            throw new Error(`report ${id} does not exist`);
+        }
+        return reportReportd;
+    },
     deleteReportReports: async (parent, { ids }, { models }) => {
         try {
             const result = await models.ReportReport.deleteMany({

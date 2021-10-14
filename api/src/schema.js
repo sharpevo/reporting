@@ -1191,6 +1191,7 @@ module.exports = gql`
 
         newReportReport(task: String!): ReportTask
         updateReportReport(id: String!, task: String!): ReportReport
+        updateReportReportFile(id: String!, file: String!): ReportReport
         deleteReportReports(ids: [ID!]!): Boolean
     }
 `;
