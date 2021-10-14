@@ -259,15 +259,20 @@ const FormComponent = ({
                     <Typography variant="body2" color="text.secondary">
                         {formComponent.label}
                     </Typography>
+                    {formComponent.previewComponent &&
+                        item[formComponent.key] &&
+                        formComponent.previewComponent(item[formComponent.key])}
                     <FormControlLabel
-                        style={{ marginLeft: 4 }}
+                        style={{ marginLeft: 1 }}
                         control={
                             <Button
                                 variant="contained"
                                 component="span"
                                 size="small"
                                 color="primary"
-                                style={{ marginRight: 4 }}
+                                style={{
+                                    marginRight: 4,
+                                }}
                             >
                                 Upload
                                 <input
