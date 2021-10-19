@@ -594,6 +594,7 @@ module.exports = gql`
         reportliterature(id: ID!): ReportLiterature!
 
         reportfiles: [ReportFile]!
+        reportfilebylabel(label: String!): ReportFile
         reportfile(id: ID!): ReportFile!
 
         pathways: [Pathway]!
@@ -1190,6 +1191,7 @@ module.exports = gql`
 
         newReportReport(task: String!): ReportTask
         updateReportReport(id: String!, task: String!): ReportReport
+        updateReportReportFile(id: String!, file: String!): ReportReport
         deleteReportReports(ids: [ID!]!): Boolean
     }
 `;

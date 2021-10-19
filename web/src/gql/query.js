@@ -654,6 +654,30 @@ const REPORT_FILES_GET = gql`
     }
 `;
 
+const REPORT_FILE_GET_BY_LABEL = gql`
+    query reportfilebylabel($label: String!) {
+        reportfilebylabel(label: $label) {
+            id
+            filename
+            mimetype
+            encoding
+            path
+            remark
+            creator {
+                id
+                name
+            }
+            updator {
+                id
+                name
+            }
+            createdAt
+            updatedAt
+            label
+        }
+    }
+`;
+
 const PATHWAYS_GET = gql`
     query pathways {
         pathways {
@@ -885,11 +909,13 @@ const REPORT_TEMPLATES_GET = gql`
                 id
                 label
                 path
+                filename
             }
             image_cover_back {
                 id
                 label
                 path
+                filename
             }
             header_left
             header_right
@@ -996,6 +1022,7 @@ export {
     REPORT_REMARKS_GET,
     REPORT_LITERATURES_GET,
     REPORT_FILES_GET,
+    REPORT_FILE_GET_BY_LABEL,
     PATHWAYS_GET,
     PATHWAY_DRUG_CANCERS_GET,
     REPORT_SAMPLE_TYPES_GET,

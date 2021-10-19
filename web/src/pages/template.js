@@ -464,7 +464,14 @@ const PageTemplate = () => {
                     <Grid item key={index}>
                         <ImageListItem sx={{ width: 200 }}>
                             <img
-                                src={reportsample}
+                                src={
+                                    template.image_cover_front
+                                        ? `http://${window.location.hostname}:5200/` +
+                                          template.image_cover_front.path +
+                                          "?name=" +
+                                          template.image_cover_front.filename
+                                        : reportsample
+                                }
                                 alt={template.title}
                                 loading="lazy"
                                 onClick={() => handleModuleEdit(template)}

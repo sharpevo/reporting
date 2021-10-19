@@ -3,6 +3,7 @@ import * as query from "../gql/query";
 import * as mutation from "../gql/mutation";
 import { format, parseISO } from "date-fns";
 import SamplePreview from "../components/PreviewSample";
+import FilePreview from "../components/PreviewFile";
 
 var tables = {};
 
@@ -1028,6 +1029,11 @@ tables["mutation_cancer"] = {
             inputType: "singleselect",
             query: query.MUTATION_CLASSES_GET,
             queryKey: "mutationclasses",
+        },
+        {
+            label: "变异注释",
+            key: "mutation_detail",
+            inputType: "textarea",
         },
         {
             label: "适用癌种",
@@ -3353,6 +3359,9 @@ tables["pathway"] = {
             label: "通路图",
             key: "image",
             inputType: "reportfile",
+            previewComponent: (filepath) => {
+                return <FilePreview filePath={filepath} />;
+            },
         },
     ],
 };
@@ -3938,11 +3947,17 @@ tables["report_sample"] = {
             label: "主样本(建议: 肿瘤活检)",
             key: "file_main",
             inputType: "reportfile",
+            previewComponent: (filepath) => {
+                return <FilePreview filePath={filepath} />;
+            },
         },
         {
             label: "匹配样本(建议: 血样)",
             key: "file_matched",
             inputType: "reportfile",
+            previewComponent: (filepath) => {
+                return <FilePreview filePath={filepath} />;
+            },
         },
     ],
 };
@@ -4030,6 +4045,7 @@ tables["report_sample_qc"] = {
         obj["result"] = String(obj["result"]);
         return obj;
     },
+    disable_bcu: true,
     formComponents: [
         {
             label: "样本",
