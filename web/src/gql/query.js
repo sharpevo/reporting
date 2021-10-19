@@ -909,11 +909,13 @@ const REPORT_TEMPLATES_GET = gql`
                 id
                 label
                 path
+                filename
             }
             image_cover_back {
                 id
                 label
                 path
+                filename
             }
             header_left
             header_right
