@@ -1031,6 +1031,11 @@ tables["mutation_cancer"] = {
             queryKey: "mutationclasses",
         },
         {
+            label: "变异注释",
+            key: "mutation_detail",
+            inputType: "textarea",
+        },
+        {
             label: "适用癌种",
             key: "cancer",
             inputType: "singleselect",
