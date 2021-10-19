@@ -118,7 +118,7 @@ const UploadTableDialog = ({ isOpen, heads, rows, table, setOpen, keys }) => {
     const [update, loadingUpdate, errorUpdate] = useMutation(
         tables[table].mutation["update"],
         {
-            //refetchQueries: [{query: tables[table].query.gql}],
+            refetchQueries: [{ query: tables[table].query.gql }],
             //fetchPolicy: "no-cache",
             onCompleted: (data) => {
                 console.log("done", data);
