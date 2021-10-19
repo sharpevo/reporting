@@ -344,6 +344,7 @@ const MUTATION_CANCER_NEW = gql`
         $position: String
         $snp: String
         $mutationclass: String
+        $mutation_detail: String
         $cancer: String!
         $drug_info: String
         $evidence: String
@@ -356,6 +357,7 @@ const MUTATION_CANCER_NEW = gql`
             position: $position
             snp: $snp
             mutationclass: $mutationclass
+            mutation_detail: $mutation_detail
             cancer: $cancer
             drug_info: $drug_info
             evidence: $evidence
@@ -375,6 +377,7 @@ const MUTATION_CANCER_UPDATE = gql`
         $position: String
         $snp: String
         $mutationclass: String
+        $mutation_detail: String
         $cancer: String!
         $drug_info: String
         $evidence: String
@@ -388,6 +391,7 @@ const MUTATION_CANCER_UPDATE = gql`
             position: $position
             snp: $snp
             mutationclass: $mutationclass
+            mutation_detail: $mutation_detail
             cancer: $cancer
             drug_info: $drug_info
             evidence: $evidence
