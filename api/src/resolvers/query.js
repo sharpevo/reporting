@@ -161,6 +161,19 @@ module.exports = {
     nccngenes: async (parent, args, { models }) => {
         return await models.NccnGene.find({});
     },
+    nccngenesgenes: async (parent, args, { models }) => {
+        var nccnds = await models.NccnGene.find({}).populate("gene");
+        var geneds = [];
+        nccnds.forEach((nccnd) => {
+            var found = geneds.find((gened) =>
+                gened._id.equals(nccnd.gene._id)
+            );
+            if (!found) {
+                geneds.push(nccnd.gene);
+            }
+        });
+        return geneds;
+    },
     nccngene: async (parent, { id }, { models }) => {
         return await models.NccnGene.findById(id);
     },
