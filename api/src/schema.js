@@ -423,6 +423,7 @@ module.exports = gql`
     type InspectionProject {
         id: ID!
         label: String!
+        genes: [Gene]
     }
 
     type ReportSample {
@@ -585,6 +586,7 @@ module.exports = gql`
         chemo(id: ID!): Chemo!
 
         nccngenes: [NccnGene]!
+        nccngenesgenes: [Gene]!
         nccngene(id: ID!): NccnGene!
 
         reportremarks: [ReportRemark]!
@@ -1065,8 +1067,15 @@ module.exports = gql`
         updateReportSampleType(id: ID!, label: String!): ReportSampleType!
         deleteReportSampleTypes(ids: [ID!]!): Boolean!
 
-        newInspectionProject(label: String!): InspectionProject!
-        updateInspectionProject(id: ID!, label: String!): InspectionProject!
+        newInspectionProject(
+            label: String!
+            genes: [String]
+        ): InspectionProject!
+        updateInspectionProject(
+            id: ID!
+            label: String!
+            genes: [String]
+        ): InspectionProject!
         deleteInspectionProjects(ids: [ID!]!): Boolean!
 
         newReportSample(
