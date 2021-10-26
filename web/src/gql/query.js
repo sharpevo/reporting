@@ -580,6 +580,15 @@ const NCCN_GENES_GET = gql`
     }
 `;
 
+const NCCN_GENES_GENES_GET = gql`
+    query nccngenesgenes {
+        nccngenesgenes {
+            id
+            label
+        }
+    }
+`;
+
 const REPORT_REMARKS_GET = gql`
     query reportremarks {
         reportremarks {
@@ -745,6 +754,10 @@ const INSPECTION_PROJECTS_GET = gql`
         inspectionprojects {
             id
             label
+            genes {
+                id
+                label
+            }
         }
     }
 `;
@@ -1019,6 +1032,7 @@ export {
     EVIDENCE_LEVELS_GET,
     CHEMOS_GET,
     NCCN_GENES_GET,
+    NCCN_GENES_GENES_GET,
     REPORT_REMARKS_GET,
     REPORT_LITERATURES_GET,
     REPORT_FILES_GET,

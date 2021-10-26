@@ -1243,8 +1243,8 @@ const REPORT_SAMPLE_TYPES_DELETE = gql`
 `;
 
 const INSPECTION_PROJECT_NEW = gql`
-    mutation newInspectionProject($label: String!) {
-        newInspectionProject(label: $label) {
+    mutation newInspectionProject($label: String!, $genes: [String]) {
+        newInspectionProject(label: $label, genes: $genes) {
             id
             label
         }
@@ -1252,8 +1252,12 @@ const INSPECTION_PROJECT_NEW = gql`
 `;
 
 const INSPECTION_PROJECT_UPDATE = gql`
-    mutation updateInspectionProject($id: ID!, $label: String!) {
-        updateInspectionProject(id: $id, label: $label) {
+    mutation updateInspectionProject(
+        $id: ID!
+        $label: String!
+        $genes: [String]
+    ) {
+        updateInspectionProject(id: $id, label: $label, genes: $genes) {
             id
             label
         }
@@ -1261,8 +1265,8 @@ const INSPECTION_PROJECT_UPDATE = gql`
 `;
 
 const INSPECTION_PROJECTS_DELETE = gql`
-    mutation deleteInspectionProject($ids: [ID!]!) {
-        deleteInspectionProject(ids: $ids)
+    mutation deleteInspectionProjects($ids: [ID!]!) {
+        deleteInspectionProjects(ids: $ids)
     }
 `;
 
