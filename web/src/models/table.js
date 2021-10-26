@@ -3547,6 +3547,11 @@ tables["inspection_project"] = {
             exportable: true,
         },
         {
+            label: "NCCN基因列表",
+            key: "genes",
+            exportable: true,
+        },
+        {
             label: "创建日期",
             key: "createdAt",
             exportable: false,
@@ -3562,6 +3567,11 @@ tables["inspection_project"] = {
             return cell.label;
         },
         (cell) => {
+            return cell.genes
+                ? cell.genes.map((gene) => gene.label).join(" ")
+                : "";
+        },
+        (cell) => {
             return formatDate(cell.createdAt);
         },
         (cell) => {
@@ -3572,6 +3582,7 @@ tables["inspection_project"] = {
     ],
     normalize: (obj) => {
         obj["label"] = String(obj["label"]);
+        obj["genes"] = obj["genes"] ? obj["genes"].split(",") : [];
         return obj;
     },
     formComponents: [
@@ -3579,6 +3590,13 @@ tables["inspection_project"] = {
             label: "名称",
             key: "label",
             inputType: "text",
+        },
+        {
+            label: "NCCN基因列表",
+            key: "genes",
+            inputType: "multiselect",
+            query: query.NCCN_GENES_GENES_GET,
+            queryKey: "nccngenesgenes",
         },
     ],
 };
