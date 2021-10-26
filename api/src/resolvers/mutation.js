@@ -2172,25 +2172,85 @@ module.exports = {
         }
     },
 
-    newInspectionProject: async (parent, { label }, { models }) => {
-        return await models.InspectionProject.create({
+    newInspectionProject: async (parent, { label, genes }, { models }) => {
+        let obj = {
+            label: label,
+        };
+        if (genes && genes.length > 0) {
+            const geneds = await models.Gene.find({
+                name: { $in: genes },
+            });
+            let geneids = [];
+            geneds.forEach((gened, index) => {
+                if (!gened) {
+                    throw new Error(`gene ${genes[index]} does not exist`);
+                }
+            });
+            genes.forEach((gene) => {
+                var found = geneds.find((gened) => gened.name == gene);
+                if (found) {
+                    geneids.push(found._id);
+                }
+            });
+            const nccnds = await models.NccnGene.find({
+                gene: { $in: geneids },
+            });
+            geneids.forEach((geneid, index) => {
+                if (!nccnds.find((nccn) => geneid.equals(nccn.gene))) {
+                    throw new Error(
+                        `gene ${genes[index]} is not valid nccn gene`
+                    );
+                }
+            });
+            obj.genes = geneids;
+        }
+        return await models.InspectionProject.create(obj);
+    },
+    updateInspectionProject: async (
+        parent,
+        { id, label, genes },
+        { models }
+    ) => {
+        let obj = new models.InspectionProject({
+            _id: id,
             label: label,
         });
-    },
-    updateInspectionProject: async (parent, { id, label }, { models }) => {
-        return await models.InspectionProject.findOneAndUpdate(
-            {
-                _id: id,
-            },
-            {
-                $set: {
-                    label: label,
-                },
-            },
-            {
-                new: true,
-            }
-        );
+        if (genes && genes.length > 0) {
+            const geneds = await models.Gene.find({
+                name: { $in: genes },
+            });
+            let geneids = [];
+            geneds.forEach((gened, index) => {
+                if (!gened) {
+                    throw new Error(`gene ${genes[index]} does not exist`);
+                }
+            });
+            genes.forEach((gene) => {
+                var found = geneds.find((gened) => gened.name == gene);
+                if (found) {
+                    geneids.push(found._id);
+                }
+            });
+            const nccnds = await models.NccnGene.find({
+                gene: { $in: geneids },
+            });
+            geneids.forEach((geneid, index) => {
+                var found = nccnds.find((nccn) => geneid.equals(nccn.gene));
+                if (!found) {
+                    throw new Error(
+                        `gene ${genes[index]} is not valid nccn gene`
+                    );
+                }
+            });
+            obj.genes = geneids;
+        }
+        obj.isNew = false;
+        try {
+            return await obj.save();
+        } catch (err) {
+            console.log(err);
+            throw new Error(err);
+        }
     },
     deleteInspectionProjects: async (parent, { ids }, { models }) => {
         try {
