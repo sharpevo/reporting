@@ -46,6 +46,13 @@ module.exports = {
         return await models.DdrClass.findById(id);
     },
 
+    ddrpathwayclasses: async (parent, args, { models }) => {
+        return await models.DdrPathwayClass.find({});
+    },
+    ddrpathwayclass: async (parent, { id }, { models }) => {
+        return await models.DdrPathwayClass.findById(id);
+    },
+
     ddrs: async (parent, args, { models }) => {
         return await models.Ddr.find({});
     },

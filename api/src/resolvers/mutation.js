@@ -292,7 +292,15 @@ module.exports = {
 
     newDdr: async (
         parent,
-        { gene, ddrclass, result, result_detail, literature, source },
+        {
+            gene,
+            ddrclass,
+            pathwayclass,
+            result,
+            result_detail,
+            literature,
+            source,
+        },
         { models }
     ) => {
         let obj = {
@@ -316,6 +324,14 @@ module.exports = {
             );
             obj.ddrclass = ddrclassd._id;
         }
+        if (pathwayclass) {
+            var pathwayclassd = await models.DdrPathwayClass.findOneAndUpdate(
+                { label: pathwayclass },
+                { label: pathwayclass },
+                { upsert: true, new: true }
+            );
+            obj.pathwayclass = pathwayclassd._id;
+        }
         try {
             return await models.Ddr.create(obj);
         } catch (err) {
@@ -325,7 +341,16 @@ module.exports = {
     },
     updateDdr: async (
         parent,
-        { id, gene, ddrclass, result, result_detail, literature, source },
+        {
+            id,
+            gene,
+            ddrclass,
+            pathwayclass,
+            result,
+            result_detail,
+            literature,
+            source,
+        },
         { models }
     ) => {
         let obj = new models.Ddr({
@@ -349,6 +374,15 @@ module.exports = {
                 { upsert: true, new: true }
             );
             obj.ddrclass = ddrclassd._id;
+        }
+        if (pathwayclass) {
+            var pathwayclassd = await models.DdrPathwayClass.findOneAndUpdate(
+                { label: pathwayclass },
+                { label: pathwayclass },
+                { upsert: true, new: true }
+            );
+            console.log(pathwayclassd);
+            obj.pathwayclass = pathwayclassd._id;
         }
         obj.isNew = false;
         try {
@@ -2035,6 +2069,38 @@ module.exports = {
     deleteDdrClasses: async (parent, { ids }, { models }) => {
         try {
             const result = await models.DdrClass.deleteMany({
+                _id: { $in: ids },
+            });
+            return true;
+        } catch (err) {
+            console.log(err);
+            return false;
+        }
+    },
+
+    newDdrPathwayClass: async (parent, { label }, { models }) => {
+        return await models.DdrPathwayClass.create({
+            label: label,
+        });
+    },
+    updateDdrPathwayClass: async (parent, { id, label }, { models }) => {
+        return await models.DdrPathwayClass.findOneAndUpdate(
+            {
+                _id: id,
+            },
+            {
+                $set: {
+                    label: label,
+                },
+            },
+            {
+                new: true,
+            }
+        );
+    },
+    deleteDdrPathwayClasses: async (parent, { ids }, { models }) => {
+        try {
+            const result = await models.DdrPathwayClass.deleteMany({
                 _id: { $in: ids },
             });
             return true;

@@ -1,6 +1,6 @@
 const { GeneClass, Gene } = require("./gene");
 const GeneAnnot = require("./gene_annot");
-const { DdrClass, Ddr } = require("./ddr");
+const { DdrClass, DdrPathwayClass, Ddr } = require("./ddr");
 const Tmh = require("./tmh");
 const Cancer = require("./cancer");
 const { MutationClass, MutationCancer } = require("./mutation_cancer");
@@ -33,6 +33,7 @@ const models = {
     Gene,
     GeneAnnot,
     DdrClass,
+    DdrPathwayClass,
     Ddr,
     Tmh,
     Cancer,

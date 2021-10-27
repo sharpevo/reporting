@@ -81,10 +81,18 @@ module.exports = gql`
         updatedAt: DateTime
     }
 
+    type DdrPathwayClass {
+        id: ID!
+        label: String!
+        createdAt: DateTime
+        updatedAt: DateTime
+    }
+
     type Ddr {
         id: ID!
         gene: Gene
         ddrclass: DdrClass
+        pathwayclass: DdrPathwayClass
         result: String
         result_detail: String
         literature: String
@@ -537,6 +545,9 @@ module.exports = gql`
         ddrclasses: [DdrClass]!
         ddrclass(id: ID!): DdrClass
 
+        ddrpathwayclasses: [DdrPathwayClass]!
+        ddrpathwayclass(id: ID!): DdrPathwayClass
+
         ddrs: [Ddr]!
         ddr(id: ID!): Ddr
 
@@ -696,6 +707,7 @@ module.exports = gql`
         newDdr(
             gene: String
             ddrclass: String
+            pathwayclass: String
             result: String
             result_detail: String
             literature: String
@@ -705,6 +717,7 @@ module.exports = gql`
             id: String!
             gene: String
             ddrclass: String
+            pathwayclass: String
             result: String
             result_detail: String
             literature: String
@@ -1050,6 +1063,10 @@ module.exports = gql`
         newDdrClass(label: String!): DdrClass!
         updateDdrClass(id: ID!, label: String!): DdrClass!
         deleteDdrClasses(ids: [ID!]!): Boolean!
+
+        newDdrPathwayClass(label: String!): DdrPathwayClass!
+        updateDdrPathwayClass(id: ID!, label: String!): DdrPathwayClass!
+        deleteDdrPathwayClasses(ids: [ID!]!): Boolean!
 
         newMutationClass(label: String!): MutationClass
         updateMutationClass(id: ID!, label: String!): MutationClass
