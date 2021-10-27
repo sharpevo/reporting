@@ -101,6 +101,17 @@ const DDR_CLASSES_GET = gql`
     }
 `;
 
+const DDR_PATHWAY_CLASSES_GET = gql`
+    query ddrpathwayclasses {
+        ddrpathwayclasses {
+            id
+            label
+            createdAt
+            updatedAt
+        }
+    }
+`;
+
 const DDRS_GET = gql`
     query ddrs {
         ddrs {
@@ -111,6 +122,10 @@ const DDRS_GET = gql`
                 label
             }
             ddrclass {
+                id
+                label
+            }
+            pathwayclass {
                 id
                 label
             }
@@ -1015,6 +1030,7 @@ export {
     GENES_GET,
     GENE_ANNOTS_GET,
     DDR_CLASSES_GET,
+    DDR_PATHWAY_CLASSES_GET,
     DDRS_GET,
     TMHS_GET,
     CANCERS_GET,

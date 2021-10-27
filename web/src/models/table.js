@@ -401,6 +401,11 @@ tables["ddr"] = {
             exportable: true,
         },
         {
+            label: "通路分类",
+            key: "pathwayclass",
+            exportable: true,
+        },
+        {
             label: "检测结果",
             key: "result",
             exportable: true,
@@ -454,6 +459,9 @@ tables["ddr"] = {
             return cell.ddrclass ? cell.ddrclass.label : "-";
         },
         (cell) => {
+            return cell.pathwayclass ? cell.pathwayclass.label : "-";
+        },
+        (cell) => {
             return cell.result;
         },
         (cell) => {
@@ -504,6 +512,13 @@ tables["ddr"] = {
             inputType: "singleselect",
             query: query.DDR_CLASSES_GET,
             queryKey: "ddrclasses",
+        },
+        {
+            label: "通路分类",
+            key: "pathwayclass",
+            inputType: "singleselect",
+            query: query.DDR_PATHWAY_CLASSES_GET,
+            queryKey: "ddrpathwayclasses",
         },
         {
             label: "检测结果",
@@ -3024,6 +3039,59 @@ tables["ddrclass"] = {
         new: mutation.DDR_CLASS_NEW,
         delete: mutation.DDR_CLASSES_DELETE,
         update: mutation.DDR_CLASS_UPDATE,
+    },
+    columns: [
+        {
+            label: "名称",
+            key: "label",
+            exportable: true,
+        },
+        {
+            label: "创建日期",
+            key: "createdAt",
+            exportable: false,
+        },
+        {
+            label: "修改日期",
+            key: "updatedAt",
+            exportable: false,
+        },
+    ],
+    cellFormatters: [
+        (cell) => {
+            return cell.label;
+        },
+        (cell) => {
+            return formatDate(cell.createdAt);
+        },
+        (cell) => {
+            return cell.createdAt == cell.updatedAt
+                ? "-"
+                : formatDate(cell.updatedAt);
+        },
+    ],
+    normalize: (obj) => {
+        obj["label"] = String(obj["label"]);
+        return obj;
+    },
+    formComponents: [
+        {
+            label: "名称",
+            key: "label",
+            inputType: "text",
+        },
+    ],
+};
+
+tables["ddrpathwayclass"] = {
+    query: {
+        gql: query.DDR_PATHWAY_CLASSES_GET,
+        key: "ddrpathwayclasses",
+    },
+    mutation: {
+        new: mutation.DDR_PATHWAY_CLASS_NEW,
+        delete: mutation.DDR_PATHWAY_CLASSES_DELETE,
+        update: mutation.DDR_PATHWAY_CLASS_UPDATE,
     },
     columns: [
         {

@@ -116,6 +116,10 @@ const databases = {
             key: "ddrclass",
         },
         {
+            name: "免疫疗效相关/DDR通路 - 通路分类",
+            key: "ddrpathwayclass",
+        },
+        {
             name: "位点用药解析数据库 - 变异分类",
             key: "mutationclass",
         },

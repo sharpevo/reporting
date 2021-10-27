@@ -155,6 +155,7 @@ const DDR_NEW = gql`
     mutation newDdr(
         $gene: String
         $ddrclass: String
+        $pathwayclass: String
         $result: String
         $result_detail: String
         $literature: String
@@ -163,6 +164,7 @@ const DDR_NEW = gql`
         newDdr(
             gene: $gene
             ddrclass: $ddrclass
+            pathwayclass: $pathwayclass
             result: $result
             result_detail: $result_detail
             literature: $literature
@@ -187,6 +189,7 @@ const DDR_UPDATE = gql`
         $id: String!
         $gene: String
         $ddrclass: String
+        $pathwayclass: String
         $result: String
         $result_detail: String
         $literature: String
@@ -196,6 +199,7 @@ const DDR_UPDATE = gql`
             id: $id
             gene: $gene
             ddrclass: $ddrclass
+            pathwayclass: $pathwayclass
             result: $result
             result_detail: $result_detail
             literature: $literature
@@ -1146,6 +1150,30 @@ const DDR_CLASSES_DELETE = gql`
     }
 `;
 
+const DDR_PATHWAY_CLASS_NEW = gql`
+    mutation newDdrPathwayClass($label: String!) {
+        newDdrPathwayClass(label: $label) {
+            id
+            label
+        }
+    }
+`;
+
+const DDR_PATHWAY_CLASS_UPDATE = gql`
+    mutation updateDdrPathwayClass($id: ID!, $label: String!) {
+        updateDdrPathwayClass(id: $id, label: $label) {
+            id
+            label
+        }
+    }
+`;
+
+const DDR_PATHWAY_CLASSES_DELETE = gql`
+    mutation deleteDdrPathwayClasses($ids: [ID!]!) {
+        deleteDdrPathwayClasses(ids: $ids)
+    }
+`;
+
 const MUTATION_CLASS_NEW = gql`
     mutation newMutationClass($label: String!) {
         newMutationClass(label: $label) {
@@ -1694,6 +1722,9 @@ export {
     DDR_CLASS_NEW,
     DDR_CLASS_UPDATE,
     DDR_CLASSES_DELETE,
+    DDR_PATHWAY_CLASS_NEW,
+    DDR_PATHWAY_CLASS_UPDATE,
+    DDR_PATHWAY_CLASSES_DELETE,
     MUTATION_CLASS_NEW,
     MUTATION_CLASS_UPDATE,
     MUTATION_CLASSES_DELETE,
