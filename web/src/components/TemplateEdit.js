@@ -1,4 +1,4 @@
-import * as React from "react";
+import * as React from 'react';
 
 import {
     Dialog,
@@ -15,92 +15,70 @@ import {
     ListItemText,
     Checkbox,
     IconButton,
-} from "@mui/material";
-import CommentIcon from "@mui/icons-material/Comment";
-import ExpandLess from "@mui/icons-material/ExpandLess";
+} from '@mui/material';
+import CommentIcon from '@mui/icons-material/Comment';
+import ExpandLess from '@mui/icons-material/ExpandLess';
 
-const ModuleList = ({ modules, pl, rootModules, setModules }) => {
-    //console.log(
-    //"ml",
-    //modules.filter((module) => module.enabled).map((module) => module.key)
-    //);
+const ModuleList = ({ modules, setModules }) => {
     const [checked, setChecked] = React.useState(
-        modules.filter((module) => module.enabled).map((module) => module.key)
+        modules.map((m, i) => (m.enabled ? i : -1)),
     );
-    const handleToggle = (key) => {
-        let newModules = toggleModule(rootModules, key);
-        setModules(newModules);
-
-        const currentIndex = checked.indexOf(key);
-        const newChecked = [...checked];
-        if (currentIndex === -1) {
-            newChecked.push(key);
-        } else {
-            newChecked.splice(currentIndex, 1);
+    const handleToggle = (index) => {
+        var newModules = [...modules];
+        var module = newModules[index];
+        var result = !Boolean(module.enabled);
+        module.enabled = result;
+        var level = module.key.split('/').length;
+        for (let i = index + 1; i < newModules.length; i++) {
+            var m = newModules[i];
+            if (m.key.split('/').length > level) {
+                m.enabled = result;
+            } else {
+                break;
+            }
         }
-        setChecked(newChecked);
+        setChecked(newModules.map((m, i) => (m.enabled ? i : -1)));
+        setModules(newModules);
     };
+
     return (
         <List
             sx={{
                 minWidth: 500,
-                bgcolor: "background.paper",
-                pl: pl,
+                bgcolor: 'background.paper',
             }}
             dense={true}
         >
             {modules.map((module, index) => (
-                <div key={index}>
-                    <ListItem key={index} disablePadding dense={true}>
-                        <ListItemButton
-                            role={undefined}
-                            onClick={() => {
-                                handleToggle(module.key);
-                            }}
-                            dense={true}
-                        >
-                            <ListItemIcon>
-                                <Checkbox
-                                    edge="start"
-                                    checked={checked.indexOf(module.key) !== -1}
-                                    tabIndex={-1}
-                                    disableRipple
-                                    size="small"
-                                />
-                            </ListItemIcon>
-                            <ListItemText
-                                primary={module.name}
-                                sx={{ ml: -3 }}
+                <ListItem
+                    key={index}
+                    disablePadding
+                    dense={true}
+                    sx={{ pl: module.key.split('/').length * 4 }}
+                >
+                    <ListItemButton
+                        onClick={() => {
+                            handleToggle(index);
+                        }}
+                        dense={true}
+                    >
+                        <ListItemIcon>
+                            <Checkbox
+                                edge="start"
+                                checked={checked.indexOf(index) !== -1}
+                                tabIndex={-1}
+                                disableRipple
+                                size="small"
                             />
-                        </ListItemButton>
-                    </ListItem>
-                    {module.modules && (
-                        <Collapse in={true}>
-                            <ModuleList
-                                modules={module.modules}
-                                pl={pl + 4}
-                                rootModules={rootModules}
-                                setModules={() => setModules}
-                            />
-                        </Collapse>
-                    )}
-                </div>
+                        </ListItemIcon>
+                        <ListItemText primary={module.name} sx={{ ml: -3 }} />
+                    </ListItemButton>
+                </ListItem>
             ))}
         </List>
     );
 };
 
-const toggleModule = (modules, key) => {
-    return modules.map((module) => {
-        if (module.key == key) {
-            module.enabled = !Boolean(module.enabled);
-        }
-        if (module.modules) {
-            module.modules = toggleModule(module.modules, key);
-        }
-        return module;
-    });
-};
 const TemplateEditDialog = ({
     isOpen,
     setOpen,
@@ -109,7 +87,6 @@ const TemplateEditDialog = ({
     onModuleChanged,
     setSelectedItem,
 }) => {
-    //console.log("t", modules);
     const [checked, setChecked] = React.useState([0]);
 
     const handleClose = () => {
