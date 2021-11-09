@@ -20,7 +20,7 @@ const DELETE_TABLE = gql`
 const GENE_NEW = gql`
     mutation newGene(
         $name: String!
-        $geneclass: String
+        $geneclasses: [String]
         $source: String
         $is_wes: Boolean
         $is_pancancer: Boolean
@@ -29,7 +29,7 @@ const GENE_NEW = gql`
     ) {
         newGene(
             name: $name
-            geneclass: $geneclass
+            geneclasses: $geneclasses
             source: $source
             is_wes: $is_wes
             is_pancancer: $is_pancancer
@@ -38,7 +38,7 @@ const GENE_NEW = gql`
         ) {
             id
             name
-            geneclass {
+            geneclasses {
                 id
                 label
             }
@@ -49,7 +49,7 @@ const GENE_UPDATE = gql`
     mutation updateGene(
         $id: String!
         $name: String!
-        $geneclass: String
+        $geneclasses: [String]
         $source: String
         $is_wes: Boolean
         $is_pancancer: Boolean
@@ -59,7 +59,7 @@ const GENE_UPDATE = gql`
         updateGene(
             id: $id
             name: $name
-            geneclass: $geneclass
+            geneclasses: $geneclasses
             source: $source
             is_wes: $is_wes
             is_pancancer: $is_pancancer
@@ -67,7 +67,7 @@ const GENE_UPDATE = gql`
             is_8glc: $is_8glc
         ) {
             id
-            geneclass {
+            geneclasses {
                 id
                 label
             }

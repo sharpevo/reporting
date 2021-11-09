@@ -61,7 +61,7 @@ tables["gene"] = {
         },
         {
             label: "分类",
-            key: "geneclass",
+            key: "geneclasses",
             exportable: true,
         },
         {
@@ -120,7 +120,9 @@ tables["gene"] = {
             return row.name;
         },
         (row) => {
-            return row.geneclass ? row.geneclass.label : "-";
+            return row.geneclasses
+                .map((geneclass) => geneclass.label)
+                .join(" ");
         },
         (row) => {
             return trimText(row.source);
@@ -171,8 +173,8 @@ tables["gene"] = {
         },
         {
             label: "分类",
-            key: "geneclass",
-            inputType: "singleselect",
+            key: "geneclasses",
+            inputType: "multiselect",
             query: query.GENE_CLASSES_GET,
             queryKey: "geneclasses",
         },

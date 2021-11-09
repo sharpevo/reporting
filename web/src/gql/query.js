@@ -33,7 +33,7 @@ const GENES_GET = gql`
         genes(label: $label) {
             id
             name
-            geneclass {
+            geneclasses {
                 id
                 label
             }
