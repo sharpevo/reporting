@@ -40,7 +40,7 @@ module.exports = gql`
     type Gene {
         id: ID!
         name: String!
-        geneclass: GeneClass
+        geneclasses: [GeneClass]
         source: String
         is_wes: Boolean
         is_pancancer: Boolean
@@ -655,7 +655,7 @@ module.exports = gql`
 
         newGene(
             name: String!
-            geneclass: String
+            geneclasses: [String]
             source: String
             is_wes: Boolean
             is_pancancer: Boolean
@@ -665,7 +665,7 @@ module.exports = gql`
         updateGene(
             id: String!
             name: String!
-            geneclass: String
+            geneclasses: [String]
             source: String
             is_wes: Boolean
             is_pancancer: Boolean
@@ -674,7 +674,6 @@ module.exports = gql`
         ): Gene!
         deleteGenes(ids: [ID!]!): Boolean!
         updateGeneName(id: ID!, name: String!): Gene
-        updateGeneGeneClass(id: ID!, geneclass: ID!): Gene
         updateGeneSource(id: ID!, source: String!): Gene
         updateGeneWes(id: ID!, wes: Boolean): Gene
         updateGenePancancer(id: ID!, pancancer: Boolean): Gene

@@ -114,7 +114,7 @@ module.exports = {
         parent,
         {
             name,
-            geneclass,
+            geneclasses,
             source,
             is_wes,
             is_pancancer,
@@ -134,13 +134,17 @@ module.exports = {
             is_8glc: is_8glc,
             status: 0,
         };
-        if (geneclass) {
-            var geneclassd = await models.GeneClass.findOneAndUpdate(
-                { label: geneclass },
-                { label: geneclass },
-                { upsert: true, new: true }
-            );
-            obj.geneclass = geneclassd._id;
+        if (geneclasses) {
+            var geneclassids = [];
+            for (let geneclass of geneclasses) {
+                var geneclassd = await models.GeneClass.findOneAndUpdate(
+                    { label: geneclass },
+                    { label: geneclass },
+                    { upsert: true, new: true }
+                );
+                geneclassids.push(geneclassd._id);
+            }
+            obj.geneclasses = geneclassids;
         }
         try {
             return await models.Gene.create(obj);
@@ -154,7 +158,7 @@ module.exports = {
         {
             id,
             name,
-            geneclass,
+            geneclasses,
             source,
             is_wes,
             is_pancancer,
@@ -175,13 +179,17 @@ module.exports = {
             is_8glc: is_8glc,
             status: 0,
         });
-        if (geneclass) {
-            var geneclassd = await models.GeneClass.findOneAndUpdate(
-                { label: geneclass },
-                { label: geneclass },
-                { upsert: true, new: true }
-            );
-            obj.geneclass = geneclassd._id;
+        if (geneclasses) {
+            var geneclassids = [];
+            for (let geneclass of geneclasses) {
+                var geneclassd = await models.GeneClass.findOneAndUpdate(
+                    { label: geneclass },
+                    { label: geneclass },
+                    { upsert: true, new: true }
+                );
+                geneclassids.push(geneclassd._id);
+            }
+            obj.geneclasses = geneclassids;
         }
         obj.isNew = false;
         try {
