@@ -4068,6 +4068,7 @@ tables["report_sample"] = {
             previewComponent: (filepath) => {
                 return <FilePreview filePath={filepath} />;
             },
+            disabled: true,
         },
     ],
 };

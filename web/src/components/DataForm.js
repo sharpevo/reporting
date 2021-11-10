@@ -266,6 +266,7 @@ const FormComponent = ({
                         style={{ marginLeft: 1 }}
                         control={
                             <Button
+                                disabled={formComponent.disabled}
                                 variant="contained"
                                 component="span"
                                 size="small"
@@ -276,6 +277,7 @@ const FormComponent = ({
                             >
                                 Upload
                                 <input
+                                    disabled={formComponent.disabled}
                                     name={formComponent.key}
                                     type="file"
                                     onChange={handleReportFileChange}
