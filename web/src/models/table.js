@@ -3618,7 +3618,12 @@ tables["inspection_project"] = {
         },
         {
             label: "NCCN基因列表",
-            key: "genes",
+            key: "genes_nccn",
+            exportable: true,
+        },
+        {
+            label: "Panel基因列表",
+            key: "genes_panel",
             exportable: true,
         },
         {
@@ -3637,8 +3642,13 @@ tables["inspection_project"] = {
             return cell.label;
         },
         (cell) => {
-            return cell.genes
-                ? cell.genes.map((gene) => gene.label).join(" ")
+            return cell.genes_nccn
+                ? cell.genes_nccn.map((gene) => gene.label).join(" ")
+                : "";
+        },
+        (cell) => {
+            return cell.genes_panel
+                ? cell.genes_panel.map((gene) => gene.label).join(" ")
                 : "";
         },
         (cell) => {
@@ -3652,7 +3662,12 @@ tables["inspection_project"] = {
     ],
     normalize: (obj) => {
         obj["label"] = String(obj["label"]);
-        obj["genes"] = obj["genes"] ? obj["genes"].split(",") : [];
+        obj["genes_nccn"] = obj["genes_nccn"]
+            ? obj["genes_nccn"].split(",").map((g) => g.trim())
+            : [];
+        obj["genes_panel"] = obj["genes_panel"]
+            ? obj["genes_panel"].split(",").map((g) => g.trim())
+            : [];
         return obj;
     },
     formComponents: [
@@ -3663,10 +3678,17 @@ tables["inspection_project"] = {
         },
         {
             label: "NCCN基因列表",
-            key: "genes",
+            key: "genes_nccn",
             inputType: "multiselect",
             query: query.NCCN_GENES_GENES_GET,
             queryKey: "nccngenesgenes",
+        },
+        {
+            label: "Panel基因列表",
+            key: "genes_panel",
+            inputType: "multiselect",
+            query: query.GENES_GET,
+            queryKey: "genes",
         },
     ],
 };

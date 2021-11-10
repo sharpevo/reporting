@@ -769,7 +769,11 @@ const INSPECTION_PROJECTS_GET = gql`
         inspectionprojects {
             id
             label
-            genes {
+            genes_nccn {
+                id
+                label
+            }
+            genes_panel {
                 id
                 label
             }
