@@ -2246,21 +2246,27 @@ module.exports = {
         }
     },
 
-    newInspectionProject: async (parent, { label, genes }, { models }) => {
+    newInspectionProject: async (
+        parent,
+        { label, genes_nccn, genes_panel },
+        { models }
+    ) => {
         let obj = {
             label: label,
         };
-        if (genes && genes.length > 0) {
+        if (genes_nccn && genes_nccn.length > 0) {
             const geneds = await models.Gene.find({
-                name: { $in: genes },
+                name: { $in: genes_nccn },
             });
             let geneids = [];
             geneds.forEach((gened, index) => {
                 if (!gened) {
-                    throw new Error(`gene ${genes[index]} does not exist`);
+                    throw new Error(
+                        `nccn gene ${genes_nccn[index]} does not exist`
+                    );
                 }
             });
-            genes.forEach((gene) => {
+            genes_nccn.forEach((gene) => {
                 var found = geneds.find((gened) => gened.name == gene);
                 if (found) {
                     geneids.push(found._id);
@@ -2272,34 +2278,42 @@ module.exports = {
             geneids.forEach((geneid, index) => {
                 if (!nccnds.find((nccn) => geneid.equals(nccn.gene))) {
                     throw new Error(
-                        `gene ${genes[index]} is not valid nccn gene`
+                        `nccn gene ${genes_nccn[index]} is not valid nccn gene`
                     );
                 }
             });
-            obj.genes = geneids;
+            obj.genes_nccn = geneids;
+        }
+        if (genes_panel && genes_panel.length > 0) {
+            const geneds = await models.Gene.find({
+                name: { $in: genes_panel },
+            });
+            obj.genes_panel = geneds.map((g) => g._id);
         }
         return await models.InspectionProject.create(obj);
     },
     updateInspectionProject: async (
         parent,
-        { id, label, genes },
+        { id, label, genes_nccn, genes_panel },
         { models }
     ) => {
         let obj = new models.InspectionProject({
             _id: id,
             label: label,
         });
-        if (genes && genes.length > 0) {
+        if (genes_nccn && genes_nccn.length > 0) {
             const geneds = await models.Gene.find({
-                name: { $in: genes },
+                name: { $in: genes_nccn },
             });
             let geneids = [];
             geneds.forEach((gened, index) => {
                 if (!gened) {
-                    throw new Error(`gene ${genes[index]} does not exist`);
+                    throw new Error(
+                        `nccn gene ${genes_nccn[index]} does not exist`
+                    );
                 }
             });
-            genes.forEach((gene) => {
+            genes_nccn.forEach((gene) => {
                 var found = geneds.find((gened) => gened.name == gene);
                 if (found) {
                     geneids.push(found._id);
@@ -2309,14 +2323,19 @@ module.exports = {
                 gene: { $in: geneids },
             });
             geneids.forEach((geneid, index) => {
-                var found = nccnds.find((nccn) => geneid.equals(nccn.gene));
-                if (!found) {
+                if (!nccnds.find((nccn) => geneid.equals(nccn.gene))) {
                     throw new Error(
-                        `gene ${genes[index]} is not valid nccn gene`
+                        `nccn gene ${genes_nccn[index]} is not valid nccn gene`
                     );
                 }
             });
-            obj.genes = geneids;
+            obj.genes_nccn = geneids;
+        }
+        if (genes_panel && genes_panel.length > 0) {
+            const geneds = await models.Gene.find({
+                name: { $in: genes_panel },
+            });
+            obj.genes_panel = geneds.map((g) => g._id);
         }
         obj.isNew = false;
         try {
