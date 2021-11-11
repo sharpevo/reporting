@@ -2288,7 +2288,14 @@ module.exports = {
             const geneds = await models.Gene.find({
                 name: { $in: genes_panel },
             });
-            obj.genes_panel = geneds.map((g) => g._id);
+            var panelGeneids = [];
+            genes_panel.forEach((g) => {
+                var found = geneds.find((gened) => gened.name == g);
+                if (found) {
+                    panelGeneids.push(found._id);
+                }
+            });
+            obj.genes_panel = panelGeneids;
         }
         return await models.InspectionProject.create(obj);
     },
@@ -2335,7 +2342,14 @@ module.exports = {
             const geneds = await models.Gene.find({
                 name: { $in: genes_panel },
             });
-            obj.genes_panel = geneds.map((g) => g._id);
+            var panelGeneids = [];
+            genes_panel.forEach((g) => {
+                var found = geneds.find((gened) => gened.name == g);
+                if (found) {
+                    panelGeneids.push(found._id);
+                }
+            });
+            obj.genes_panel = panelGeneids;
         }
         obj.isNew = false;
         try {
