@@ -75,7 +75,7 @@ const databases = {
     其他: [
         {
             name: "遗传变异数据库",
-            key: "",
+            key: "hrdt",
         },
         {
             name: "化疗数据库",

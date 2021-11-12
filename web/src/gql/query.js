@@ -1028,6 +1028,53 @@ const REPORT_REPORTS_GET = gql`
     }
 `;
 
+const HRDTS_GET = gql`
+    query hrdts {
+        hrdts {
+            id
+            mutation_type
+            chr
+            start
+            end
+            ref
+            alt
+            vcf_mut
+            func_refgene
+            gene_name
+            gene_detail_refgene
+            exonic_func_refgene
+            aachange_refgene
+            func_hgvs
+            aachange_hgvs
+            cytoband
+            avsnp150
+            clnalleleid
+            clndn
+            clndisdb
+            clnrevstat
+            clnsig
+            cosmic90
+            hgmd
+            hgmd_pmid
+            omim_inheritance
+            omim_disease
+            hgmd_disease
+            clinical_detail
+            hrdt_analysis
+            creator {
+                id
+                name
+            }
+            approver {
+                id
+                name
+            }
+            createdAt
+            updatedAt
+        }
+    }
+`;
+
 export {
     GET_TABLES,
     GENE_CLASSES_GET,
@@ -1068,4 +1115,5 @@ export {
     REPORT_TEMPLATES_GET,
     REPORT_TASKS_GET,
     REPORT_REPORTS_GET,
+    HRDTS_GET,
 };

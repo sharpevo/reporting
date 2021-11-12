@@ -1667,6 +1667,150 @@ const REPORT_REPORTS_DELETE = gql`
     }
 `;
 
+const HRDT_NEW = gql`
+    mutation newHrdt(
+        $mutation_type: String
+        $chr: String!
+        $start: String!
+        $end: String!
+        $ref: String
+        $alt: String!
+        $vcf_mut: String
+        $func_refgene: String
+        $gene_name: String
+        $gene_detail_refgene: String
+        $exonic_func_refgene: String
+        $aachange_refgene: String
+        $func_hgvs: String
+        $aachange_hgvs: String
+        $cytoband: String
+        $avsnp150: String
+        $clnalleleid: String
+        $clndn: String
+        $clndisdb: String
+        $clnrevstat: String
+        $clnsig: String
+        $cosmic90: String
+        $hgmd: String
+        $hgmd_pmid: String
+        $omim_inheritance: String
+        $omim_disease: String
+        $hgmd_disease: String
+        $clinical_detail: String
+        $hrdt_analysis: String
+    ) {
+        newHrdt(
+            mutation_type: $mutation_type
+            chr: $chr
+            start: $start
+            end: $end
+            ref: $ref
+            alt: $alt
+            vcf_mut: $vcf_mut
+            func_refgene: $func_refgene
+            gene_name: $gene_name
+            gene_detail_refgene: $gene_detail_refgene
+            exonic_func_refgene: $exonic_func_refgene
+            aachange_refgene: $aachange_refgene
+            func_hgvs: $func_hgvs
+            aachange_hgvs: $aachange_hgvs
+            cytoband: $cytoband
+            avsnp150: $avsnp150
+            clnalleleid: $clnalleleid
+            clndn: $clndn
+            clndisdb: $clndisdb
+            clnrevstat: $clnrevstat
+            clnsig: $clnsig
+            cosmic90: $cosmic90
+            hgmd: $hgmd
+            hgmd_pmid: $hgmd_pmid
+            omim_inheritance: $omim_inheritance
+            omim_disease: $omim_disease
+            hgmd_disease: $hgmd_disease
+            clinical_detail: $clinical_detail
+            hrdt_analysis: $hrdt_analysis
+        ) {
+            id
+        }
+    }
+`;
+
+const HRDT_UPDATE = gql`
+    mutation updateHrdt(
+        $id: String!
+        $mutation_type: String
+        $chr: String!
+        $start: String!
+        $end: String!
+        $ref: String
+        $alt: String!
+        $vcf_mut: String
+        $func_refgene: String
+        $gene_name: String
+        $gene_detail_refgene: String
+        $exonic_func_refgene: String
+        $aachange_refgene: String
+        $func_hgvs: String
+        $aachange_hgvs: String
+        $cytoband: String
+        $avsnp150: String
+        $clnalleleid: String
+        $clndn: String
+        $clndisdb: String
+        $clnrevstat: String
+        $clnsig: String
+        $cosmic90: String
+        $hgmd: String
+        $hgmd_pmid: String
+        $omim_inheritance: String
+        $omim_disease: String
+        $hgmd_disease: String
+        $clinical_detail: String
+        $hrdt_analysis: String
+    ) {
+        updateHrdt(
+            id: $id
+            mutation_type: $mutation_type
+            chr: $chr
+            start: $start
+            end: $end
+            ref: $ref
+            alt: $alt
+            vcf_mut: $vcf_mut
+            func_refgene: $func_refgene
+            gene_name: $gene_name
+            gene_detail_refgene: $gene_detail_refgene
+            exonic_func_refgene: $exonic_func_refgene
+            aachange_refgene: $aachange_refgene
+            func_hgvs: $func_hgvs
+            aachange_hgvs: $aachange_hgvs
+            cytoband: $cytoband
+            avsnp150: $avsnp150
+            clnalleleid: $clnalleleid
+            clndn: $clndn
+            clndisdb: $clndisdb
+            clnrevstat: $clnrevstat
+            clnsig: $clnsig
+            cosmic90: $cosmic90
+            hgmd: $hgmd
+            hgmd_pmid: $hgmd_pmid
+            omim_inheritance: $omim_inheritance
+            omim_disease: $omim_disease
+            hgmd_disease: $hgmd_disease
+            clinical_detail: $clinical_detail
+            hrdt_analysis: $hrdt_analysis
+        ) {
+            id
+        }
+    }
+`;
+
+const HRDTS_DELETE = gql`
+    mutation deleteHrdts($ids: [ID!]!) {
+        deleteHrdts(ids: $ids)
+    }
+`;
+
 export {
     NEW_TABLE,
     DELETE_TABLE,
@@ -1771,4 +1915,7 @@ export {
     REPORT_REPORT_NEW,
     REPORT_REPORT_UPDATE,
     REPORT_REPORTS_DELETE,
+    HRDT_NEW,
+    HRDT_UPDATE,
+    HRDTS_DELETE,
 };
