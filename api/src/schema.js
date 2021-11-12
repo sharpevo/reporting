@@ -527,6 +527,45 @@ module.exports = gql`
         updatedAt: DateTime
     }
 
+    type Hrdt {
+        id: ID!
+        mutation_type: String
+        chr: String
+        start: String
+        end: String
+        ref: String
+        alt: String
+        vcf_mut: String
+        func_refgene: String
+        gene_name: String
+        gene_detail_refgene: String
+        exonic_func_refgene: String
+        aachange_refgene: String
+        func_hgvs: String
+        aachange_hgvs: String
+        cytoband: String
+        avsnp150: String
+        clnalleleid: String
+        clndn: String
+        clndisdb: String
+        clnrevstat: String
+        clnsig: String
+        cosmic90: String
+        hgmd: String
+        hgmd_pmid: String
+        omim_inheritance: String
+        omim_disease: String
+        hgmd_disease: String
+        clinical_detail: String
+        hrdt_analysis: String
+        creator: User
+        updator: User
+        approver: User
+        status: Int
+        createdAt: DateTime
+        updatedAt: DateTime
+    }
+
     type Query {
         tables: [Table!]!
         table(id: ID!): Table!
@@ -639,6 +678,9 @@ module.exports = gql`
 
         reportreports: [ReportReport]!
         reportreport(id: ID!): ReportReport
+
+        hrdts: [Hrdt]!
+        hrdt(id: ID!): Hrdt
     }
 
     type Mutation {
@@ -1221,5 +1263,70 @@ module.exports = gql`
         updateReportReport(id: String!, task: String!): ReportReport
         updateReportReportFile(id: String!, file: String!): ReportReport
         deleteReportReports(ids: [ID!]!): Boolean
+
+        newHrdt(
+            mutation_type: String
+            chr: String!
+            start: String!
+            end: String!
+            ref: String
+            alt: String!
+            vcf_mut: String
+            func_refgene: String
+            gene_name: String
+            gene_detail_refgene: String
+            exonic_func_refgene: String
+            aachange_refgene: String
+            func_hgvs: String
+            aachange_hgvs: String
+            cytoband: String
+            avsnp150: String
+            clnalleleid: String
+            clndn: String
+            clndisdb: String
+            clnrevstat: String
+            clnsig: String
+            cosmic90: String
+            hgmd: String
+            hgmd_pmid: String
+            omim_inheritance: String
+            omim_disease: String
+            hgmd_disease: String
+            clinical_detail: String
+            hrdt_analysis: String
+        ): Hrdt
+        updateHrdt(
+            id: String!
+            mutation_type: String
+            chr: String!
+            start: String!
+            end: String!
+            ref: String
+            alt: String!
+            vcf_mut: String
+            func_refgene: String
+            gene_name: String
+            gene_detail_refgene: String
+            exonic_func_refgene: String
+            aachange_refgene: String
+            func_hgvs: String
+            aachange_hgvs: String
+            cytoband: String
+            avsnp150: String
+            clnalleleid: String
+            clndn: String
+            clndisdb: String
+            clnrevstat: String
+            clnsig: String
+            cosmic90: String
+            hgmd: String
+            hgmd_pmid: String
+            omim_inheritance: String
+            omim_disease: String
+            hgmd_disease: String
+            clinical_detail: String
+            hrdt_analysis: String
+        ): Hrdt
+        deleteHrdts(ids: [ID!]!): Boolean
     }
 `;

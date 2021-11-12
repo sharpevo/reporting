@@ -28,6 +28,7 @@ const {
 const ReportSampleQc = require("./report_sample_qc");
 const ReportTask = require("./report_task");
 const ReportReport = require("./report_report");
+const Hrdt = require("./hrdt");
 const models = {
     GeneClass,
     Gene,
@@ -63,6 +64,7 @@ const models = {
     ReportTemplate,
     ReportTask,
     ReportReport,
+    Hrdt,
 };
 
 module.exports = models;

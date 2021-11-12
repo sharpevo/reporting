@@ -301,4 +301,11 @@ module.exports = {
     reportreport: async (parent, { id }, { models }) => {
         return await models.ReportReport.findById(id);
     },
+
+    hrdts: async (parent, args, { models }) => {
+        return await models.Hrdt.find({});
+    },
+    hrdt: async (parent, { id }, { models }) => {
+        return await models.Hrdt.findById(id);
+    },
 };

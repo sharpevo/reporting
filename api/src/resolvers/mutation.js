@@ -2994,4 +2994,159 @@ module.exports = {
             throw new Error(err);
         }
     },
+
+    newHrdt: async (
+        parent,
+        {
+            mutation_type,
+            chr,
+            start,
+            end,
+            ref,
+            alt,
+            vcf_mut,
+            func_refgene,
+            gene_name,
+            gene_detail_refgene,
+            exonic_func_refgene,
+            aachange_refgene,
+            func_hgvs,
+            aachange_hgvs,
+            cytoband,
+            avsnp150,
+            clnalleleid,
+            clndn,
+            clndisdb,
+            clnrevstat,
+            clnsig,
+            cosmic90,
+            hgmd,
+            hgmd_pmid,
+            omim_inheritance,
+            omim_disease,
+            hgmd_disease,
+            clinical_detail,
+            hrdt_analysis,
+        },
+        { models }
+    ) => {
+        return await models.Hrdt.create({
+            mutation_type: mutation_type,
+            chr: chr,
+            start: start,
+            end: end,
+            ref: ref,
+            alt: alt,
+            vcf_mut: vcf_mut,
+            func_refgene: func_refgene,
+            gene_name: gene_name,
+            gene_detail_refgene: gene_detail_refgene,
+            exonic_func_refgene: exonic_func_refgene,
+            aachange_refgene: aachange_refgene,
+            func_hgvs: func_hgvs,
+            aachange_hgvs: aachange_hgvs,
+            cytoband: cytoband,
+            avsnp150: avsnp150,
+            clnalleleid: clnalleleid,
+            clndn: clndn,
+            clndisdb: clndisdb,
+            clnrevstat: clnrevstat,
+            clnsig: clnsig,
+            cosmic90: cosmic90,
+            hgmd: hgmd,
+            hgmd_pmid: hgmd_pmid,
+            omim_inheritance: omim_inheritance,
+            omim_disease: omim_disease,
+            hgmd_disease: hgmd_disease,
+            clinical_detail: clinical_detail,
+            hrdt_analysis: hrdt_analysis,
+        });
+    },
+    updateHrdt: async (
+        parent,
+        {
+            id,
+            mutation_type,
+            chr,
+            start,
+            end,
+            ref,
+            alt,
+            vcf_mut,
+            func_refgene,
+            gene_name,
+            gene_detail_refgene,
+            exonic_func_refgene,
+            aachange_refgene,
+            func_hgvs,
+            aachange_hgvs,
+            cytoband,
+            avsnp150,
+            clnalleleid,
+            clndn,
+            clndisdb,
+            clnrevstat,
+            clnsig,
+            cosmic90,
+            hgmd,
+            hgmd_pmid,
+            omim_inheritance,
+            omim_disease,
+            hgmd_disease,
+            clinical_detail,
+            hrdt_analysis,
+        },
+        { models }
+    ) => {
+        let obj = new models.Hrdt({
+            _id: id,
+            mutation_type: mutation_type,
+            chr: chr,
+            start: start,
+            end: end,
+            ref: ref,
+            alt: alt,
+            vcf_mut: vcf_mut,
+            func_refgene: func_refgene,
+            gene_name: gene_name,
+            gene_detail_refgene: gene_detail_refgene,
+            exonic_func_refgene: exonic_func_refgene,
+            aachange_refgene: aachange_refgene,
+            func_hgvs: func_hgvs,
+            aachange_hgvs: aachange_hgvs,
+            cytoband: cytoband,
+            avsnp150: avsnp150,
+            clnalleleid: clnalleleid,
+            clndn: clndn,
+            clndisdb: clndisdb,
+            clnrevstat: clnrevstat,
+            clnsig: clnsig,
+            cosmic90: cosmic90,
+            hgmd: hgmd,
+            hgmd_pmid: hgmd_pmid,
+            omim_inheritance: omim_inheritance,
+            omim_disease: omim_disease,
+            hgmd_disease: hgmd_disease,
+            clinical_detail: clinical_detail,
+            hrdt_analysis: hrdt_analysis,
+        });
+        obj.isNew = false;
+        try {
+            return await obj.save();
+        } catch (err) {
+            console.log(err);
+            throw new Error(err);
+        }
+    },
+    deleteHrdts: async (parent, { ids }, { models }) => {
+        try {
+            const result = await models.Hrdt.deleteMany({
+                _id: { $in: ids },
+            });
+            return true;
+        } catch (err) {
+            console.log(err);
+            return false;
+        }
+    },
 };
