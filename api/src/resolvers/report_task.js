@@ -12,4 +12,9 @@ module.exports = {
     label: async (reportTask, args, { models }) => {
         return reportTask._id;
     },
+    report: async (reportTask, args, { models }) => {
+        return await models.ReportReport.findOne({
+            task: reportTask._id,
+        }).populate("pdf_file");
+    },
 };
