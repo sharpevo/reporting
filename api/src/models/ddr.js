@@ -15,6 +15,24 @@ const ddrClassSchema = new mongoose.Schema(
 
 const DdrClass = mongoose.model("DdrClass", ddrClassSchema);
 
+const ddrPathwayClassSchema = new mongoose.Schema(
+    {
+        label: {
+            type: String,
+            unique: true,
+            required: true,
+        },
+    },
+    {
+        timestamps: true,
+    }
+);
+
+const DdrPathwayClass = mongoose.model(
+    "DdrPathwayClass",
+    ddrPathwayClassSchema
+);
+
 const ddrSchema = new mongoose.Schema(
     {
         gene: {
@@ -24,6 +42,10 @@ const ddrSchema = new mongoose.Schema(
         ddrclass: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "DdrClass",
+        },
+        pathwayclass: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "DdrPathwayClass",
         },
         result: {
             type: String,
@@ -63,5 +85,6 @@ const Ddr = mongoose.model("Ddr", ddrSchema);
 
 module.exports = {
     DdrClass,
+    DdrPathwayClass,
     Ddr,
 };

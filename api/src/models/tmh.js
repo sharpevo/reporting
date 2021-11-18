@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
 const tmhSchema = new mongoose.Schema(
     {
@@ -22,11 +22,11 @@ const tmhSchema = new mongoose.Schema(
         },
         creator: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: "User",
+            ref: 'User',
         },
         approver: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: "User",
+            ref: 'User',
         },
         status: {
             type: Number,
@@ -34,10 +34,10 @@ const tmhSchema = new mongoose.Schema(
     },
     {
         timestamps: true,
-    }
+    },
 );
 
-tmhSchema.index({ value: 1, result: 1 }, { unique: true });
-const Tmh = mongoose.model("Tmh", tmhSchema);
+tmhSchema.index({ item: 1, result: 1 }, { unique: true });
+const Tmh = mongoose.model('Tmh', tmhSchema);
 
 module.exports = Tmh;

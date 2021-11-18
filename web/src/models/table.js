@@ -61,7 +61,7 @@ tables["gene"] = {
         },
         {
             label: "分类",
-            key: "geneclass",
+            key: "geneclasses",
             exportable: true,
         },
         {
@@ -120,7 +120,9 @@ tables["gene"] = {
             return row.name;
         },
         (row) => {
-            return row.geneclass ? row.geneclass.label : "-";
+            return row.geneclasses
+                .map((geneclass) => geneclass.label)
+                .join(" ");
         },
         (row) => {
             return trimText(row.source);
@@ -171,8 +173,8 @@ tables["gene"] = {
         },
         {
             label: "分类",
-            key: "geneclass",
-            inputType: "singleselect",
+            key: "geneclasses",
+            inputType: "multiselect",
             query: query.GENE_CLASSES_GET,
             queryKey: "geneclasses",
         },
@@ -401,6 +403,11 @@ tables["ddr"] = {
             exportable: true,
         },
         {
+            label: "通路分类",
+            key: "pathwayclass",
+            exportable: true,
+        },
+        {
             label: "检测结果",
             key: "result",
             exportable: true,
@@ -454,6 +461,9 @@ tables["ddr"] = {
             return cell.ddrclass ? cell.ddrclass.label : "-";
         },
         (cell) => {
+            return cell.pathwayclass ? cell.pathwayclass.label : "-";
+        },
+        (cell) => {
             return cell.result;
         },
         (cell) => {
@@ -504,6 +514,13 @@ tables["ddr"] = {
             inputType: "singleselect",
             query: query.DDR_CLASSES_GET,
             queryKey: "ddrclasses",
+        },
+        {
+            label: "通路分类",
+            key: "pathwayclass",
+            inputType: "singleselect",
+            query: query.DDR_PATHWAY_CLASSES_GET,
+            queryKey: "ddrpathwayclasses",
         },
         {
             label: "检测结果",
@@ -3068,6 +3085,59 @@ tables["ddrclass"] = {
     ],
 };
 
+tables["ddrpathwayclass"] = {
+    query: {
+        gql: query.DDR_PATHWAY_CLASSES_GET,
+        key: "ddrpathwayclasses",
+    },
+    mutation: {
+        new: mutation.DDR_PATHWAY_CLASS_NEW,
+        delete: mutation.DDR_PATHWAY_CLASSES_DELETE,
+        update: mutation.DDR_PATHWAY_CLASS_UPDATE,
+    },
+    columns: [
+        {
+            label: "名称",
+            key: "label",
+            exportable: true,
+        },
+        {
+            label: "创建日期",
+            key: "createdAt",
+            exportable: false,
+        },
+        {
+            label: "修改日期",
+            key: "updatedAt",
+            exportable: false,
+        },
+    ],
+    cellFormatters: [
+        (cell) => {
+            return cell.label;
+        },
+        (cell) => {
+            return formatDate(cell.createdAt);
+        },
+        (cell) => {
+            return cell.createdAt == cell.updatedAt
+                ? "-"
+                : formatDate(cell.updatedAt);
+        },
+    ],
+    normalize: (obj) => {
+        obj["label"] = String(obj["label"]);
+        return obj;
+    },
+    formComponents: [
+        {
+            label: "名称",
+            key: "label",
+            inputType: "text",
+        },
+    ],
+};
+
 tables["mutationclass"] = {
     query: {
         gql: query.MUTATION_CLASSES_GET,
@@ -3547,6 +3617,16 @@ tables["inspection_project"] = {
             exportable: true,
         },
         {
+            label: "NCCN基因列表",
+            key: "genes_nccn",
+            exportable: true,
+        },
+        {
+            label: "Panel基因列表",
+            key: "genes_panel",
+            exportable: true,
+        },
+        {
             label: "创建日期",
             key: "createdAt",
             exportable: false,
@@ -3562,6 +3642,16 @@ tables["inspection_project"] = {
             return cell.label;
         },
         (cell) => {
+            return cell.genes_nccn
+                ? cell.genes_nccn.map((gene) => gene.label).join(" ")
+                : "";
+        },
+        (cell) => {
+            return cell.genes_panel
+                ? cell.genes_panel.map((gene) => gene.label).join(" ")
+                : "";
+        },
+        (cell) => {
             return formatDate(cell.createdAt);
         },
         (cell) => {
@@ -3572,6 +3662,12 @@ tables["inspection_project"] = {
     ],
     normalize: (obj) => {
         obj["label"] = String(obj["label"]);
+        obj["genes_nccn"] = obj["genes_nccn"]
+            ? obj["genes_nccn"].split(",").map((g) => g.trim())
+            : [];
+        obj["genes_panel"] = obj["genes_panel"]
+            ? obj["genes_panel"].split(",").map((g) => g.trim())
+            : [];
         return obj;
     },
     formComponents: [
@@ -3579,6 +3675,20 @@ tables["inspection_project"] = {
             label: "名称",
             key: "label",
             inputType: "text",
+        },
+        {
+            label: "NCCN基因列表",
+            key: "genes_nccn",
+            inputType: "multiselect",
+            query: query.NCCN_GENES_GENES_GET,
+            queryKey: "nccngenesgenes",
+        },
+        {
+            label: "Panel基因列表",
+            key: "genes_panel",
+            inputType: "multiselect",
+            query: query.GENES_GET,
+            queryKey: "genes",
         },
     ],
 };
@@ -3958,6 +4068,7 @@ tables["report_sample"] = {
             previewComponent: (filepath) => {
                 return <FilePreview filePath={filepath} />;
             },
+            disabled: true,
         },
     ],
 };
@@ -4140,11 +4251,11 @@ tables["report_task"] = {
             key: "task_status",
             exportable: true,
         },
-        //{
-        //label: "报告状态",
-        //key: "task_report",
-        //exportable: false,
-        //},
+        {
+            label: "报告",
+            key: "report",
+            exportable: false,
+        },
     ],
     cellFormatters: [
         (cell) => {
@@ -4176,6 +4287,19 @@ tables["report_task"] = {
                     return "已完成";
                 default:
                     return "异常";
+            }
+        },
+        (cell) => {
+            if (!cell.report) {
+                return "-";
+            }
+            switch (cell.report.report_status) {
+                case -1:
+                    return "未生成";
+                case 0:
+                    return (<FilePreview filePath={cell.report.pdf_file.path} />)
+                default:
+                    return cell.report.error_message;
             }
         },
     ],
@@ -4338,6 +4462,465 @@ tables["report_report"] = {
             inputType: "singleselect",
             query: query.REPORT_TASKS_GET,
             queryKey: "reporttasks",
+        },
+    ],
+};
+
+tables["hrdt"] = {
+    query: {
+        gql: query.HRDTS_GET,
+        key: "hrdts",
+    },
+    mutation: {
+        new: mutation.HRDT_NEW,
+        delete: mutation.HRDTS_DELETE,
+        update: mutation.HRDT_UPDATE,
+    },
+    columns: [
+        {
+            label: "变异类型",
+            key: "mutation_type",
+            exportable: true,
+        },
+        {
+            label: "基因所处染色体位置",
+            key: "chr",
+            exportable: true,
+        },
+        {
+            label: "Start",
+            key: "start",
+            exportable: true,
+        },
+        {
+            label: "End",
+            key: "end",
+            exportable: true,
+        },
+        {
+            label: "Ref",
+            key: "ref",
+            exportable: true,
+        },
+        {
+            label: "Alt",
+            key: "alt",
+            exportable: true,
+        },
+        {
+            label: "Vcf_mut",
+            key: "vcf_mut",
+            exportable: true,
+        },
+        {
+            label: "Func.refGene",
+            key: "func_refgene",
+            exportable: true,
+        },
+        {
+            label: "基因名称",
+            key: "gene_name",
+            exportable: true,
+        },
+        {
+            label: "GeneDetail.refGene",
+            key: "gene_detail_refgene",
+            exportable: true,
+        },
+        {
+            label: "ExonicFunc.refGene",
+            key: "exonic_func_refgene",
+            exportable: true,
+        },
+        {
+            label: "AAChange.refGene",
+            key: "aachange_refgene",
+            exportable: true,
+        },
+        {
+            label: "Func.HGVS",
+            key: "func_hgvs",
+            exportable: true,
+        },
+        {
+            label: "AAChange.HGVS",
+            key: "aachange_hgvs",
+            exportable: true,
+        },
+        {
+            label: "cytoBand",
+            key: "cytoband",
+            exportable: true,
+        },
+        {
+            label: "avsnp150",
+            key: "avsnp150",
+            exportable: true,
+        },
+        {
+            label: "CLNALLELEID",
+            key: "clnalleleid",
+            exportable: true,
+        },
+        {
+            label: "CLNDN",
+            key: "clndn",
+            exportable: true,
+        },
+        {
+            label: "CLNDISDB",
+            key: "clndisdb",
+            exportable: true,
+        },
+        {
+            label: "CLNREVSTAT",
+            key: "clnrevstat",
+            exportable: true,
+        },
+        {
+            label: "CLNSIG",
+            key: "clnsig",
+            exportable: true,
+        },
+        {
+            label: "cosmic90",
+            key: "cosmic90",
+            exportable: true,
+        },
+        {
+            label: "HGMD",
+            key: "hgmd",
+            exportable: true,
+        },
+        {
+            label: "HGMDpmid",
+            key: "hgmd_pmid",
+            exportable: true,
+        },
+        {
+            label: "OMIM_Inheritance",
+            key: "omim_inheritance",
+            exportable: true,
+        },
+        {
+            label: "OMIM_Disease",
+            key: "omim_disease",
+            exportable: true,
+        },
+        {
+            label: "HGMD_Disease",
+            key: "hgmd_disease",
+            exportable: true,
+        },
+        {
+            label: "临床意义",
+            key: "clinical_detail",
+            exportable: true,
+        },
+        {
+            label: "遗传变异解析",
+            key: "hrdt_analysis",
+            exportable: true,
+        },
+        {
+            label: "解读人",
+            key: "creator",
+            exportable: false,
+        },
+        {
+            label: "审核人",
+            key: "approver",
+            exportable: false,
+        },
+    ],
+    cellFormatters: [
+        (cell) => {
+            return cell.mutation_type;
+        },
+        (cell) => {
+            return cell.chr;
+        },
+        (cell) => {
+            return cell.start;
+        },
+        (cell) => {
+            return cell.end;
+        },
+        (cell) => {
+            return cell.ref;
+        },
+        (cell) => {
+            return cell.alt;
+        },
+        (cell) => {
+            return cell.vcf_mut;
+        },
+        (cell) => {
+            return cell.func_refgene;
+        },
+        (cell) => {
+            return cell.gene_name;
+        },
+        (cell) => {
+            return cell.gene_detail_refgene;
+        },
+        (cell) => {
+            return cell.exonic_func_refgene;
+        },
+        (cell) => {
+            return cell.aachange_refgene;
+        },
+        (cell) => {
+            return cell.func_hgvs;
+        },
+        (cell) => {
+            return cell.aachange_hgvs;
+        },
+        (cell) => {
+            return cell.cytoband;
+        },
+        (cell) => {
+            return cell.avsnp150;
+        },
+        (cell) => {
+            return cell.clnalleleid;
+        },
+        (cell) => {
+            return cell.clndn;
+        },
+        (cell) => {
+            return cell.clndisdb;
+        },
+        (cell) => {
+            return cell.clnrevstat;
+        },
+        (cell) => {
+            return cell.clnsig;
+        },
+        (cell) => {
+            return cell.cosmic90;
+        },
+        (cell) => {
+            return cell.hgmd;
+        },
+        (cell) => {
+            return cell.hgmd_pmid;
+        },
+        (cell) => {
+            return cell.omim_inheritance;
+        },
+        (cell) => {
+            return cell.omim_disease;
+        },
+        (cell) => {
+            return cell.hgmd_disease;
+        },
+        (cell) => {
+            return cell.clinical_detail;
+        },
+        (cell) => {
+            return cell.hrdt_analysis;
+        },
+        (cell) => {
+            return cell.creator ? cell.creator.name : "-";
+        },
+        //(cell) => {
+        //return formatDate(cell.createdAt);
+        //},
+        //(cell) => {
+        //return cell.createdAt == cell.updatedAt
+        //? "-"
+        //: formatDate(cell.updatedAt);
+        //},
+        //(cell) => {
+        //return cell.status ? "已审核" : "未审核";
+        //},
+        (cell) => {
+            return cell.aprrover ? cell.approver.name : "-";
+        },
+    ],
+    normalize: (obj) => {
+        var stringProp = [
+            "mutation_type",
+            "chr",
+            "start",
+            "end",
+            "ref",
+            "alt",
+            "vcf_mut",
+            "func_refgene",
+            "gene_name",
+            "gene_detail_refgene",
+            "exonic_func_refgene",
+            "aachange_refgene",
+            "func_hgvs",
+            "aachange_hgvs",
+            "cytoband",
+            "avsnp150",
+            "clnalleleid",
+            "clndn",
+            "clndisdb",
+            "clnrevstat",
+            "clnsig",
+            "cosmic90",
+            "hgmd",
+            "hgmd_pmid",
+            "omim_inheritance",
+            "omim_disease",
+            "hgmd_disease",
+            "clinical_detail",
+            "hrdt_analysis",
+        ];
+        stringProp.forEach((p) => {
+            obj[p] = String(obj[p]);
+        });
+        return obj;
+    },
+    formComponents: [
+        {
+            label: "变异类型",
+            key: "mutation_type",
+            inputType: "text",
+        },
+        {
+            label: "基因所处染色体位置",
+            key: "chr",
+            inputType: "text",
+        },
+        {
+            label: "Start",
+            key: "start",
+            inputType: "text",
+        },
+        {
+            label: "End",
+            key: "end",
+            inputType: "text",
+        },
+        {
+            label: "Ref",
+            key: "ref",
+            inputType: "text",
+        },
+        {
+            label: "Alt",
+            key: "alt",
+            inputType: "text",
+        },
+        {
+            label: "Vcf_mut",
+            key: "vcf_mut",
+            inputType: "text",
+        },
+        {
+            label: "Func.refGene",
+            key: "func_refgene",
+            inputType: "text",
+        },
+        {
+            label: "基因名称",
+            key: "gene_name",
+            inputType: "text",
+        },
+        {
+            label: "GeneDetail.refGene",
+            key: "gene_detail_refgene",
+            inputType: "text",
+        },
+        {
+            label: "ExonicFunc.refGene",
+            key: "exonic_func_refgene",
+            inputType: "text",
+        },
+        {
+            label: "AAChange.refGene",
+            key: "aachange_refgene",
+            inputType: "text",
+        },
+        {
+            label: "Func.HGVS",
+            key: "func_hgvs",
+            inputType: "text",
+        },
+        {
+            label: "AAChange.HGVS",
+            key: "aachange_hgvs",
+            inputType: "text",
+        },
+        {
+            label: "cytoBand",
+            key: "cytoband",
+            inputType: "text",
+        },
+        {
+            label: "avsnp150",
+            key: "avsnp150",
+            inputType: "text",
+        },
+        {
+            label: "CLNALLELEID",
+            key: "clnalleleid",
+            inputType: "text",
+        },
+        {
+            label: "CLNDN",
+            key: "clndn",
+            inputType: "text",
+        },
+        {
+            label: "CLNDISDB",
+            key: "clndisdb",
+            inputType: "text",
+        },
+        {
+            label: "CLNREVSTAT",
+            key: "clnrevstat",
+            inputType: "text",
+        },
+        {
+            label: "CLNSIG",
+            key: "clnsig",
+            inputType: "text",
+        },
+        {
+            label: "cosmic90",
+            key: "cosmic90",
+            inputType: "text",
+        },
+        {
+            label: "HGMD",
+            key: "hgmd",
+            inputType: "text",
+        },
+        {
+            label: "HGMDpmid",
+            key: "hgmd_pmid",
+            inputType: "text",
+        },
+        {
+            label: "OMIM_Inheritance",
+            key: "omim_inheritance",
+            inputType: "text",
+        },
+        {
+            label: "OMIM_Disease",
+            key: "omim_disease",
+            inputType: "text",
+        },
+        {
+            label: "HGMD_Disease",
+            key: "hgmd_disease",
+            inputType: "text",
+        },
+        {
+            label: "临床意义",
+            key: "clinical_detail",
+            inputType: "text",
+        },
+        {
+            label: "遗传变异解析",
+            key: "hrdt_analysis",
+            inputType: "text",
         },
     ],
 };

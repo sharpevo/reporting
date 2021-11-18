@@ -3,6 +3,7 @@ const fs = require("fs");
 const { finished } = require("stream/promises");
 const path = require("path");
 const uuid = require("uuid");
+const reportUtil = require("../lib/report");
 
 module.exports = {
     newField: async (parent, args, { models }) => {
@@ -114,7 +115,7 @@ module.exports = {
         parent,
         {
             name,
-            geneclass,
+            geneclasses,
             source,
             is_wes,
             is_pancancer,
@@ -134,13 +135,17 @@ module.exports = {
             is_8glc: is_8glc,
             status: 0,
         };
-        if (geneclass) {
-            var geneclassd = await models.GeneClass.findOneAndUpdate(
-                { label: geneclass },
-                { label: geneclass },
-                { upsert: true, new: true }
-            );
-            obj.geneclass = geneclassd._id;
+        if (geneclasses) {
+            var geneclassids = [];
+            for (let geneclass of geneclasses) {
+                var geneclassd = await models.GeneClass.findOneAndUpdate(
+                    { label: geneclass },
+                    { label: geneclass },
+                    { upsert: true, new: true }
+                );
+                geneclassids.push(geneclassd._id);
+            }
+            obj.geneclasses = geneclassids;
         }
         try {
             return await models.Gene.create(obj);
@@ -154,7 +159,7 @@ module.exports = {
         {
             id,
             name,
-            geneclass,
+            geneclasses,
             source,
             is_wes,
             is_pancancer,
@@ -175,13 +180,17 @@ module.exports = {
             is_8glc: is_8glc,
             status: 0,
         });
-        if (geneclass) {
-            var geneclassd = await models.GeneClass.findOneAndUpdate(
-                { label: geneclass },
-                { label: geneclass },
-                { upsert: true, new: true }
-            );
-            obj.geneclass = geneclassd._id;
+        if (geneclasses) {
+            var geneclassids = [];
+            for (let geneclass of geneclasses) {
+                var geneclassd = await models.GeneClass.findOneAndUpdate(
+                    { label: geneclass },
+                    { label: geneclass },
+                    { upsert: true, new: true }
+                );
+                geneclassids.push(geneclassd._id);
+            }
+            obj.geneclasses = geneclassids;
         }
         obj.isNew = false;
         try {
@@ -292,7 +301,15 @@ module.exports = {
 
     newDdr: async (
         parent,
-        { gene, ddrclass, result, result_detail, literature, source },
+        {
+            gene,
+            ddrclass,
+            pathwayclass,
+            result,
+            result_detail,
+            literature,
+            source,
+        },
         { models }
     ) => {
         let obj = {
@@ -316,6 +333,14 @@ module.exports = {
             );
             obj.ddrclass = ddrclassd._id;
         }
+        if (pathwayclass) {
+            var pathwayclassd = await models.DdrPathwayClass.findOneAndUpdate(
+                { label: pathwayclass },
+                { label: pathwayclass },
+                { upsert: true, new: true }
+            );
+            obj.pathwayclass = pathwayclassd._id;
+        }
         try {
             return await models.Ddr.create(obj);
         } catch (err) {
@@ -325,7 +350,16 @@ module.exports = {
     },
     updateDdr: async (
         parent,
-        { id, gene, ddrclass, result, result_detail, literature, source },
+        {
+            id,
+            gene,
+            ddrclass,
+            pathwayclass,
+            result,
+            result_detail,
+            literature,
+            source,
+        },
         { models }
     ) => {
         let obj = new models.Ddr({
@@ -349,6 +383,15 @@ module.exports = {
                 { upsert: true, new: true }
             );
             obj.ddrclass = ddrclassd._id;
+        }
+        if (pathwayclass) {
+            var pathwayclassd = await models.DdrPathwayClass.findOneAndUpdate(
+                { label: pathwayclass },
+                { label: pathwayclass },
+                { upsert: true, new: true }
+            );
+            console.log(pathwayclassd);
+            obj.pathwayclass = pathwayclassd._id;
         }
         obj.isNew = false;
         try {
@@ -555,11 +598,12 @@ module.exports = {
             }
             // unique:
             if (mutationclass) {
-                const mutationclassd = await models.MutationClass.findOneAndUpdate(
-                    { label: mutationclass },
-                    { label: mutationclass },
-                    { upsert: true, new: true }
-                );
+                const mutationclassd =
+                    await models.MutationClass.findOneAndUpdate(
+                        { label: mutationclass },
+                        { label: mutationclass },
+                        { upsert: true, new: true }
+                    );
                 obj.mutationclass = mutationclassd._id;
             }
             return await models.MutationCancer.create(obj);
@@ -2044,6 +2088,38 @@ module.exports = {
         }
     },
 
+    newDdrPathwayClass: async (parent, { label }, { models }) => {
+        return await models.DdrPathwayClass.create({
+            label: label,
+        });
+    },
+    updateDdrPathwayClass: async (parent, { id, label }, { models }) => {
+        return await models.DdrPathwayClass.findOneAndUpdate(
+            {
+                _id: id,
+            },
+            {
+                $set: {
+                    label: label,
+                },
+            },
+            {
+                new: true,
+            }
+        );
+    },
+    deleteDdrPathwayClasses: async (parent, { ids }, { models }) => {
+        try {
+            const result = await models.DdrPathwayClass.deleteMany({
+                _id: { $in: ids },
+            });
+            return true;
+        } catch (err) {
+            console.log(err);
+            return false;
+        }
+    },
+
     newMutationClass: async (parent, { label }, { models }) => {
         return await models.MutationClass.create({
             label: label,
@@ -2172,25 +2248,118 @@ module.exports = {
         }
     },
 
-    newInspectionProject: async (parent, { label }, { models }) => {
-        return await models.InspectionProject.create({
+    newInspectionProject: async (
+        parent,
+        { label, genes_nccn, genes_panel },
+        { models }
+    ) => {
+        let obj = {
+            label: label,
+        };
+        if (genes_nccn && genes_nccn.length > 0) {
+            const geneds = await models.Gene.find({
+                name: { $in: genes_nccn },
+            });
+            let geneids = [];
+            geneds.forEach((gened, index) => {
+                if (!gened) {
+                    throw new Error(
+                        `nccn gene ${genes_nccn[index]} does not exist`
+                    );
+                }
+            });
+            genes_nccn.forEach((gene) => {
+                var found = geneds.find((gened) => gened.name == gene);
+                if (found) {
+                    geneids.push(found._id);
+                }
+            });
+            const nccnds = await models.NccnGene.find({
+                gene: { $in: geneids },
+            });
+            geneids.forEach((geneid, index) => {
+                if (!nccnds.find((nccn) => geneid.equals(nccn.gene))) {
+                    throw new Error(
+                        `nccn gene ${genes_nccn[index]} is not valid nccn gene`
+                    );
+                }
+            });
+            obj.genes_nccn = geneids;
+        }
+        if (genes_panel && genes_panel.length > 0) {
+            const geneds = await models.Gene.find({
+                name: { $in: genes_panel },
+            });
+            var panelGeneids = [];
+            genes_panel.forEach((g) => {
+                var found = geneds.find((gened) => gened.name == g);
+                if (found) {
+                    panelGeneids.push(found._id);
+                }
+            });
+            obj.genes_panel = panelGeneids;
+        }
+        return await models.InspectionProject.create(obj);
+    },
+    updateInspectionProject: async (
+        parent,
+        { id, label, genes_nccn, genes_panel },
+        { models }
+    ) => {
+        let obj = new models.InspectionProject({
+            _id: id,
             label: label,
         });
-    },
-    updateInspectionProject: async (parent, { id, label }, { models }) => {
-        return await models.InspectionProject.findOneAndUpdate(
-            {
-                _id: id,
-            },
-            {
-                $set: {
-                    label: label,
-                },
-            },
-            {
-                new: true,
-            }
-        );
+        if (genes_nccn && genes_nccn.length > 0) {
+            const geneds = await models.Gene.find({
+                name: { $in: genes_nccn },
+            });
+            let geneids = [];
+            geneds.forEach((gened, index) => {
+                if (!gened) {
+                    throw new Error(
+                        `nccn gene ${genes_nccn[index]} does not exist`
+                    );
+                }
+            });
+            genes_nccn.forEach((gene) => {
+                var found = geneds.find((gened) => gened.name == gene);
+                if (found) {
+                    geneids.push(found._id);
+                }
+            });
+            const nccnds = await models.NccnGene.find({
+                gene: { $in: geneids },
+            });
+            geneids.forEach((geneid, index) => {
+                if (!nccnds.find((nccn) => geneid.equals(nccn.gene))) {
+                    throw new Error(
+                        `nccn gene ${genes_nccn[index]} is not valid nccn gene`
+                    );
+                }
+            });
+            obj.genes_nccn = geneids;
+        }
+        if (genes_panel && genes_panel.length > 0) {
+            const geneds = await models.Gene.find({
+                name: { $in: genes_panel },
+            });
+            var panelGeneids = [];
+            genes_panel.forEach((g) => {
+                var found = geneds.find((gened) => gened.name == g);
+                if (found) {
+                    panelGeneids.push(found._id);
+                }
+            });
+            obj.genes_panel = panelGeneids;
+        }
+        obj.isNew = false;
+        try {
+            return await obj.save();
+        } catch (err) {
+            console.log(err);
+            throw new Error(err);
+        }
     },
     deleteInspectionProjects: async (parent, { ids }, { models }) => {
         try {
@@ -2689,7 +2858,9 @@ module.exports = {
             obj.template = templated._id;
         }
         try {
-            return await models.ReportTask.create(obj);
+            const task = await models.ReportTask.create(obj);
+            const output = await reportUtil.generate(task._id, models);
+            return task;
         } catch (err) {
             console.log(err);
             throw new Error(err);
@@ -2739,6 +2910,49 @@ module.exports = {
         } catch (err) {
             console.log(err);
             throw new Error(err);
+        }
+    },
+    addReportFileToReportTask: async (
+        parent,
+        { file, taskId, errMsg },
+        { models }
+    ) => {
+        const { createReadStream, filename, mimetype, encoding } = await file;
+        let stream = createReadStream();
+        const dir = "files";
+        const uniqueName = uuid.v4();
+        const targetPath = path.join(dir, uniqueName.substr(0, 2));
+        if (!fs.existsSync(targetPath))
+            fs.mkdirSync(targetPath, { recursive: true });
+        const targetFile = path.join(targetPath, uniqueName);
+        const out = fs.createWriteStream(targetFile);
+        stream.pipe(out);
+        await finished(out);
+        let obj = {
+            filename: filename,
+            path: targetFile,
+            error_message: errMsg,
+            report_status: errMsg ? 1 : 0,
+        };
+        try {
+            const reportFile = await models.ReportFile.create(obj);
+            var reportTask = await models.ReportTask.findById(taskId);
+            if (!reportTask) {
+                throw new Error(`invalid task ${taskId}`);
+            }
+            var reportReport = await models.ReportReport.findOne({
+                task: reportTask._id,
+            });
+            reportReport.pdf_file = reportFile._id;
+            reportReport.report_status = errMsg ? -1 : 0;
+            reportReport.markModified("pdf_file");
+            reportReport.markModified("report_status");
+            await reportReport.save();
+            return true;
+        } catch (err) {
+            console.log(err);
+            throw new Error(err);
+            return false;
         }
     },
     deleteReportTasks: async (parent, { ids }, { models }) => {
@@ -2825,6 +3039,161 @@ module.exports = {
         } catch (err) {
             console.log(err);
             throw new Error(err);
+        }
+    },
+
+    newHrdt: async (
+        parent,
+        {
+            mutation_type,
+            chr,
+            start,
+            end,
+            ref,
+            alt,
+            vcf_mut,
+            func_refgene,
+            gene_name,
+            gene_detail_refgene,
+            exonic_func_refgene,
+            aachange_refgene,
+            func_hgvs,
+            aachange_hgvs,
+            cytoband,
+            avsnp150,
+            clnalleleid,
+            clndn,
+            clndisdb,
+            clnrevstat,
+            clnsig,
+            cosmic90,
+            hgmd,
+            hgmd_pmid,
+            omim_inheritance,
+            omim_disease,
+            hgmd_disease,
+            clinical_detail,
+            hrdt_analysis,
+        },
+        { models }
+    ) => {
+        return await models.Hrdt.create({
+            mutation_type: mutation_type,
+            chr: chr,
+            start: start,
+            end: end,
+            ref: ref,
+            alt: alt,
+            vcf_mut: vcf_mut,
+            func_refgene: func_refgene,
+            gene_name: gene_name,
+            gene_detail_refgene: gene_detail_refgene,
+            exonic_func_refgene: exonic_func_refgene,
+            aachange_refgene: aachange_refgene,
+            func_hgvs: func_hgvs,
+            aachange_hgvs: aachange_hgvs,
+            cytoband: cytoband,
+            avsnp150: avsnp150,
+            clnalleleid: clnalleleid,
+            clndn: clndn,
+            clndisdb: clndisdb,
+            clnrevstat: clnrevstat,
+            clnsig: clnsig,
+            cosmic90: cosmic90,
+            hgmd: hgmd,
+            hgmd_pmid: hgmd_pmid,
+            omim_inheritance: omim_inheritance,
+            omim_disease: omim_disease,
+            hgmd_disease: hgmd_disease,
+            clinical_detail: clinical_detail,
+            hrdt_analysis: hrdt_analysis,
+        });
+    },
+    updateHrdt: async (
+        parent,
+        {
+            id,
+            mutation_type,
+            chr,
+            start,
+            end,
+            ref,
+            alt,
+            vcf_mut,
+            func_refgene,
+            gene_name,
+            gene_detail_refgene,
+            exonic_func_refgene,
+            aachange_refgene,
+            func_hgvs,
+            aachange_hgvs,
+            cytoband,
+            avsnp150,
+            clnalleleid,
+            clndn,
+            clndisdb,
+            clnrevstat,
+            clnsig,
+            cosmic90,
+            hgmd,
+            hgmd_pmid,
+            omim_inheritance,
+            omim_disease,
+            hgmd_disease,
+            clinical_detail,
+            hrdt_analysis,
+        },
+        { models }
+    ) => {
+        let obj = new models.Hrdt({
+            _id: id,
+            mutation_type: mutation_type,
+            chr: chr,
+            start: start,
+            end: end,
+            ref: ref,
+            alt: alt,
+            vcf_mut: vcf_mut,
+            func_refgene: func_refgene,
+            gene_name: gene_name,
+            gene_detail_refgene: gene_detail_refgene,
+            exonic_func_refgene: exonic_func_refgene,
+            aachange_refgene: aachange_refgene,
+            func_hgvs: func_hgvs,
+            aachange_hgvs: aachange_hgvs,
+            cytoband: cytoband,
+            avsnp150: avsnp150,
+            clnalleleid: clnalleleid,
+            clndn: clndn,
+            clndisdb: clndisdb,
+            clnrevstat: clnrevstat,
+            clnsig: clnsig,
+            cosmic90: cosmic90,
+            hgmd: hgmd,
+            hgmd_pmid: hgmd_pmid,
+            omim_inheritance: omim_inheritance,
+            omim_disease: omim_disease,
+            hgmd_disease: hgmd_disease,
+            clinical_detail: clinical_detail,
+            hrdt_analysis: hrdt_analysis,
+        });
+        obj.isNew = false;
+        try {
+            return await obj.save();
+        } catch (err) {
+            console.log(err);
+            throw new Error(err);
+        }
+    },
+    deleteHrdts: async (parent, { ids }, { models }) => {
+        try {
+            const result = await models.Hrdt.deleteMany({
+                _id: { $in: ids },
+            });
+            return true;
+        } catch (err) {
+            console.log(err);
+            return false;
         }
     },
 };

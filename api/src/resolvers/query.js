@@ -46,6 +46,13 @@ module.exports = {
         return await models.DdrClass.findById(id);
     },
 
+    ddrpathwayclasses: async (parent, args, { models }) => {
+        return await models.DdrPathwayClass.find({});
+    },
+    ddrpathwayclass: async (parent, { id }, { models }) => {
+        return await models.DdrPathwayClass.findById(id);
+    },
+
     ddrs: async (parent, args, { models }) => {
         return await models.Ddr.find({});
     },
@@ -160,6 +167,19 @@ module.exports = {
 
     nccngenes: async (parent, args, { models }) => {
         return await models.NccnGene.find({});
+    },
+    nccngenesgenes: async (parent, args, { models }) => {
+        var nccnds = await models.NccnGene.find({}).populate("gene");
+        var geneds = [];
+        nccnds.forEach((nccnd) => {
+            var found = geneds.find((gened) =>
+                gened._id.equals(nccnd.gene._id)
+            );
+            if (!found) {
+                geneds.push(nccnd.gene);
+            }
+        });
+        return geneds;
     },
     nccngene: async (parent, { id }, { models }) => {
         return await models.NccnGene.findById(id);
@@ -280,5 +300,12 @@ module.exports = {
     },
     reportreport: async (parent, { id }, { models }) => {
         return await models.ReportReport.findById(id);
+    },
+
+    hrdts: async (parent, args, { models }) => {
+        return await models.Hrdt.find({});
+    },
+    hrdt: async (parent, { id }, { models }) => {
+        return await models.Hrdt.findById(id);
     },
 };

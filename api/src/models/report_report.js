@@ -16,7 +16,7 @@ const reportReportSchema = new mongoose.Schema(
         },
         report_status: {
             type: Number,
-            default: 0,
+            default: -1,
         },
         error_message: {
             type: String,

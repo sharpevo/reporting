@@ -10,7 +10,7 @@ const geneClassSchema = new mongoose.Schema(
     },
     {
         timestamps: true,
-    }
+    },
 );
 
 const GeneClass = mongoose.model("GeneClass", geneClassSchema);
@@ -22,10 +22,12 @@ const geneSchema = new mongoose.Schema(
             unique: true,
             required: true,
         },
-        geneclass: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "GeneClass",
-        },
+        geneclasses: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "GeneClass",
+            },
+        ],
         source: {
             type: String,
         },
@@ -59,7 +61,7 @@ const geneSchema = new mongoose.Schema(
     },
     {
         timestamps: true,
-    }
+    },
 );
 
 geneSchema.virtual("label").get(function() {

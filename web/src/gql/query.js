@@ -33,7 +33,7 @@ const GENES_GET = gql`
         genes(label: $label) {
             id
             name
-            geneclass {
+            geneclasses {
                 id
                 label
             }
@@ -101,6 +101,17 @@ const DDR_CLASSES_GET = gql`
     }
 `;
 
+const DDR_PATHWAY_CLASSES_GET = gql`
+    query ddrpathwayclasses {
+        ddrpathwayclasses {
+            id
+            label
+            createdAt
+            updatedAt
+        }
+    }
+`;
+
 const DDRS_GET = gql`
     query ddrs {
         ddrs {
@@ -111,6 +122,10 @@ const DDRS_GET = gql`
                 label
             }
             ddrclass {
+                id
+                label
+            }
+            pathwayclass {
                 id
                 label
             }
@@ -580,6 +595,15 @@ const NCCN_GENES_GET = gql`
     }
 `;
 
+const NCCN_GENES_GENES_GET = gql`
+    query nccngenesgenes {
+        nccngenesgenes {
+            id
+            label
+        }
+    }
+`;
+
 const REPORT_REMARKS_GET = gql`
     query reportremarks {
         reportremarks {
@@ -745,6 +769,14 @@ const INSPECTION_PROJECTS_GET = gql`
         inspectionprojects {
             id
             label
+            genes_nccn {
+                id
+                label
+            }
+            genes_panel {
+                id
+                label
+            }
         }
     }
 `;
@@ -954,6 +986,17 @@ const REPORT_TASKS_GET = gql`
             }
             createdAt
             updatedAt
+
+            report {
+                id
+                report_status
+                error_message
+                pdf_file {
+                    id
+                    label
+                    path
+                }
+            }
         }
     }
 `;
@@ -996,12 +1039,60 @@ const REPORT_REPORTS_GET = gql`
     }
 `;
 
+const HRDTS_GET = gql`
+    query hrdts {
+        hrdts {
+            id
+            mutation_type
+            chr
+            start
+            end
+            ref
+            alt
+            vcf_mut
+            func_refgene
+            gene_name
+            gene_detail_refgene
+            exonic_func_refgene
+            aachange_refgene
+            func_hgvs
+            aachange_hgvs
+            cytoband
+            avsnp150
+            clnalleleid
+            clndn
+            clndisdb
+            clnrevstat
+            clnsig
+            cosmic90
+            hgmd
+            hgmd_pmid
+            omim_inheritance
+            omim_disease
+            hgmd_disease
+            clinical_detail
+            hrdt_analysis
+            creator {
+                id
+                name
+            }
+            approver {
+                id
+                name
+            }
+            createdAt
+            updatedAt
+        }
+    }
+`;
+
 export {
     GET_TABLES,
     GENE_CLASSES_GET,
     GENES_GET,
     GENE_ANNOTS_GET,
     DDR_CLASSES_GET,
+    DDR_PATHWAY_CLASSES_GET,
     DDRS_GET,
     TMHS_GET,
     CANCERS_GET,
@@ -1019,6 +1110,7 @@ export {
     EVIDENCE_LEVELS_GET,
     CHEMOS_GET,
     NCCN_GENES_GET,
+    NCCN_GENES_GENES_GET,
     REPORT_REMARKS_GET,
     REPORT_LITERATURES_GET,
     REPORT_FILES_GET,
@@ -1034,4 +1126,5 @@ export {
     REPORT_TEMPLATES_GET,
     REPORT_TASKS_GET,
     REPORT_REPORTS_GET,
+    HRDTS_GET,
 };
