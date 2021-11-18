@@ -2908,6 +2908,49 @@ module.exports = {
             throw new Error(err);
         }
     },
+    addReportFileToReportTask: async (
+        parent,
+        { file, taskId, errMsg },
+        { models }
+    ) => {
+        const { createReadStream, filename, mimetype, encoding } = await file;
+        let stream = createReadStream();
+        const dir = "files";
+        const uniqueName = uuid.v4();
+        const targetPath = path.join(dir, uniqueName.substr(0, 2));
+        if (!fs.existsSync(targetPath))
+            fs.mkdirSync(targetPath, { recursive: true });
+        const targetFile = path.join(targetPath, uniqueName);
+        const out = fs.createWriteStream(targetFile);
+        stream.pipe(out);
+        await finished(out);
+        let obj = {
+            filename: filename,
+            path: targetFile,
+            error_message: errMsg,
+            report_status: errMsg ? 1 : 0,
+        };
+        try {
+            const reportFile = await models.ReportFile.create(obj);
+            var reportTask = await models.ReportTask.findById(taskId);
+            if (!reportTask) {
+                throw new Error(`invalid task ${taskId}`);
+            }
+            var reportReport = await models.ReportReport.findOne({
+                task: reportTask._id,
+            });
+            reportReport.pdf_file = reportFile._id;
+            reportReport.report_status = errMsg ? -1 : 0;
+            reportReport.markModified("pdf_file");
+            reportReport.markModified("report_status");
+            await reportReport.save();
+            return true;
+        } catch (err) {
+            console.log(err);
+            throw new Error(err);
+            return false;
+        }
+    },
     deleteReportTasks: async (parent, { ids }, { models }) => {
         try {
             const result = await models.ReportTask.deleteMany({

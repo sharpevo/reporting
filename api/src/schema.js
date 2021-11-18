@@ -1251,6 +1251,11 @@ module.exports = gql`
             date_started: String
             date_completed: String
         ): ReportTask
+        addReportFileToReportTask(
+            file: Upload!
+            taskId: String!
+            errMsg: String
+        ): Boolean
         deleteReportTasks(ids: [ID!]!): Boolean
 
         id: ID!
