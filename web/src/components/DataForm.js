@@ -508,7 +508,14 @@ const DataFormDialog = ({
         }
     );
     const handleChange = (event, values, targetName) => {
-        //console.log("<", event.target.name, event.target.value, event.target)
+        //console.log(
+        //"<",
+        //event.target.name,
+        //event.target.value,
+        //event.target,
+        //values,
+        //value
+        //);
         let value = event.target.value;
         switch (event.target.type) {
             case "checkbox":
@@ -519,21 +526,21 @@ const DataFormDialog = ({
                 break;
             case "date":
                 value = format(new Date(event.target.value), "yyyy-MM-dd");
-                console.log(value);
+                //console.log(value);
                 break;
         }
-        if (values && values.length > 0) {
-            //console.log("x", values)
+        if (value) {
+            setItem({
+                ...item,
+                [event.target.name]: value,
+            });
+        } else {
+            //console.log("x", values);
             setItem({
                 ...item,
                 [targetName]: values,
             });
             //setTmpValue(values)
-        } else {
-            setItem({
-                ...item,
-                [event.target.name]: value,
-            });
         }
     };
     const handleClose = () => {
