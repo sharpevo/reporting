@@ -4251,11 +4251,11 @@ tables["report_task"] = {
             key: "task_status",
             exportable: true,
         },
-        //{
-        //label: "报告状态",
-        //key: "task_report",
-        //exportable: false,
-        //},
+        {
+            label: "报告",
+            key: "report",
+            exportable: false,
+        },
     ],
     cellFormatters: [
         (cell) => {
@@ -4287,6 +4287,19 @@ tables["report_task"] = {
                     return "已完成";
                 default:
                     return "异常";
+            }
+        },
+        (cell) => {
+            if (!cell.report) {
+                return "-";
+            }
+            switch (cell.report.report_status) {
+                case -1:
+                    return "未生成";
+                case 0:
+                    return (<FilePreview filePath={cell.report.pdf_file.path} />)
+                default:
+                    return cell.report.error_message;
             }
         },
     ],

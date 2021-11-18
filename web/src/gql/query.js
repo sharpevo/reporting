@@ -986,6 +986,17 @@ const REPORT_TASKS_GET = gql`
             }
             createdAt
             updatedAt
+
+            report {
+                id
+                report_status
+                error_message
+                pdf_file {
+                    id
+                    label
+                    path
+                }
+            }
         }
     }
 `;

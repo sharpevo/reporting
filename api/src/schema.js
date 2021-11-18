@@ -510,6 +510,8 @@ module.exports = gql`
         createdAt: DateTime
         updatedAt: DateTime
         label: String
+
+        report: ReportReport
     }
 
     type ReportReport {
