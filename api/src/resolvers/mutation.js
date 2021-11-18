@@ -598,11 +598,12 @@ module.exports = {
             }
             // unique:
             if (mutationclass) {
-                const mutationclassd = await models.MutationClass.findOneAndUpdate(
-                    { label: mutationclass },
-                    { label: mutationclass },
-                    { upsert: true, new: true }
-                );
+                const mutationclassd =
+                    await models.MutationClass.findOneAndUpdate(
+                        { label: mutationclass },
+                        { label: mutationclass },
+                        { upsert: true, new: true }
+                    );
                 obj.mutationclass = mutationclassd._id;
             }
             return await models.MutationCancer.create(obj);
