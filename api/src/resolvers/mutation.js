@@ -3,6 +3,7 @@ const fs = require("fs");
 const { finished } = require("stream/promises");
 const path = require("path");
 const uuid = require("uuid");
+const reportUtil = require("../lib/report");
 
 module.exports = {
     newField: async (parent, args, { models }) => {
@@ -2856,7 +2857,9 @@ module.exports = {
             obj.template = templated._id;
         }
         try {
-            return await models.ReportTask.create(obj);
+            const task = await models.ReportTask.create(obj);
+            const output = await reportUtil.generate(task._id, models);
+            return task;
         } catch (err) {
             console.log(err);
             throw new Error(err);
