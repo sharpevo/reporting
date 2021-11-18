@@ -202,6 +202,12 @@ const TableToolbar = ({
                 if (item.hasOwnProperty("label")) {
                     return item.label;
                 }
+                if (Array.isArray(item)) {
+                    var output = item
+                        .map((i) => (i.label ? i.label : i))
+                        .join(",");
+                    return output;
+                }
             }
             return item;
         })
@@ -215,9 +221,8 @@ const TableToolbar = ({
         ],
     };
     const ref = React.createRef();
-    const [isOpenUploadTableDialog, setOpenUploadTableDialog] = React.useState(
-        false
-    );
+    const [isOpenUploadTableDialog, setOpenUploadTableDialog] =
+        React.useState(false);
     const [isOpenDataFormDialog, setOpenDataFormDialog] = React.useState(false);
     const [selectedItem, setSelectedItem] = React.useState({});
     const [headsImp, setHeadsImp] = React.useState([]);

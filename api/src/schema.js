@@ -40,7 +40,7 @@ module.exports = gql`
     type Gene {
         id: ID!
         name: String!
-        geneclass: GeneClass
+        geneclasses: [GeneClass]
         source: String
         is_wes: Boolean
         is_pancancer: Boolean
@@ -81,10 +81,18 @@ module.exports = gql`
         updatedAt: DateTime
     }
 
+    type DdrPathwayClass {
+        id: ID!
+        label: String!
+        createdAt: DateTime
+        updatedAt: DateTime
+    }
+
     type Ddr {
         id: ID!
         gene: Gene
         ddrclass: DdrClass
+        pathwayclass: DdrPathwayClass
         result: String
         result_detail: String
         literature: String
@@ -423,6 +431,8 @@ module.exports = gql`
     type InspectionProject {
         id: ID!
         label: String!
+        genes_nccn: [Gene]
+        genes_panel: [Gene]
     }
 
     type ReportSample {
@@ -500,6 +510,8 @@ module.exports = gql`
         createdAt: DateTime
         updatedAt: DateTime
         label: String
+
+        report: ReportReport
     }
 
     type ReportReport {
@@ -509,6 +521,45 @@ module.exports = gql`
         date_generated: DateTime
         report_status: Int
         error_message: String
+        creator: User
+        updator: User
+        approver: User
+        status: Int
+        createdAt: DateTime
+        updatedAt: DateTime
+    }
+
+    type Hrdt {
+        id: ID!
+        mutation_type: String
+        chr: String
+        start: String
+        end: String
+        ref: String
+        alt: String
+        vcf_mut: String
+        func_refgene: String
+        gene_name: String
+        gene_detail_refgene: String
+        exonic_func_refgene: String
+        aachange_refgene: String
+        func_hgvs: String
+        aachange_hgvs: String
+        cytoband: String
+        avsnp150: String
+        clnalleleid: String
+        clndn: String
+        clndisdb: String
+        clnrevstat: String
+        clnsig: String
+        cosmic90: String
+        hgmd: String
+        hgmd_pmid: String
+        omim_inheritance: String
+        omim_disease: String
+        hgmd_disease: String
+        clinical_detail: String
+        hrdt_analysis: String
         creator: User
         updator: User
         approver: User
@@ -535,6 +586,9 @@ module.exports = gql`
 
         ddrclasses: [DdrClass]!
         ddrclass(id: ID!): DdrClass
+
+        ddrpathwayclasses: [DdrPathwayClass]!
+        ddrpathwayclass(id: ID!): DdrPathwayClass
 
         ddrs: [Ddr]!
         ddr(id: ID!): Ddr
@@ -585,6 +639,7 @@ module.exports = gql`
         chemo(id: ID!): Chemo!
 
         nccngenes: [NccnGene]!
+        nccngenesgenes: [Gene]!
         nccngene(id: ID!): NccnGene!
 
         reportremarks: [ReportRemark]!
@@ -625,6 +680,9 @@ module.exports = gql`
 
         reportreports: [ReportReport]!
         reportreport(id: ID!): ReportReport
+
+        hrdts: [Hrdt]!
+        hrdt(id: ID!): Hrdt
     }
 
     type Mutation {
@@ -642,7 +700,7 @@ module.exports = gql`
 
         newGene(
             name: String!
-            geneclass: String
+            geneclasses: [String]
             source: String
             is_wes: Boolean
             is_pancancer: Boolean
@@ -652,7 +710,7 @@ module.exports = gql`
         updateGene(
             id: String!
             name: String!
-            geneclass: String
+            geneclasses: [String]
             source: String
             is_wes: Boolean
             is_pancancer: Boolean
@@ -661,7 +719,6 @@ module.exports = gql`
         ): Gene!
         deleteGenes(ids: [ID!]!): Boolean!
         updateGeneName(id: ID!, name: String!): Gene
-        updateGeneGeneClass(id: ID!, geneclass: ID!): Gene
         updateGeneSource(id: ID!, source: String!): Gene
         updateGeneWes(id: ID!, wes: Boolean): Gene
         updateGenePancancer(id: ID!, pancancer: Boolean): Gene
@@ -694,6 +751,7 @@ module.exports = gql`
         newDdr(
             gene: String
             ddrclass: String
+            pathwayclass: String
             result: String
             result_detail: String
             literature: String
@@ -703,6 +761,7 @@ module.exports = gql`
             id: String!
             gene: String
             ddrclass: String
+            pathwayclass: String
             result: String
             result_detail: String
             literature: String
@@ -1049,6 +1108,10 @@ module.exports = gql`
         updateDdrClass(id: ID!, label: String!): DdrClass!
         deleteDdrClasses(ids: [ID!]!): Boolean!
 
+        newDdrPathwayClass(label: String!): DdrPathwayClass!
+        updateDdrPathwayClass(id: ID!, label: String!): DdrPathwayClass!
+        deleteDdrPathwayClasses(ids: [ID!]!): Boolean!
+
         newMutationClass(label: String!): MutationClass
         updateMutationClass(id: ID!, label: String!): MutationClass
         deleteMutationClasses(ids: [ID!]!): Boolean!
@@ -1065,8 +1128,17 @@ module.exports = gql`
         updateReportSampleType(id: ID!, label: String!): ReportSampleType!
         deleteReportSampleTypes(ids: [ID!]!): Boolean!
 
-        newInspectionProject(label: String!): InspectionProject!
-        updateInspectionProject(id: ID!, label: String!): InspectionProject!
+        newInspectionProject(
+            label: String!
+            genes_nccn: [String]
+            genes_panel: [String]
+        ): InspectionProject!
+        updateInspectionProject(
+            id: ID!
+            label: String!
+            genes_nccn: [String]
+            genes_panel: [String]
+        ): InspectionProject!
         deleteInspectionProjects(ids: [ID!]!): Boolean!
 
         newReportSample(
@@ -1181,6 +1253,11 @@ module.exports = gql`
             date_started: String
             date_completed: String
         ): ReportTask
+        addReportFileToReportTask(
+            file: Upload!
+            taskId: String!
+            errMsg: String
+        ): Boolean
         deleteReportTasks(ids: [ID!]!): Boolean
 
         id: ID!
@@ -1193,5 +1270,70 @@ module.exports = gql`
         updateReportReport(id: String!, task: String!): ReportReport
         updateReportReportFile(id: String!, file: String!): ReportReport
         deleteReportReports(ids: [ID!]!): Boolean
+
+        newHrdt(
+            mutation_type: String
+            chr: String!
+            start: String!
+            end: String!
+            ref: String
+            alt: String!
+            vcf_mut: String
+            func_refgene: String
+            gene_name: String
+            gene_detail_refgene: String
+            exonic_func_refgene: String
+            aachange_refgene: String
+            func_hgvs: String
+            aachange_hgvs: String
+            cytoband: String
+            avsnp150: String
+            clnalleleid: String
+            clndn: String
+            clndisdb: String
+            clnrevstat: String
+            clnsig: String
+            cosmic90: String
+            hgmd: String
+            hgmd_pmid: String
+            omim_inheritance: String
+            omim_disease: String
+            hgmd_disease: String
+            clinical_detail: String
+            hrdt_analysis: String
+        ): Hrdt
+        updateHrdt(
+            id: String!
+            mutation_type: String
+            chr: String!
+            start: String!
+            end: String!
+            ref: String
+            alt: String!
+            vcf_mut: String
+            func_refgene: String
+            gene_name: String
+            gene_detail_refgene: String
+            exonic_func_refgene: String
+            aachange_refgene: String
+            func_hgvs: String
+            aachange_hgvs: String
+            cytoband: String
+            avsnp150: String
+            clnalleleid: String
+            clndn: String
+            clndisdb: String
+            clnrevstat: String
+            clnsig: String
+            cosmic90: String
+            hgmd: String
+            hgmd_pmid: String
+            omim_inheritance: String
+            omim_disease: String
+            hgmd_disease: String
+            clinical_detail: String
+            hrdt_analysis: String
+        ): Hrdt
+        deleteHrdts(ids: [ID!]!): Boolean
     }
 `;

@@ -20,7 +20,7 @@ const DELETE_TABLE = gql`
 const GENE_NEW = gql`
     mutation newGene(
         $name: String!
-        $geneclass: String
+        $geneclasses: [String]
         $source: String
         $is_wes: Boolean
         $is_pancancer: Boolean
@@ -29,7 +29,7 @@ const GENE_NEW = gql`
     ) {
         newGene(
             name: $name
-            geneclass: $geneclass
+            geneclasses: $geneclasses
             source: $source
             is_wes: $is_wes
             is_pancancer: $is_pancancer
@@ -38,7 +38,7 @@ const GENE_NEW = gql`
         ) {
             id
             name
-            geneclass {
+            geneclasses {
                 id
                 label
             }
@@ -49,7 +49,7 @@ const GENE_UPDATE = gql`
     mutation updateGene(
         $id: String!
         $name: String!
-        $geneclass: String
+        $geneclasses: [String]
         $source: String
         $is_wes: Boolean
         $is_pancancer: Boolean
@@ -59,7 +59,7 @@ const GENE_UPDATE = gql`
         updateGene(
             id: $id
             name: $name
-            geneclass: $geneclass
+            geneclasses: $geneclasses
             source: $source
             is_wes: $is_wes
             is_pancancer: $is_pancancer
@@ -67,7 +67,7 @@ const GENE_UPDATE = gql`
             is_8glc: $is_8glc
         ) {
             id
-            geneclass {
+            geneclasses {
                 id
                 label
             }
@@ -155,6 +155,7 @@ const DDR_NEW = gql`
     mutation newDdr(
         $gene: String
         $ddrclass: String
+        $pathwayclass: String
         $result: String
         $result_detail: String
         $literature: String
@@ -163,6 +164,7 @@ const DDR_NEW = gql`
         newDdr(
             gene: $gene
             ddrclass: $ddrclass
+            pathwayclass: $pathwayclass
             result: $result
             result_detail: $result_detail
             literature: $literature
@@ -187,6 +189,7 @@ const DDR_UPDATE = gql`
         $id: String!
         $gene: String
         $ddrclass: String
+        $pathwayclass: String
         $result: String
         $result_detail: String
         $literature: String
@@ -196,6 +199,7 @@ const DDR_UPDATE = gql`
             id: $id
             gene: $gene
             ddrclass: $ddrclass
+            pathwayclass: $pathwayclass
             result: $result
             result_detail: $result_detail
             literature: $literature
@@ -1146,6 +1150,30 @@ const DDR_CLASSES_DELETE = gql`
     }
 `;
 
+const DDR_PATHWAY_CLASS_NEW = gql`
+    mutation newDdrPathwayClass($label: String!) {
+        newDdrPathwayClass(label: $label) {
+            id
+            label
+        }
+    }
+`;
+
+const DDR_PATHWAY_CLASS_UPDATE = gql`
+    mutation updateDdrPathwayClass($id: ID!, $label: String!) {
+        updateDdrPathwayClass(id: $id, label: $label) {
+            id
+            label
+        }
+    }
+`;
+
+const DDR_PATHWAY_CLASSES_DELETE = gql`
+    mutation deleteDdrPathwayClasses($ids: [ID!]!) {
+        deleteDdrPathwayClasses(ids: $ids)
+    }
+`;
+
 const MUTATION_CLASS_NEW = gql`
     mutation newMutationClass($label: String!) {
         newMutationClass(label: $label) {
@@ -1243,8 +1271,16 @@ const REPORT_SAMPLE_TYPES_DELETE = gql`
 `;
 
 const INSPECTION_PROJECT_NEW = gql`
-    mutation newInspectionProject($label: String!) {
-        newInspectionProject(label: $label) {
+    mutation newInspectionProject(
+        $label: String!
+        $genes_nccn: [String]
+        $genes_panel: [String]
+    ) {
+        newInspectionProject(
+            label: $label
+            genes_nccn: $genes_nccn
+            genes_panel: $genes_panel
+        ) {
             id
             label
         }
@@ -1252,8 +1288,18 @@ const INSPECTION_PROJECT_NEW = gql`
 `;
 
 const INSPECTION_PROJECT_UPDATE = gql`
-    mutation updateInspectionProject($id: ID!, $label: String!) {
-        updateInspectionProject(id: $id, label: $label) {
+    mutation updateInspectionProject(
+        $id: ID!
+        $label: String!
+        $genes_nccn: [String]
+        $genes_panel: [String]
+    ) {
+        updateInspectionProject(
+            id: $id
+            label: $label
+            genes_nccn: $genes_nccn
+            genes_panel: $genes_panel
+        ) {
             id
             label
         }
@@ -1261,8 +1307,8 @@ const INSPECTION_PROJECT_UPDATE = gql`
 `;
 
 const INSPECTION_PROJECTS_DELETE = gql`
-    mutation deleteInspectionProject($ids: [ID!]!) {
-        deleteInspectionProject(ids: $ids)
+    mutation deleteInspectionProjects($ids: [ID!]!) {
+        deleteInspectionProjects(ids: $ids)
     }
 `;
 
@@ -1621,6 +1667,150 @@ const REPORT_REPORTS_DELETE = gql`
     }
 `;
 
+const HRDT_NEW = gql`
+    mutation newHrdt(
+        $mutation_type: String
+        $chr: String!
+        $start: String!
+        $end: String!
+        $ref: String
+        $alt: String!
+        $vcf_mut: String
+        $func_refgene: String
+        $gene_name: String
+        $gene_detail_refgene: String
+        $exonic_func_refgene: String
+        $aachange_refgene: String
+        $func_hgvs: String
+        $aachange_hgvs: String
+        $cytoband: String
+        $avsnp150: String
+        $clnalleleid: String
+        $clndn: String
+        $clndisdb: String
+        $clnrevstat: String
+        $clnsig: String
+        $cosmic90: String
+        $hgmd: String
+        $hgmd_pmid: String
+        $omim_inheritance: String
+        $omim_disease: String
+        $hgmd_disease: String
+        $clinical_detail: String
+        $hrdt_analysis: String
+    ) {
+        newHrdt(
+            mutation_type: $mutation_type
+            chr: $chr
+            start: $start
+            end: $end
+            ref: $ref
+            alt: $alt
+            vcf_mut: $vcf_mut
+            func_refgene: $func_refgene
+            gene_name: $gene_name
+            gene_detail_refgene: $gene_detail_refgene
+            exonic_func_refgene: $exonic_func_refgene
+            aachange_refgene: $aachange_refgene
+            func_hgvs: $func_hgvs
+            aachange_hgvs: $aachange_hgvs
+            cytoband: $cytoband
+            avsnp150: $avsnp150
+            clnalleleid: $clnalleleid
+            clndn: $clndn
+            clndisdb: $clndisdb
+            clnrevstat: $clnrevstat
+            clnsig: $clnsig
+            cosmic90: $cosmic90
+            hgmd: $hgmd
+            hgmd_pmid: $hgmd_pmid
+            omim_inheritance: $omim_inheritance
+            omim_disease: $omim_disease
+            hgmd_disease: $hgmd_disease
+            clinical_detail: $clinical_detail
+            hrdt_analysis: $hrdt_analysis
+        ) {
+            id
+        }
+    }
+`;
+
+const HRDT_UPDATE = gql`
+    mutation updateHrdt(
+        $id: String!
+        $mutation_type: String
+        $chr: String!
+        $start: String!
+        $end: String!
+        $ref: String
+        $alt: String!
+        $vcf_mut: String
+        $func_refgene: String
+        $gene_name: String
+        $gene_detail_refgene: String
+        $exonic_func_refgene: String
+        $aachange_refgene: String
+        $func_hgvs: String
+        $aachange_hgvs: String
+        $cytoband: String
+        $avsnp150: String
+        $clnalleleid: String
+        $clndn: String
+        $clndisdb: String
+        $clnrevstat: String
+        $clnsig: String
+        $cosmic90: String
+        $hgmd: String
+        $hgmd_pmid: String
+        $omim_inheritance: String
+        $omim_disease: String
+        $hgmd_disease: String
+        $clinical_detail: String
+        $hrdt_analysis: String
+    ) {
+        updateHrdt(
+            id: $id
+            mutation_type: $mutation_type
+            chr: $chr
+            start: $start
+            end: $end
+            ref: $ref
+            alt: $alt
+            vcf_mut: $vcf_mut
+            func_refgene: $func_refgene
+            gene_name: $gene_name
+            gene_detail_refgene: $gene_detail_refgene
+            exonic_func_refgene: $exonic_func_refgene
+            aachange_refgene: $aachange_refgene
+            func_hgvs: $func_hgvs
+            aachange_hgvs: $aachange_hgvs
+            cytoband: $cytoband
+            avsnp150: $avsnp150
+            clnalleleid: $clnalleleid
+            clndn: $clndn
+            clndisdb: $clndisdb
+            clnrevstat: $clnrevstat
+            clnsig: $clnsig
+            cosmic90: $cosmic90
+            hgmd: $hgmd
+            hgmd_pmid: $hgmd_pmid
+            omim_inheritance: $omim_inheritance
+            omim_disease: $omim_disease
+            hgmd_disease: $hgmd_disease
+            clinical_detail: $clinical_detail
+            hrdt_analysis: $hrdt_analysis
+        ) {
+            id
+        }
+    }
+`;
+
+const HRDTS_DELETE = gql`
+    mutation deleteHrdts($ids: [ID!]!) {
+        deleteHrdts(ids: $ids)
+    }
+`;
+
 export {
     NEW_TABLE,
     DELETE_TABLE,
@@ -1690,6 +1880,9 @@ export {
     DDR_CLASS_NEW,
     DDR_CLASS_UPDATE,
     DDR_CLASSES_DELETE,
+    DDR_PATHWAY_CLASS_NEW,
+    DDR_PATHWAY_CLASS_UPDATE,
+    DDR_PATHWAY_CLASSES_DELETE,
     MUTATION_CLASS_NEW,
     MUTATION_CLASS_UPDATE,
     MUTATION_CLASSES_DELETE,
@@ -1722,4 +1915,7 @@ export {
     REPORT_REPORT_NEW,
     REPORT_REPORT_UPDATE,
     REPORT_REPORTS_DELETE,
+    HRDT_NEW,
+    HRDT_UPDATE,
+    HRDTS_DELETE,
 };

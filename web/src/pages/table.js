@@ -75,7 +75,7 @@ const databases = {
     其他: [
         {
             name: "遗传变异数据库",
-            key: "",
+            key: "hrdt",
         },
         {
             name: "化疗数据库",
@@ -114,6 +114,10 @@ const databases = {
         {
             name: "免疫疗效相关/DDR通路 - 基因分类",
             key: "ddrclass",
+        },
+        {
+            name: "免疫疗效相关/DDR通路 - 通路分类",
+            key: "ddrpathwayclass",
         },
         {
             name: "位点用药解析数据库 - 变异分类",

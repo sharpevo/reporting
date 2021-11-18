@@ -1,6 +1,6 @@
 const { GeneClass, Gene } = require("./gene");
 const GeneAnnot = require("./gene_annot");
-const { DdrClass, Ddr } = require("./ddr");
+const { DdrClass, DdrPathwayClass, Ddr } = require("./ddr");
 const Tmh = require("./tmh");
 const Cancer = require("./cancer");
 const { MutationClass, MutationCancer } = require("./mutation_cancer");
@@ -28,11 +28,13 @@ const {
 const ReportSampleQc = require("./report_sample_qc");
 const ReportTask = require("./report_task");
 const ReportReport = require("./report_report");
+const Hrdt = require("./hrdt");
 const models = {
     GeneClass,
     Gene,
     GeneAnnot,
     DdrClass,
+    DdrPathwayClass,
     Ddr,
     Tmh,
     Cancer,
@@ -55,16 +57,14 @@ const models = {
     ReportFile,
     Pathway,
     PathwayDrugCancer,
-    ReportSampleType,
     InspectionProject,
     ReportSample,
     ReportSampleQc,
     ReportSampleType,
-    InspectionProject,
-    ReportSample,
     ReportTemplate,
     ReportTask,
     ReportReport,
+    Hrdt,
 };
 
 module.exports = models;

@@ -15,6 +15,9 @@ const FilePreview = ({ filePath }) => {
     }
     const reportFile = data["reportfilebylabel"];
     console.log("file", reportFile);
+    if (!reportFile) {
+        return <span>N/A</span>;
+    }
     return (
         <Paper elevation={0}>
             {reportFile.filename.match(/.(jpg|jpeg|png|gif)$/i) ? (

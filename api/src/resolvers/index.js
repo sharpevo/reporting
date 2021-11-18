@@ -23,6 +23,7 @@ const ReportSampleQc = require("./report_sample_qc");
 const ReportTemplate = require("./report_template");
 const ReportTask = require("./report_task");
 const ReportReport = require("./report_report");
+const InspectionProject = require("./inspection_project");
 module.exports = {
     DateTime: DateTimeResolver,
     Upload: GraphQLUpload,
@@ -49,4 +50,5 @@ module.exports = {
     ReportTemplate,
     ReportTask,
     ReportReport,
+    InspectionProject,
 };

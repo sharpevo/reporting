@@ -7,6 +7,18 @@ const inspectionProjectSchema = new mongoose.Schema(
             unique: true,
             required: true,
         },
+        genes_nccn: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "Gene",
+            },
+        ],
+        genes_panel: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "Gene",
+            },
+        ],
     },
     { timestamps: true }
 );
