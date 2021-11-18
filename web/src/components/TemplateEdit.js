@@ -1,12 +1,13 @@
 import * as React from 'react';
 
 import {
+    Box,
+    TextField,
     Dialog,
     DialogTitle,
     DialogContent,
     DialogContentText,
     DialogActions,
-    Collapse,
     List,
     ListItem,
     ListItemButton,
@@ -15,13 +16,18 @@ import {
     ListItemText,
     Checkbox,
     IconButton,
+    Collapse,
 } from '@mui/material';
-import CommentIcon from '@mui/icons-material/Comment';
+import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import ExpandLess from '@mui/icons-material/ExpandLess';
+import ExpandMore from '@mui/icons-material/ExpandMore';
 
 const ModuleList = ({ modules, setModules }) => {
     const [checked, setChecked] = React.useState(
         modules.map((m, i) => (m.enabled ? i : -1)),
+    );
+    const [moreOpened, setMoreOpened] = React.useState(
+        modules.map((m, i) => false),
     );
     const handleToggle = (index) => {
         var newModules = [...modules];
@@ -41,6 +47,18 @@ const ModuleList = ({ modules, setModules }) => {
         setModules(newModules);
     };
 
+    const handleMore = (index) => {
+        var newOpened = [...moreOpened];
+        newOpened[index] = !Boolean(newOpened[index]);
+        setMoreOpened(newOpened);
+    };
+    const handleNote = (event, index) => {
+        var newModules = [...modules];
+        var module = newModules[index];
+        module.note = event.target.value;
+        setModules(newModules);
+    };
+
     return (
         <List
             sx={{
@@ -50,30 +68,68 @@ const ModuleList = ({ modules, setModules }) => {
             dense={true}
         >
             {modules.map((module, index) => (
-                <ListItem
-                    key={index}
-                    disablePadding
-                    dense={true}
-                    sx={{ pl: module.key.split('/').length * 4 }}
-                >
-                    <ListItemButton
-                        onClick={() => {
-                            handleToggle(index);
-                        }}
+                <div key={index}>
+                    <ListItem
+                        key={index}
+                        secondaryAction={
+                            <IconButton
+                                edge="end"
+                                onClick={() => handleMore(index)}
+                            >
+                                {moreOpened[index] ? (
+                                    <ExpandMore />
+                                ) : (
+                                    <ExpandLess />
+                                )}
+                            </IconButton>
+                        }
+                        disablePadding
                         dense={true}
+                        sx={{ pl: module.key.split('/').length * 4 }}
                     >
-                        <ListItemIcon>
-                            <Checkbox
-                                edge="start"
-                                checked={checked.indexOf(index) !== -1}
-                                tabIndex={-1}
-                                disableRipple
-                                size="small"
+                        <ListItemButton
+                            onClick={() => {
+                                handleToggle(index);
+                            }}
+                            dense={true}
+                        >
+                            <ListItemIcon>
+                                <Checkbox
+                                    edge="start"
+                                    checked={checked.indexOf(index) !== -1}
+                                    tabIndex={-1}
+                                    disableRipple
+                                    size="small"
+                                />
+                            </ListItemIcon>
+                            <ListItemText
+                                primary={module.name}
+                                sx={{ ml: -3 }}
                             />
-                        </ListItemIcon>
-                        <ListItemText primary={module.name} sx={{ ml: -3 }} />
-                    </ListItemButton>
-                </ListItem>
+                        </ListItemButton>
+                    </ListItem>
+                    <Collapse
+                        in={moreOpened[index]}
+                        timeout="auto"
+                        unmountOnExit
+                        sx={{
+                            pl: (module.key.split('/').length + 1) * 4,
+                            width: '80%',
+                        }}
+                    >
+                        <TextField
+                            sx={{
+                                width: '80%',
+                                margin: 2,
+                            }}
+                            size="small"
+                            label="Remark"
+                            multiline
+                            value={module.note}
+                            onChange={(event) => handleNote(event, index)}
+                        />
+                    </Collapse>
+                </div>
             ))}
         </List>
     );
