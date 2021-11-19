@@ -158,6 +158,9 @@ tables["gene"] = {
         },
     ],
     normalize: (obj) => {
+        obj["geneclasses"] = obj["geneclasses"]
+            ? obj["geneclasses"].split(",").map((g) => g.trim())
+            : [];
         obj["source"] = String(obj["source"]);
         obj["is_wes"] = convertBoolean(obj["is_wes"]);
         obj["is_pancancer"] = convertBoolean(obj["is_pancancer"]);
