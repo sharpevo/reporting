@@ -2929,7 +2929,7 @@ module.exports = {
         stream.pipe(out);
         await finished(out);
         let obj = {
-            filename: filename,
+            filename: taskId + filename.split(".").pop(),
             path: targetFile,
             error_message: errMsg,
             report_status: errMsg ? 1 : 0,
