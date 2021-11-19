@@ -4300,7 +4300,7 @@ tables["report_task"] = {
                 case -1:
                     return "未生成";
                 case 0:
-                    return (<FilePreview filePath={cell.report.pdf_file.path} />)
+                    return <FilePreview filePath={cell.report.pdf_file.path} />;
                 default:
                     return cell.report.error_message;
             }

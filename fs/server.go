@@ -221,7 +221,6 @@ func updateTask(outputPath, taskId, errMsg, apiUrl string) error {
 }
 
 func copyDirectory(src, dst string) error {
-	log.Println("copying", src, dst)
 	entries, err := ioutil.ReadDir(src)
 	if err != nil {
 		return err
