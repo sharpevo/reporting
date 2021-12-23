@@ -777,6 +777,7 @@ const INSPECTION_PROJECTS_GET = gql`
                 id
                 label
             }
+            pmids
         }
     }
 `;

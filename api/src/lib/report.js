@@ -49,11 +49,17 @@ const generateData = async (
     //var enabledModule = m().filter((item) => item.enabled == true);
     try {
         const posGeneClassd = await models.DdrClass.findOne({
-            label: "正相关",
+            label: "正相关基因",
         });
         const negGeneClassd = await models.DdrClass.findOne({
-            label: "负相关",
+            label: "负相关基因",
         });
+        if (!posGeneClassd) {
+            throw new Error("'正相关基因' not found");
+        }
+        if (!negGeneClassd) {
+            throw new Error("'负相关基因' not found");
+        }
         const ddrPathwayClassds = await models.DdrPathwayClass.find({});
         const posGeneds = await models.Ddr.find({
             ddrclass: posGeneClassd._id,
@@ -65,18 +71,70 @@ const generateData = async (
 
         var pathwayClassGeneds = [];
         var pathwayClassGeneKeys = [];
+        var pathwayResultDetails = [];
+        var pathwayLiteratureDetails = [];
         for (let p of ddrPathwayClassds) {
             pathwayClassGeneKeys.push(p.label);
             const gds = await models.Ddr.find({
                 pathwayclass: p._id,
             }).populate("gene");
             pathwayClassGeneds.push(gds);
+            var resultDetail = "";
+            var literatureDetail = "";
+            gds.forEach((g) => {
+                if (g.result_detail) {
+                    resultDetail = resultDetail
+                        ? resultDetail + "," + g.result_detail
+                        : g.result_detail;
+                }
+                if (g.literature_detail) {
+                    literatureDetail = literatureDetail
+                        ? literatureDetail + "," + g.literatureDetail
+                        : g.literature_detail;
+                }
+            });
+            pathwayResultDetails.push(resultDetail);
+            pathwayLiteratureDetails.push(literatureDetail);
         }
         //console.log('== pos', posGeneds);
         //console.log('== neg', negGeneds);
         //console.log('== path', pathwayClassGeneds);
         var geneds = [];
         var ageneds = [];
+        var agenedsAll = [];
+        var hrdtds = [];
+        var vsHrdtAnna = [];
+        for (let germData of resultjson.Germline_genetic) {
+            const hrdtd = await models.Hrdt.findOne({
+                chr: germData[0],
+                alt: germData[3],
+                start: { $lte: germData[1] },
+                end: { $gte: germData[1] },
+            });
+            if (hrdtd) {
+                hrdtds.push(hrdtd);
+                var mutations = hrdtd.aachange_refgene.split(",");
+                var cm = "";
+                var pm = "";
+                if (mutations.length > 0) {
+                    var mutation = mutations[0].split(":");
+                    if (mutation.length > 4) {
+                        cm = mutation[3];
+                        pm = mutation[4];
+                    }
+                }
+                vsHrdtAnna.push(
+                    hrdtd.gene_name,
+                    hrdtd.avsnp150,
+                    cm,
+                    pm,
+                    germData[4],
+                    hrdtd.mutation_type,
+                    hrdtd.clinical_detail,
+                    hrdtd.hrdt_analysis
+                );
+            }
+        }
         for (const [index, item] of enabledModule.entries()) {
             switch (item.key) {
                 case "cover": //{{{
@@ -146,6 +204,7 @@ const generateData = async (
                             );
                             continue;
                         }
+                        agenedsAll.push(agened);
                         const mutationd = await models.MutationCancer.findOne({
                             mutation: somatic_mutation,
                             gene_annot: agened._id,
@@ -162,6 +221,13 @@ const generateData = async (
                             );
                             continue;
                         }
+                        console.log(
+                            "result: mutation found",
+                            somatic_mutation,
+                            agened._id,
+                            somatic_transcript,
+                            cancerd._id
+                        );
                         mutationds.push(mutationd);
                         geneds.push(gened);
                         ageneds.push(agened);
@@ -249,7 +315,8 @@ const generateData = async (
                         vs.push(drug_mc);
                     }
                     if (vs.length == 0) {
-                        vs = ["本次检测未检出与靶向用药相关的体细胞变异"];
+                        //vs = ["本次检测未检出与靶向用药相关的体细胞变异"];
+                        vs = [""];
                         enabledModule[index].lines.push([OBJ]);
                     } else {
                         enabledModule[index].lines.push(
@@ -309,9 +376,10 @@ const generateData = async (
                     }
 
                     if (vsTargetDrugGenePm.length == 0) {
-                        vsTargetDrugGenePm = [
-                            "本样本未检出与靶向用药相关的体细胞基因点突变、缺失、插入变异",
-                        ];
+                        //vsTargetDrugGenePm = [
+                        //"本样本未检出与靶向用药相关的体细胞基因点突变、缺失、插入变异",
+                        //];
+                        vsTargetDrugGenePm = [""];
                         enabledModule[drugAnnaSomaticIndex].lines.push([OBJ]);
                     } else {
                         enabledModule[drugAnnaSomaticIndex].lines.push(
@@ -334,9 +402,8 @@ const generateData = async (
                     }
 
                     if (vsTargetDrugGeneCv.length == 0) {
-                        vsTargetDrugGeneCv = [
-                            "本样本未检出与靶向用药相关的基因拷贝数变异",
-                        ];
+                        vsTargetDrugGeneCv = [""];
+                        //"本样本未检出与靶向用药相关的基因拷贝数变异",
                         enabledModule[drugAnnaCnvIndex].lines.push([OBJ]);
                     } else {
                         enabledModule[drugAnnaCnvIndex].lines.push(
@@ -359,9 +426,8 @@ const generateData = async (
                     }
 
                     if (vsTargetDrugGeneFs.length == 0) {
-                        vsTargetDrugGeneFs = [
-                            "本样本未检出与靶向用药相关的体细胞基因拷贝数变异",
-                        ];
+                        vsTargetDrugGeneFs = [""];
+                        //"本样本未检出与靶向用药相关的体细胞基因拷贝数变异",
                         enabledModule[drugAnnaFusionIndex].lines.push([OBJ]);
                     } else {
                         enabledModule[drugAnnaFusionIndex].lines.push(
@@ -389,10 +455,9 @@ const generateData = async (
                         resultjson.Somatic.forEach((s) => {
                             if (geneds[index].name == s[1]) {
                                 vsTargetDrugClinical.push(
-                                    s[1],
-                                    `${s[9]}:${s[8]}:${s[4]},${s[5]}(${s[6]}%)`,
-                                    ageneds[index].description_cn,
+                                    `${s[1]} ${s[9]}:${s[8]}:${s[4]},${s[5]}(${s[6]}%)`,
                                     mutationd.mutation_detail,
+                                    ageneds[index].description_cn,
                                     mutationd.drug_info
                                 );
                             }
@@ -400,14 +465,15 @@ const generateData = async (
                     });
 
                     if (vsTargetDrugClinical.length == 0) {
-                        vsTargetDrugClinical = ["无"];
+                        //vsTargetDrugClinical = ["无"];
+                        vsTargetDrugClinical = [];
                         enabledModule[targetDrugClinicalIndex].lines.push([
                             OBJ,
                         ]);
                     } else {
                         enabledModule[targetDrugClinicalIndex].lines.push(
-                            ...[...Array(vsTargetDrugClinical.length / 5)].map(
-                                (x) => [OBJ, OBJ, OBJ, OBJ, OBJ]
+                            ...[...Array(vsTargetDrugClinical.length / 4)].map(
+                                (x) => [OBJ, OBJ, OBJ, OBJ]
                             )
                         );
                     }
@@ -437,7 +503,7 @@ const generateData = async (
                             drugds.push(drugd);
                         }
                     }
-                    var drugCancerds = [];
+                    //var drugCancerds = [];
                     for (let dd of drugds) {
                         const drugCancerd = await models.DrugCancer.findOne({
                             drug: dd.drug._id,
@@ -448,13 +514,27 @@ const generateData = async (
                                 dd.drug.label,
                                 cancerd.label,
                                 drugCancerd.medical_evidence
+                                    ? drugCancerd.medical_evidence
+                                    : ""
+                            );
+                        } else {
+                            vsTargetDrugMedEvidence.push(
+                                dd.drug.label,
+                                cancerd.label,
+                                ""
                             );
                         }
-                        console.log(dd.drug._id, cancerd._id, drugCancerd);
+                        console.log(
+                            "Drug",
+                            dd.drug._id,
+                            cancerd._id,
+                            drugCancerd
+                        );
                     }
 
                     if (vsTargetDrugMedEvidence.length == 0) {
-                        vsTargetDrugMedEvidence = ["无"];
+                        //vsTargetDrugMedEvidence = ["无"];
+                        vsTargetDrugMedEvidence = [];
                         enabledModule[targetDrugMedEvidenceIndex].lines.push([
                             OBJ,
                         ]);
@@ -482,28 +562,57 @@ const generateData = async (
                         continue;
                     }
                     var vsTargetDrugClinicalTrial = [];
-                    var clinicalds = [];
-                    for (let d of drugc) {
-                        const cd = await models.Clinical.findOne({
-                            clinicalid: d.clinical_or_drug,
-                            cancer: cancerd._id,
+                    //var clinicalds = [];
+                    //for (let d of drugc) {
+                    //const cd = await models.Clinical.findOne({
+                    //clinicalid: d.clinical_or_drug,
+                    //cancer: cancerd._id,
+                    //});
+                    //if (cd) {
+                    //clinicalds.push(cd);
+                    //}
+                    //}
+                    //var agids = agenedsAll.map((g) => g._id);
+                    //.filter(
+                    //(value, index, array) =>
+                    //array.indexOf(value) === index
+                    //);
+                    //console.log("GGG", somaticGenes, agids);
+                    //
+                    for (let s of resultjson.Somatic) {
+                        var gened = await models.Gene.findOne({
+                            name: s[1],
                         });
-                        if (cd) {
-                            clinicalds.push(cd);
+                        if (!gened) {
+                            continue;
                         }
-                    }
-                    clinicalds.forEach((d) => {
+                        var agened = await models.GeneAnnot.findOne({
+                            gene: gened._id,
+                        });
+                        if (!agened) {
+                            continue;
+                        }
+                        var clinicald = await models.Clinical.findOne({
+                            mutation: s[5],
+                            snp: s[4],
+                            gene_annot: agened._id,
+                        });
+                        if (!clinicald) {
+                            continue;
+                        }
+                        //console.log("CCC", clinicald);
                         vsTargetDrugClinicalTrial.push(
-                            d.clinicalid,
+                            clinicald.clinicalid,
                             cancerd.label,
-                            d.drug,
-                            d.stage,
-                            d.location
+                            clinicald.drug,
+                            clinicald.stage,
+                            clinicald.location
                         );
-                    });
+                    }
 
                     if (vsTargetDrugClinicalTrial.length == 0) {
-                        vsTargetDrugClinicalTrial = ["无"];
+                        //vsTargetDrugClinicalTrial = ["无"];
+                        vsTargetDrugClinicalTrial = [];
                         enabledModule[targetDrugClinicalTrialIndex].lines.push([
                             OBJ,
                         ]);
@@ -535,7 +644,7 @@ const generateData = async (
                     var somatic_ms = resultjson.MSI[0][3];
                     switch (somatic_ms) {
                         case "MSS":
-                            ms = "微卫星稳定性（MSS）";
+                            ms = "微卫星稳定（MSS）";
                             break;
                         case "MSI-H":
                             ms = "微卫星稳定性高（MSI-H）";
@@ -549,19 +658,54 @@ const generateData = async (
                     var germline_genetic = resultjson.Germline_genetic;
                     fillLine(enabledModule[resultAllIndex], [
                         resultjson.Somatic.length +
+                            resultjson.CNV.length +
+                            resultjson.Fusion.length +
                             " 个基因突变，" +
-                            mutationds.length >
-                        0
-                            ? "其中" +
-                              mutationds.length +
-                              "个突变与靶向用药相关"
-                            : "未检测到与靶向用药相关的突变",
+                            (mutationds.length > 0
+                                ? "其中" +
+                                  mutationds.length +
+                                  "个突变与靶向用药相关"
+                                : "未检测到与靶向用药相关的突变"),
                         resultjson.TMB[0][1] + "muts/Mb",
                         ms,
-                        germline_genetic.length > 0
-                            ? `检测到${germline_genetic.length}个与遗传性肿瘤相关的致病突变`
-                            : "未检测到与遗传性肿瘤相关的致病突变",
+                        vsHrdtAnna.length / 8 > 0
+                            ? //germline_genetic.length > 0
+                              `检测到${
+                                  vsHrdtAnna.length / 8
+                              }个与遗传性肿瘤相关的致病突变/可能致病突变`
+                            : "未检测到与遗传性肿瘤相关的致病/可能致病突变",
                     ]);
+
+                    // appendix/gene_annot
+
+                    var refGeneAnnotIndex = enabledModule.findIndex(
+                        (m) => m.key == "appendix/gene_annot"
+                    );
+                    if (refGeneAnnotIndex < 0) {
+                        console.error(
+                            "invalid gene annot index",
+                            refGeneAnnotIndex
+                        );
+                        continue;
+                    }
+                    var vsRefGeneAnnot = [];
+                    agenedsAll
+                        .filter(
+                            (v, i, a) =>
+                                a.findIndex(
+                                    (t) => t.gene.label == v.gene.label
+                                ) === i
+                        )
+                        .forEach((g) => {
+                            vsRefGeneAnnot.push(g.gene.label, g.description_cn);
+                        });
+                    enabledModule[refGeneAnnotIndex].lines.push(
+                        ...[...Array(vsRefGeneAnnot.length / 2)].map((x) => [
+                            OBJ,
+                            OBJ,
+                        ])
+                    );
+                    fillLine(enabledModule[refGeneAnnotIndex], vsRefGeneAnnot);
                     break; //}}}
                 case "nccn_genes": //{{{
                     var genes = [];
@@ -620,15 +764,22 @@ const generateData = async (
                     });
                     var vsTmbAnna = [];
                     if (!tmbd) {
-                        vsTmbAnna = ["无"];
+                        //vsTmbAnna = ["无"];
+                        vsTmbAnna = [];
                         enabledModule[tmbAnnaIndex].push([OBJ]);
                     } else {
                         vsTmbAnna.push(
                             tmbd.item,
                             resultjson.TMB[0][1] + "muts/Mb",
-                            tmbd.result_detail
+                            tmbd.result_detail,
+                            tmbd.literature_detail
                         );
-                        enabledModule[tmbAnnaIndex].lines.push([OBJ, OBJ, OBJ]);
+                        enabledModule[tmbAnnaIndex].lines.push([
+                            OBJ,
+                            OBJ,
+                            OBJ,
+                            OBJ,
+                        ]);
                     }
                     fillLine(enabledModule[tmbAnnaIndex], vsTmbAnna);
                     break; //}}}
@@ -659,11 +810,22 @@ const generateData = async (
                     });
                     var vsMsiAnna = [];
                     if (!msid) {
-                        vsMsiAnna = ["无"];
+                        //vsMsiAnna = ["无"];
+                        vsMsiAnna = [];
                         enabledModule[msiAnnaIndex].lines.push([OBJ]);
                     } else {
-                        vsMsiAnna.push(msid.item, msiValue, msid.result_detail);
-                        enabledModule[msiAnnaIndex].lines.push([OBJ, OBJ, OBJ]);
+                        vsMsiAnna.push(
+                            msid.item,
+                            msiValue,
+                            msid.result_detail,
+                            msid.literature_detail
+                        );
+                        enabledModule[msiAnnaIndex].lines.push([
+                            OBJ,
+                            OBJ,
+                            OBJ,
+                            OBJ,
+                        ]);
                     }
                     fillLine(enabledModule[msiAnnaIndex], vsMsiAnna);
 
@@ -681,12 +843,19 @@ const generateData = async (
                                 vsGenePosAnna.push(
                                     g.gene.label,
                                     s[5],
-                                    g.result_detail
+                                    g.result_detail,
+                                    g.literature_detail
                                 );
                             }
                         });
                         if (!found) {
                             vsGenePos.push(g.gene.label, "未检测出变异");
+                            vsGenePosAnna.push(
+                                g.gene.label,
+                                "未检测出变异",
+                                g.result_detail,
+                                g.literature_detail
+                            );
                         }
                     });
                     //console.log('y', pathwayClassGeneds, pathwayClassGeneKeys);
@@ -694,7 +863,8 @@ const generateData = async (
                         vsGenePos.push(k);
                         vsGenePosAnna.push(k);
                         var m = "";
-                        var a = "";
+                        //var a = "";
+                        //var c = "";
                         pathwayClassGeneds[index].forEach((g) => {
                             resultjson.Somatic.forEach((s) => {
                                 if (g.gene.label == s[1]) {
@@ -703,11 +873,16 @@ const generateData = async (
                                     } else {
                                         m = m + ", " + s[5];
                                     }
-                                    if (a == "") {
-                                        a = g.result_detail;
-                                    } else {
-                                        a = a + "; " + g.result_detail;
-                                    }
+                                    //if (a == "") {
+                                    //a = g.result_detail;
+                                    //} else {
+                                    //a = a + "; " + g.result_detail;
+                                    //}
+                                    //if (c == "") {
+                                    //c = g.literature_detail;
+                                    //} else {
+                                    //c = c + "; " + g.literature_detail;
+                                    //}
                                 }
                             });
                         });
@@ -718,9 +893,13 @@ const generateData = async (
                             vsGenePos.push(m);
                             vsGenePosAnna.push(m);
                         }
-                        vsGenePosAnna.push(a);
+                        vsGenePosAnna.push(pathwayResultDetails[index]);
+                        vsGenePosAnna.push(pathwayLiteratureDetails[index]);
+                        //vsGenePosAnna.push(a);
+                        //vsGenePosAnna.push(c);
                     });
 
+                    //var padding = 6 - (vsGenePos.length % 6);
                     var padding = 6 - (vsGenePos.length % 6);
                     if (padding > 0) {
                         vsGenePos.push(...[...Array(padding)].map((x) => ""));
@@ -751,7 +930,8 @@ const generateData = async (
                     }
 
                     enabledModule[indexGenePosAnna].lines.push(
-                        ...[...Array(vsGenePosAnna.length / 3)].map((x) => [
+                        ...[...Array(vsGenePosAnna.length / 4)].map((x) => [
+                            OBJ,
                             OBJ,
                             OBJ,
                             OBJ,
@@ -763,17 +943,57 @@ const generateData = async (
                 case "drug_result/immu_result/gene/neg": //{{{
                     var vsGeneNeg = [];
                     var vsGeneNegAnna = [];
+                    var negStatement = "未检测出变异";
                     negGeneds.forEach((g) => {
                         var found = false;
                         resultjson.Somatic.forEach((s) => {
                             if (g.gene.label == s[1]) {
                                 found = true;
-                                vsGeneNeg.push(g.gene.label, s[5]);
-                                vsGeneNegAnna.push(
-                                    g.gene.label,
-                                    s[5],
-                                    g.result_detail
+                                var vsGeneNegIndex = vsGeneNeg.indexOf(
+                                    g.gene.label
                                 );
+                                if (vsGeneNegIndex > 0) {
+                                    var negContent =
+                                        vsGeneNeg[vsGeneNegIndex + 1];
+                                    if (
+                                        negContent == negStatement ||
+                                        negContent == ""
+                                    ) {
+                                        vsGeneNeg[vsGeneNegIndex + 1] = s[5];
+                                    } else {
+                                        vsGeneNeg[vsGeneNegIndex + 1] +=
+                                            "; " + s[5];
+                                    }
+                                } else {
+                                    vsGeneNeg.push(g.gene.label, s[5]);
+                                }
+                                var vsGeneNegAnnaIndex = vsGeneNegAnna.indexOf(
+                                    g.gene.label
+                                );
+                                if (vsGeneNegAnnaIndex > 0) {
+                                    var annContent =
+                                        vsGeneNegAnna[vsGeneNegAnnaIndex + 1];
+                                    if (
+                                        annContent == negStatement ||
+                                        annContent == ""
+                                    ) {
+                                        vsGeneNegAnna[vsGeneNegAnnaIndex + 1] =
+                                            s[5];
+                                        vsGeneNegAnna[vsGeneNegAnnaIndex + 2] =
+                                            g.result_detail;
+                                    } else {
+                                        vsGeneNegAnna[vsGeneNegAnnaIndex + 1] +=
+                                            "; " + s[5];
+                                        vsGeneNegAnna[vsGeneNegAnnaIndex + 2] +=
+                                            g.result_detail;
+                                    }
+                                } else {
+                                    vsGeneNegAnna.push(
+                                        g.gene.label,
+                                        s[5],
+                                        g.result_detail
+                                    );
+                                }
                             }
                         });
                         if (!found) {
@@ -785,19 +1005,19 @@ const generateData = async (
                             );
                         }
                     });
-                    var padding = 6 - (vsGeneNeg.length % 6);
-                    if (padding > 0) {
-                        vsGeneNeg.push(...[...Array(padding)].map((x) => ""));
-                    }
+                    //var padding = 6 - (vsGeneNeg.length % 6);
+                    //if (padding > 0) {
+                    //vsGeneNeg.push(...[...Array(padding)].map((x) => ""));
+                    //}
 
                     enabledModule[index].lines.push(
-                        ...[...Array(vsGeneNeg.length / 6)].map((x) => [
+                        ...[...Array(vsGeneNeg.length / 2)].map((x) => [
                             OBJ,
                             OBJ,
-                            OBJ,
-                            OBJ,
-                            OBJ,
-                            OBJ,
+                            //OBJ,
+                            //OBJ,
+                            //OBJ,
+                            //OBJ,
                         ])
                     );
                     fillLine(enabledModule[index], vsGeneNeg);
@@ -876,14 +1096,17 @@ const generateData = async (
                         continue;
                     }
 
-                    const hlad = await models.Tmh.findOne({
-                        item: "HLA",
+                    const hlads = await models.Tmh.find({
+                        item: { $regex: "HLA.*" },
                     });
-                    if (!hlad) {
+                    if (!hlads.length) {
                         console.error("invalid hla anna text");
                         continue;
                     }
-
+                    var literature_detail = hlads
+                        .map((h) => h.literature_detail)
+                        .join("");
+                    //console.log("HHH", hlads, literature_detail);
                     enabledModule[indexHlaAnna].lines.push(
                         [OBJ, OBJ, OBJ, OBJ, OBJ, OBJ],
                         ["临床意义", OBJ]
@@ -895,7 +1118,7 @@ const generateData = async (
                         dqb1s.length == 0 ? "-" : dqb1s.join("\n"),
                         dpb1s.length == 0 ? "-" : dpb1s.join("\n"),
                         drb1s.length == 0 ? "-" : drb1s.join("\n"),
-                        hlad.literature_detail,
+                        literature_detail,
                     ]);
 
                     break; //}}}
@@ -907,7 +1130,8 @@ const generateData = async (
                             genotype: c[1],
                         })
                             .populate("gene")
-                            .populate("evidence_level");
+                            .populate("evidence_level")
+                            .populate("cancer");
                         chemods.forEach((d) => {
                             vsChemoAnna.push(
                                 d.drug,
@@ -915,7 +1139,8 @@ const generateData = async (
                                 d.rs,
                                 c[1],
                                 d.evidence_level ? d.evidence_level.label : "",
-                                cancerd.label,
+                                //cancerd.label,
+                                d.cancer.label,
                                 d.description_ref
                             );
                         });
@@ -934,41 +1159,14 @@ const generateData = async (
                     fillLine(enabledModule[index], vsChemoAnna);
                     break; //}}}
                 case "hrdt_result": //{{{
-                    var hrdtds = [];
-                    var vsHrdtAnna = [];
-                    for (let germData of resultjson.Germline_genetic) {
-                        const hrdtd = await models.Hrdt.findOne({
-                            chr: germData[0],
-                            alt: germData[3],
-                            start: { $lte: germData[1] },
-                            end: { $gte: germData[1] },
-                        });
-                        if (hrdtd) {
-                            hrdtds.push(hrdtd);
-                            var mutations = hrdtd.aachange_refgene.split(",");
-                            var cm = "";
-                            var pm = "";
-                            if (mutations.length > 0) {
-                                var mutation = mutations[0].split(":");
-                                if (mutation.length > 4) {
-                                    cm = mutation[3];
-                                    pm = mutation[4];
-                                }
-                            }
-                            vsHrdtAnna.push(
-                                hrdtd.gene_name,
-                                hrdtd.avsnp150,
-                                cm,
-                                pm,
-                                germData[4],
-                                hrdtd.mutation_type,
-                                hrdtd.clinical_detail,
-                                hrdtd.hrdt_analysis
-                            );
-                        }
-                    }
                     enabledModule[index].lines.push([OBJ]);
-                    fillLine(enabledModule[index], [hrdtds.length]);
+                    fillLine(enabledModule[index], [
+                        hrdtds.length > 0
+                            ? `本次检测检测到${
+                                  vsHrdtAnna.length / 8
+                              }个与遗传肿瘤相关的致病/可能致病突变`
+                            : "本次检测未检测到与遗传肿瘤相关的致病/可能致病突变",
+                    ]);
 
                     // hrdt_anna
 
@@ -997,7 +1195,13 @@ const generateData = async (
                     break; //}}}
                 case "pd": //{{{
                     var vsPdDrug = [];
+                    const tdcds = await models.DrugCancer.find({
+                        cancer: cancerd._id,
+                    });
+                    //const tdcids = tdcds.map((d) => d._id);
+                    const tdcids = tdcds.map((d) => d.drug);
                     const tds = await models.Drug.find({
+                        _id: { $in: tdcids },
                         associated_gene: { $in: ["PD-1", "PD-L1"] },
                     }).sort("associated_gene");
                     tds.forEach((t) => {
@@ -1005,6 +1209,7 @@ const generateData = async (
                             t.name_cm,
                             t.date_approved_fda + "/" + t.date_approved_nmpa,
                             t.associated_gene,
+                            //t.cancer.label
                             cancerd.label
                         );
                     });
@@ -1080,18 +1285,19 @@ const generateData = async (
                     );
                     fillLine(enabledModule[index], vsCnv);
                     break; //}}}
-                case "appendix/gene_annot": //{{{
-                    var vsRefGeneAnnot = [];
-                    ageneds.forEach((g) => {
-                        vsRefGeneAnnot.push(g.gene.label, g.description_cn);
-                    });
-                    enabledModule[index].lines.push(
-                        ...[...Array(vsRefGeneAnnot.length / 2)].map((x) => [
-                            OBJ,
-                            OBJ,
-                        ])
-                    );
-                    fillLine(enabledModule[index], vsRefGeneAnnot);
+                case "ref": //{{{
+                    if (project.literatures) {
+                        var projectPmids = await models.ReportLiterature.find({
+                            _id: { $in: project.literatures },
+                        });
+                        var vsRef = projectPmids.map((p) => p.literature);
+                        if (vsRef.length > 0) {
+                            enabledModule[index].lines.push(
+                                ...[...Array(vsRef.length)].map((x) => [OBJ])
+                            );
+                            fillLine(enabledModule[index], vsRef);
+                        }
+                    }
                     break; //}}}
                 case "appendix/gene_tumor/all": //{{{
                     var vsRefGeneTumorAll = [];
@@ -1114,11 +1320,14 @@ const generateData = async (
                     }
                     var vsRefGeneTumorChemo = [];
                     project.genes_panel.forEach((g) => {
-                        var found = g.geneclasses.find((c) =>
-                            c._id.equals(chemoGeneClass._id)
-                        );
-                        if (found) {
-                            vsRefGeneTumorChemo.push(g.label);
+                        //console.log("PPP", g);
+                        if (g.geneclasses.length > 0) {
+                            var found = g.geneclasses.find((c) =>
+                                c._id.equals(chemoGeneClass._id)
+                            );
+                            if (found) {
+                                vsRefGeneTumorChemo.push(g.label);
+                            }
                         }
                     });
                     enabledModule[index].lines.push(
@@ -1137,11 +1346,13 @@ const generateData = async (
                     }
                     var vsRefGeneTumorHrdt = [];
                     project.genes_panel.forEach((g) => {
-                        var found = g.geneclasses.find((c) =>
-                            c._id.equals(hrdtGeneClass._id)
-                        );
-                        if (found) {
-                            vsRefGeneTumorHrdt.push(g.label);
+                        if (g.geneclasses.length > 0) {
+                            var found = g.geneclasses.find((c) =>
+                                c._id.equals(hrdtGeneClass._id)
+                            );
+                            if (found) {
+                                vsRefGeneTumorHrdt.push(g.label);
+                            }
                         }
                     });
                     enabledModule[index].lines.push(
@@ -1184,6 +1395,7 @@ const generateData = async (
         //});
     } catch (err) {
         //console.log('ERROR', err);
+        console.log("ERROR", err);
         throw new Error(err);
     }
     return enabledModule;
@@ -1222,7 +1434,7 @@ module.exports = {
                 .populate("genes_nccn")
                 .populate("genes_panel");
             var nccnGenes = await models.NccnGene.find({
-                gene: { $in: inspectionProject.genes },
+                gene: { $in: inspectionProject.genes_nccn },
             })
                 .populate("gene")
                 .populate("cancer");
@@ -1239,6 +1451,24 @@ module.exports = {
                 nccnGenes
             );
 
+            var refIndex = result.findIndex((r) => r.key == "ref");
+            var resultPmids = JSON.stringify(result).match(/PMID:[\d]{1,8}/gi);
+
+            var projectPmids = inspectionProject.pmids;
+            if (projectPmids) {
+                defaultPmids = projectPmids.split(",").map((a) => a.trim());
+                //console.log("PPP default", defaultPmids);
+                //console.log("PPP result", resultPmids);
+                resultPmids.push(...defaultPmids);
+                //console.log("PPP merged", resultPmids);
+            }
+
+            var pmidds = await models.ReportLiterature.find({
+                pmid: { $in: resultPmids },
+            });
+            result[refIndex].lines.push(...pmidds.map((p) => [p.literature]));
+            //console.log("RRR", refIndex, resultPmids, result[refIndex]);
+
             var output = {};
             result.forEach((r, index) => {
                 if (r.id && r.lines) {
@@ -1253,6 +1483,11 @@ module.exports = {
                 var v = output[id];
                 if (v.length == 0) {
                     v = [[]];
+                }
+                for (i = 0; i < v.length; i++) {
+                    for (j = 0; j < v[i].length; j++) {
+                        if (v[i][j] == null) v[i][j] = "";
+                    }
                 }
                 var l = `"${id}":${JSON.stringify(v)}`;
                 if (xianzhi.length == 0) {
@@ -1271,7 +1506,6 @@ module.exports = {
             //if (!fs.existsSync(targetPath))
             //fs.mkdirSync(targetPath, { recursive: true });
             fs.writeFileSync(tmpPath, xianzhi.join("\n"));
-
             var report = await models.ReportReport.create({
                 task: reportTask._id,
                 report_status: -1,

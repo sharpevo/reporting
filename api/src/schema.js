@@ -433,6 +433,7 @@ module.exports = gql`
         label: String!
         genes_nccn: [Gene]
         genes_panel: [Gene]
+        pmids: String
     }
 
     type ReportSample {
@@ -1132,12 +1133,14 @@ module.exports = gql`
             label: String!
             genes_nccn: [String]
             genes_panel: [String]
+            pmids: String
         ): InspectionProject!
         updateInspectionProject(
             id: ID!
             label: String!
             genes_nccn: [String]
             genes_panel: [String]
+            pmids: String
         ): InspectionProject!
         deleteInspectionProjects(ids: [ID!]!): Boolean!
 
