@@ -685,7 +685,7 @@ tables["tmh"] = {
         {
             label: "文献中文解析",
             key: "literature_detail",
-            inputType: "text",
+            inputType: "textarea",
         },
         {
             label: "英文解析参考来源",
@@ -3630,6 +3630,11 @@ tables["inspection_project"] = {
             exportable: true,
         },
         {
+            label: "PMIDs",
+            key: "pmids",
+            exportable: true,
+        },
+        {
             label: "创建日期",
             key: "createdAt",
             exportable: false,
@@ -3653,6 +3658,9 @@ tables["inspection_project"] = {
             return cell.genes_panel
                 ? cell.genes_panel.map((gene) => gene.label).join(" ")
                 : "";
+        },
+        (cell) => {
+            return cell.pmids;
         },
         (cell) => {
             return formatDate(cell.createdAt);
@@ -3692,6 +3700,11 @@ tables["inspection_project"] = {
             inputType: "multiselect",
             query: query.GENES_GET,
             queryKey: "genes",
+        },
+        {
+            label: "PMIDs",
+            key: "pmids",
+            inputType: "text",
         },
     ],
 };

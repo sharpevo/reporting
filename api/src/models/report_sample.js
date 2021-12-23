@@ -19,6 +19,9 @@ const inspectionProjectSchema = new mongoose.Schema(
                 ref: "Gene",
             },
         ],
+        pmids: {
+            type: String,
+        },
     },
     { timestamps: true }
 );
@@ -134,7 +137,7 @@ const reportSampleSchema = new mongoose.Schema(
     }
 );
 
-reportSampleSchema.virtual("label").get(function() {
+reportSampleSchema.virtual("label").get(function () {
     return `${this.sample_number}(${this.name})`;
 });
 reportSampleSchema.set("toObject", { virtuals: true, getters: true });

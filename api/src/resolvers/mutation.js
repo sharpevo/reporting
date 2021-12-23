@@ -2250,11 +2250,12 @@ module.exports = {
 
     newInspectionProject: async (
         parent,
-        { label, genes_nccn, genes_panel },
+        { label, genes_nccn, genes_panel, pmids },
         { models }
     ) => {
         let obj = {
             label: label,
+            pmids: pmids,
         };
         if (genes_nccn && genes_nccn.length > 0) {
             const geneds = await models.Gene.find({
@@ -2303,12 +2304,13 @@ module.exports = {
     },
     updateInspectionProject: async (
         parent,
-        { id, label, genes_nccn, genes_panel },
+        { id, label, genes_nccn, genes_panel, pmids },
         { models }
     ) => {
         let obj = new models.InspectionProject({
             _id: id,
             label: label,
+            pmids: pmids,
         });
         if (genes_nccn && genes_nccn.length > 0) {
             const geneds = await models.Gene.find({

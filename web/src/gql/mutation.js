@@ -1275,11 +1275,13 @@ const INSPECTION_PROJECT_NEW = gql`
         $label: String!
         $genes_nccn: [String]
         $genes_panel: [String]
+        $pmids: String
     ) {
         newInspectionProject(
             label: $label
             genes_nccn: $genes_nccn
             genes_panel: $genes_panel
+            pmids: $pmids
         ) {
             id
             label
@@ -1293,12 +1295,14 @@ const INSPECTION_PROJECT_UPDATE = gql`
         $label: String!
         $genes_nccn: [String]
         $genes_panel: [String]
+        $pmids: String
     ) {
         updateInspectionProject(
             id: $id
             label: $label
             genes_nccn: $genes_nccn
             genes_panel: $genes_panel
+            pmids: $pmids
         ) {
             id
             label

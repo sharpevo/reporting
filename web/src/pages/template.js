@@ -28,6 +28,7 @@ import AccountTreeIcon from "@mui/icons-material/AccountTree";
 import { useQuery, useMutation } from "@apollo/client";
 import { makeStyles } from "@mui/styles";
 import DataFormDialog from "../components/DataForm";
+import FilePreview from "../components/PreviewFile";
 import TemplateEditDialog from "../components/TemplateEdit";
 import * as query from "../gql/query";
 import * as mutation from "../gql/mutation";
@@ -82,11 +83,17 @@ const formComponents = [
         label: "封面",
         key: "image_cover_front",
         inputType: "reportfile",
+        previewComponent: (filepath) => {
+            return <FilePreview filePath={filepath} />;
+        },
     },
     {
         label: "封底",
         key: "image_cover_back",
         inputType: "reportfile",
+        previewComponent: (filepath) => {
+            return <FilePreview filePath={filepath} />;
+        },
     },
 ];
 
@@ -143,7 +150,7 @@ const m = () => {
                 ],
                 [
                     "微卫星不稳定性（MSI）",
-                    "微卫星位点（MSI）",
+                    "微卫星位点（MS）",
                     "预测免疫治疗药物有效性",
                     OBJ,
                 ],
@@ -317,8 +324,7 @@ const m = () => {
             id: "07201",
             lines: [
                 [
-                    "基因",
-                    "突变形式(突变频率)",
+                    "基因及突变形式(突变频率)",
                     "变异解析",
                     "基因说明",
                     "用药说明",
@@ -378,7 +384,7 @@ const m = () => {
             key: "immu_anna/gene/pos",
             id: "08311",
             enabled: true,
-            lines: [["基因", "检测结果", "结果解析"]],
+            lines: [["基因", "检测结果", "内容解析", "文献和临床试验信息"]],
         },
         {
             name: "免疫疗效负相关基因",
@@ -503,7 +509,7 @@ const m = () => {
             key: "ref",
             id: "13001",
             enabled: true,
-            lines: [],
+            lines: [["文献"]],
             note: "",
         },
         {
